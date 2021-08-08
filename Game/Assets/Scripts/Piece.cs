@@ -28,9 +28,10 @@ public class Piece : MonoBehaviour
     public bool evolved { get; set; } = false;
     private void Start()
     {
+        // 今はこんな感じで使ってるけど、ホントは陣形をロードするときに呼び出すようにしたい
         InitActionRange(t_UpperLeft, t_LowerLeft, t_UpperRight, t_LowerRight, t_Left, t_Right, t_Forward, t_Backward);
     }
-
+    // 行動範囲の初期化
     public void InitActionRange(int UpperLeft, int LowerLeft, int UpperRight, int LowerRight, int Left, int Right, int Forward, int Backward)
     {
         this.UpperLeft = UpperLeft;
