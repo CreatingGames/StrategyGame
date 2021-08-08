@@ -10,33 +10,28 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] int x;
     [SerializeField] int y;
 
-    private GameObject[,] ChildBoard;
+    private GameObject[,] ChildBoard;// 盤のマス
+    public GameObject[,] GameBoard; // 盤面の管理
+    private int BoardSize;
     private void Start()
     {
+        if((int)Mathf.Sqrt(ParentBoard.transform.childCount) == Mathf.Sqrt(ParentBoard.transform.childCount))
+        {
+            BoardSize = (int)Mathf.Sqrt(ParentBoard.transform.childCount);
+        }
+        
+        GameBoard = new GameObject[BoardSize, BoardSize];
         GetAllChildBoard();
         ChangeImageTransparency(x, y);
     }
     // インスペクターで取得したBoardから子要素のそれぞれのImageを取得する
     private void GetAllChildBoard()
     {
-        int boardSize;
-        if (ParentBoard.transform.childCount == 5 * 5)
-        {
-            boardSize = 5;
-        }
-        else if (ParentBoard.transform.childCount == 6 * 6)
-        {
-            boardSize = 6;
-        }
-        else
-        {
-            boardSize = 7;
-        }
-        ChildBoard = new GameObject[boardSize, boardSize];
+        ChildBoard = new GameObject[BoardSize, BoardSize];
         int index = 0;
-        for (int i = 0; i < boardSize; i++)
+        for (int i = 0; i < BoardSize; i++)
         {
-            for (int j = 0; j < boardSize; j++)
+            for (int j = 0; j < BoardSize; j++)
             {
                 ChildBoard[i, j] = ParentBoard.transform.GetChild(index).gameObject;
                 index++;
