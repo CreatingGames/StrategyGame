@@ -3,20 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 public class FormationData : MonoBehaviour
 {
-    public struct Formation
-    {
-        public int UpperLeft;// 左斜め前
-        public int LowerLeft;// 左斜め後ろ
-        public int UpperRight;// 右斜め前
-        public int LowerRight;// 右斜め後ろ
-        public int Left;// 左
-        public int Right;// 右
-        public int Forward;// 前
-        public int Backward;// 後ろ
-    }
-    public Formation[,] shortBoard = new Formation[2, 5];
+    public PieceData[,] shortBoard;
     private void Start()
     {
+        shortBoard = new PieceData[2, 5];
+        shortBoard[1, 2] = gameObject.AddComponent<PieceData>();
+        shortBoard[1, 2].Forward = 1;
+        if (shortBoard[1, 2] == null)
+        {
+            print("This is NULL");
+        }
 
     }
 }
