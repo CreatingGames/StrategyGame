@@ -1679,7 +1679,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParentBoard: {fileID: 1819504959}
-  formation: {fileID: 1824768511}
+  Formation: {fileID: 1824768511}
+  PiecePrefab: {fileID: 6433473436612652756, guid: 73264c3a42e40344ea3acb1086cc5ac1, type: 3}
   x: 2
   y: 4
 --- !u!4 &1036103875
