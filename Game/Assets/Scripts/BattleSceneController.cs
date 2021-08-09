@@ -9,7 +9,7 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] GameObject Formation;
     [SerializeField] GameObject PiecePrefab;
     [SerializeField] GameObject Canvas;
-    // Test
+    [Header("Testópïœêî")]
     [SerializeField] int x;
     [SerializeField] int y;
 
