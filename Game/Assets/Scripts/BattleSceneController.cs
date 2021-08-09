@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class BattleSceneController : MonoBehaviour
 {
     [SerializeField] GameObject ParentBoard;
+    [SerializeField] GameObject formation;
     // Test
     [SerializeField] int x;
     [SerializeField] int y;
@@ -16,11 +17,11 @@ public class BattleSceneController : MonoBehaviour
     private Vector3[,] ChildBoardPosition;
     private void Start()
     {
-        if((int)Mathf.Sqrt(ParentBoard.transform.childCount) == Mathf.Sqrt(ParentBoard.transform.childCount))
+        if ((int)Mathf.Sqrt(ParentBoard.transform.childCount) == Mathf.Sqrt(ParentBoard.transform.childCount))
         {
             BoardSize = (int)Mathf.Sqrt(ParentBoard.transform.childCount);
         }
-        
+
         GameBoard = new GameObject[BoardSize, BoardSize];
         GetAllChildBoard();
         GetAllChildBoardPosition();
@@ -42,15 +43,16 @@ public class BattleSceneController : MonoBehaviour
     }
     private void GetAllChildBoardPosition()
     {
+        ChildBoardPosition = new Vector3[BoardSize, BoardSize];
         for (int i = 0; i < BoardSize; i++)
         {
             for (int j = 0; j < BoardSize; j++)
             {
-                ChildBoardPosition[i,j] = ChildBoard[i, j].transform.position;
+                ChildBoardPosition[i, j] = ChildBoard[i, j].transform.position;
             }
         }
     }
-    public void ChangeImageTransparency(int x,int y)
+    public void ChangeImageTransparency(int x, int y)
     {
         float red = ChildBoard[y, x].GetComponent<Image>().color.r;
         float green = ChildBoard[y, x].GetComponent<Image>().color.g;
