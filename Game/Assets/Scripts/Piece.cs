@@ -35,6 +35,11 @@ public class Piece : PieceData
         this.Forward = Forward;
         this.Backward = Backward;
     }
+    public void InitPosition(int x, int y)
+    {
+        PositionX = x;
+        PositionY = y;
+    }
 
     // 駒が保有する戦略ポイントを返す。
     public int GetStrategyPoint()

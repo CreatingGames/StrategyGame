@@ -13,4 +13,6 @@ public class PieceData : MonoBehaviour
     public int Right { get; set; } = 0;// ‰E
     public int Forward { get; set; } = 0;// ‘O
     public int Backward { get; set; } = 0;// Œã‚ë
+    public int PositionX { get; set; } = 0;
+    public int PositionY { get; set; } = 0;
 }
