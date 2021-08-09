@@ -9,10 +9,7 @@ public class FormationData : MonoBehaviour
         shortBoard = new PieceData[2, 5];
         shortBoard[1, 2] = gameObject.AddComponent<PieceData>();
         shortBoard[1, 2].Forward = 1;
-        if (shortBoard[1, 2] == null)
-        {
-            print("This is NULL");
-        }
 
     }
+
 }
