@@ -18,6 +18,10 @@ public class BattleSceneController : MonoBehaviour
     private int BoardSize;// 盤のサイズ
     private Vector3[,] ChildBoardPosition;
     private Vector3 piecePositionZ = new Vector3(0.0f, 0.0f, -0.46296296296f);// 生成されるオブジェクト位置をz軸-50にするためにメタ的にこうしてる。
+    /*
+     * 現在の設定だと生成するオブジェクトをCanvasに追加して、ｚ軸を動かそうとすると１０８倍される。
+     * 原因は不明、調査が必要。
+     */
     private void Start()
     {
         if ((int)Mathf.Sqrt(ParentBoard.transform.childCount) == Mathf.Sqrt(ParentBoard.transform.childCount))
