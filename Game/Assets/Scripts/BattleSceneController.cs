@@ -12,7 +12,8 @@ public class BattleSceneController : MonoBehaviour
 
     private GameObject[,] ChildBoard;// 盤のマス
     public GameObject[,] GameBoard; // 盤面の管理
-    private int BoardSize;
+    private int BoardSize;// 盤のサイズ
+    private Vector3[,] ChildBoardPosition;
     private void Start()
     {
         if((int)Mathf.Sqrt(ParentBoard.transform.childCount) == Mathf.Sqrt(ParentBoard.transform.childCount))
@@ -22,6 +23,7 @@ public class BattleSceneController : MonoBehaviour
         
         GameBoard = new GameObject[BoardSize, BoardSize];
         GetAllChildBoard();
+        GetAllChildBoardPosition();
         ChangeImageTransparency(x, y);
     }
     // インスペクターで取得したBoardから子要素のそれぞれのImageを取得する
@@ -35,6 +37,16 @@ public class BattleSceneController : MonoBehaviour
             {
                 ChildBoard[i, j] = ParentBoard.transform.GetChild(index).gameObject;
                 index++;
+            }
+        }
+    }
+    private void GetAllChildBoardPosition()
+    {
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                ChildBoardPosition[i,j] = ChildBoard[i, j].transform.position;
             }
         }
     }
