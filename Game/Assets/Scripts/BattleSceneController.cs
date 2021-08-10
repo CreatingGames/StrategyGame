@@ -88,7 +88,7 @@ public class BattleSceneController : MonoBehaviour
                 {
                     GameBoard[i + 3, j] = (GameObject)Instantiate(PiecePrefab, ChildBoardPosition[i + 3, j], Quaternion.identity, Canvas.transform);
                     GameBoard[i + 3, j].GetComponent<Piece>().InitActionRange(shortBoard[i, j].UpperLeft, shortBoard[i, j].LowerLeft, shortBoard[i, j].UpperRight, shortBoard[i, j].LowerRight, shortBoard[i, j].Left, shortBoard[i, j].Right, shortBoard[i, j].Forward, shortBoard[i, j].Backward);
-                    GameBoard[i + 3, j].GetComponent<Piece>().InitPosition(i + 3, j);
+                    GameBoard[i + 3, j].GetComponent<Piece>().InitPosition(j, i + 3);
                 }
             }
         }
