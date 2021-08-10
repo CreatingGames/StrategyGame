@@ -36,11 +36,13 @@ public class Piece : PieceData
         this.Right = Right;
         this.Forward = Forward;
         this.Backward = Backward;
+        ToInspector();
     }
     public void InitPosition(int x, int y)
     {
         PositionX = x;
         PositionY = y;
+        ToInspector();
     }
 
     // 駒が保有する行動範囲の合計を返す。
