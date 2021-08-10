@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,18 +9,18 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] GameObject Formation;
     [SerializeField] GameObject PiecePrefab;
     [SerializeField] GameObject Canvas;
-    [Header("Test—p•Ï”")]
+    [Header("Testç”¨å¤‰æ•°")]
     [SerializeField] int x;
     [SerializeField] int y;
 
-    private GameObject[,] ChildBoard;// ”Õ‚Ìƒ}ƒX
-    public GameObject[,] GameBoard; // ”Õ–Ê‚ÌŠÇ—
-    private int BoardSize;// ”Õ‚ÌƒTƒCƒY
+    private GameObject[,] ChildBoard;// ç›¤ã®ãƒã‚¹
+    public GameObject[,] GameBoard; // ç›¤é¢ã®ç®¡ç†
+    private int BoardSize;// ç›¤ã®ã‚µã‚¤ã‚º
     private Vector3[,] ChildBoardPosition;
-    private Vector3 piecePositionZ = new Vector3(0.0f, 0.0f, -0.46296296296f);// ¶¬‚³‚ê‚éƒIƒuƒWƒFƒNƒgˆÊ’u‚ğz²-50‚É‚·‚é‚½‚ß‚Éƒƒ^“I‚É‚±‚¤‚µ‚Ä‚éB
+    private Vector3 piecePositionZ = new Vector3(0.0f, 0.0f, -0.46296296296f);// ç”Ÿæˆã•ã‚Œã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½ç½®ã‚’zè»¸-50ã«ã™ã‚‹ãŸã‚ã«ãƒ¡ã‚¿çš„ã«ã“ã†ã—ã¦ã‚‹ã€‚
     /*
-     * Œ»İ‚Ìİ’è‚¾‚Æ¶¬‚·‚éƒIƒuƒWƒFƒNƒg‚ğCanvas‚É’Ç‰Á‚µ‚ÄA‚š²‚ğ“®‚©‚»‚¤‚Æ‚·‚é‚Æ‚P‚O‚W”{‚³‚ê‚éB
-     * Œ´ˆö‚Í•s–¾A’²¸‚ª•K—vB
+     * ç¾åœ¨ã®è¨­å®šã ã¨ç”Ÿæˆã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’Canvasã«è¿½åŠ ã—ã¦ã€ï½šè»¸ã‚’å‹•ã‹ãã†ã¨ã™ã‚‹ã¨ï¼‘ï¼ï¼˜å€ã•ã‚Œã‚‹ã€‚
+     * åŸå› ã¯ä¸æ˜ã€èª¿æŸ»ãŒå¿…è¦ã€‚
      */
     private void Start()
     {
@@ -35,7 +35,7 @@ public class BattleSceneController : MonoBehaviour
         ChangeImageTransparency(x, y);
         StartCoroutine(LoadFormation());
     }
-    // ƒCƒ“ƒXƒyƒNƒ^[‚Åæ“¾‚µ‚½Board‚©‚çq—v‘f‚Ì‚»‚ê‚¼‚ê‚ÌImage‚ğæ“¾‚·‚é
+    // ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ãƒ¼ã§å–å¾—ã—ãŸBoardã‹ã‚‰å­è¦ç´ ã®ãã‚Œãã‚Œã®Imageã‚’å–å¾—ã™ã‚‹
     private void GetAllChildBoard()
     {
         ChildBoard = new GameObject[BoardSize, BoardSize];
@@ -75,11 +75,11 @@ public class BattleSceneController : MonoBehaviour
         Formation.GetComponent<FormationData>().InitFormationData();
         while (!Formation.GetComponent<FormationData>().isClomplete)
         {
-            // child‚ÌisComplete•Ï”‚ªtrue‚É‚È‚é‚Ü‚Å‘Ò‹@
+            // childã®isCompleteå¤‰æ•°ãŒtrueã«ãªã‚‹ã¾ã§å¾…æ©Ÿ
             yield return new WaitForEndOfFrame();
         }
         PieceData[,] shortBoard = Formation.GetComponent<FormationData>().shortBoard;
-        // ‚±‚±‚Í‚¢‚Á‚½‚ñƒƒ^‚Éƒ‹[ƒv‰ñ”‚ğŒˆ‚ß‚é
+        // ã“ã“ã¯ã„ã£ãŸã‚“ãƒ¡ã‚¿ã«ãƒ«ãƒ¼ãƒ—å›æ•°ã‚’æ±ºã‚ã‚‹
         for (int i = 0; i < 2; i++)
         {
             for (int j = 0; j < 5; j++)

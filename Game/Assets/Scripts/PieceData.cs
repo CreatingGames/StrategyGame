@@ -1,18 +1,18 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PieceData : MonoBehaviour
 {
-    // ‹î‚Ìs“®”ÍˆÍ
-    public int UpperLeft { get; set; } = 0;// ¶Î‚ß‘O
-    public int LowerLeft { get; set; } = 0;// ¶Î‚ßŒã‚ë
-    public int UpperRight { get; set; } = 0;// ‰EÎ‚ß‘O
-    public int LowerRight { get; set; } = 0;// ‰EÎ‚ßŒã‚ë
-    public int Left { get; set; } = 0;// ¶
-    public int Right { get; set; } = 0;// ‰E
-    public int Forward { get; set; } = 0;// ‘O
-    public int Backward { get; set; } = 0;// Œã‚ë
+    // é§’ã®è¡Œå‹•ç¯„å›²
+    public int UpperLeft { get; set; } = 0;// å·¦æ–œã‚å‰
+    public int LowerLeft { get; set; } = 0;// å·¦æ–œã‚å¾Œã‚
+    public int UpperRight { get; set; } = 0;// å³æ–œã‚å‰
+    public int LowerRight { get; set; } = 0;// å³æ–œã‚å¾Œã‚
+    public int Left { get; set; } = 0;// å·¦
+    public int Right { get; set; } = 0;// å³
+    public int Forward { get; set; } = 0;// å‰
+    public int Backward { get; set; } = 0;// å¾Œã‚
     public int PositionX { get; set; } = 0;
     public int PositionY { get; set; } = 0;
 }

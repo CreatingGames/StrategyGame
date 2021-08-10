@@ -1,10 +1,10 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Piece : PieceData
 {
-    // Test—pƒf[ƒ^“ü—Í
+    // Testç”¨ãƒ‡ãƒ¼ã‚¿å…¥åŠ›
     [SerializeField] int t_UpperLeft = 0;
     [SerializeField] int t_LowerLeft = 0;
     [SerializeField] int t_UpperRight = 0;
@@ -16,14 +16,14 @@ public class Piece : PieceData
 
 
 
-    // ‹î‚Ìó‘Ô
+    // é§’ã®çŠ¶æ…‹
     public bool evolved { get; set; } = false;
     private void Start()
     {
-        // ¡‚Í‚±‚ñ‚ÈŠ´‚¶‚Åg‚Á‚Ä‚é‚¯‚ÇAƒzƒ“ƒg‚ÍwŒ`‚ğƒ[ƒh‚·‚é‚Æ‚«‚ÉŒÄ‚Ño‚·‚æ‚¤‚É‚µ‚½‚¢
+        // ä»Šã¯ã“ã‚“ãªæ„Ÿã˜ã§ä½¿ã£ã¦ã‚‹ã‘ã©ã€ãƒ›ãƒ³ãƒˆã¯é™£å½¢ã‚’ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã¨ãã«å‘¼ã³å‡ºã™ã‚ˆã†ã«ã—ãŸã„
         InitActionRange(t_UpperLeft, t_LowerLeft, t_UpperRight, t_LowerRight, t_Left, t_Right, t_Forward, t_Backward);
     }
-    // s“®”ÍˆÍ‚Ì‰Šú‰»
+    // è¡Œå‹•ç¯„å›²ã®åˆæœŸåŒ–
     public void InitActionRange(int UpperLeft, int LowerLeft, int UpperRight, int LowerRight, int Left, int Right, int Forward, int Backward)
     {
         this.UpperLeft = UpperLeft;
@@ -41,7 +41,7 @@ public class Piece : PieceData
         PositionY = y;
     }
 
-    // ‹î‚ª•Û—L‚·‚éí—ªƒ|ƒCƒ“ƒg‚ğ•Ô‚·B
+    // é§’ãŒä¿æœ‰ã™ã‚‹æˆ¦ç•¥ãƒã‚¤ãƒ³ãƒˆã‚’è¿”ã™ã€‚
     public int GetStrategyPoint()
     {
         int sum = UpperLeft + LowerLeft + UpperRight + LowerRight + Left + Right + Forward + Backward;
