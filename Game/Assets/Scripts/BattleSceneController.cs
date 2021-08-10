@@ -73,7 +73,7 @@ public class BattleSceneController : MonoBehaviour
     private IEnumerator LoadFormation()
     {
         Formation.GetComponent<FormationData>().InitFormationData();
-        while (!Formation.GetComponent<FormationData>().isClomplete)
+        while (!Formation.GetComponent<FormationData>().isComplete)
         {
             // childのisComplete変数がtrueになるまで待機
             yield return new WaitForEndOfFrame();
