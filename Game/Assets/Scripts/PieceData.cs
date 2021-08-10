@@ -15,4 +15,5 @@ public class PieceData : MonoBehaviour
     public int Backward { get; set; } = 0;// 後ろ
     public int PositionX { get; set; } = 0;
     public int PositionY { get; set; } = 0;
+    public int SumActionRange { get; set; } = 0;
 }

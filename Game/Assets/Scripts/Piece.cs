@@ -22,6 +22,7 @@ public class Piece : PieceData
     {
         // 今はこんな感じで使ってるけど、ホントは陣形をロードするときに呼び出すようにしたい
         InitActionRange(t_UpperLeft, t_LowerLeft, t_UpperRight, t_LowerRight, t_Left, t_Right, t_Forward, t_Backward);
+        SumActionRange = GetSumActionRange();
     }
     // 行動範囲の初期化
     public void InitActionRange(int UpperLeft, int LowerLeft, int UpperRight, int LowerRight, int Left, int Right, int Forward, int Backward)
@@ -41,8 +42,8 @@ public class Piece : PieceData
         PositionY = y;
     }
 
-    // 駒が保有する戦略ポイントを返す。
-    public int GetStrategyPoint()
+    // 駒が保有する行動範囲の合計を返す。
+    public int GetSumActionRange()
     {
         int sum = UpperLeft + LowerLeft + UpperRight + LowerRight + Left + Right + Forward + Backward;
         return sum;
