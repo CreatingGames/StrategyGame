@@ -22,7 +22,6 @@ public class Piece : PieceData
     public bool evolved { get; set; } = false;
     private void Start()
     {
-        SumActionRange = GetSumActionRange();
 
     }
     // 行動範囲の初期化
@@ -37,12 +36,14 @@ public class Piece : PieceData
         this.Forward = Forward;
         this.Backward = Backward;
         ToInspector();
+        SumActionRange = GetSumActionRange();
     }
     public void InitPosition(int x, int y)
     {
         PositionX = x;
         PositionY = y;
         ToInspector();
+        SumActionRange = GetSumActionRange();
     }
 
     // 駒が保有する行動範囲の合計を返す。
