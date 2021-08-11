@@ -13,8 +13,8 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] int x;
     [SerializeField] int y;
     [Header("升目の透明度")]
-    [SerializeField] float Opacity = 200; // 不透明にするときの値
-    [SerializeField] float Transparency = 30;// 透明にするときの値
+    [SerializeField] float Opacity; // 不透明にするときの値
+    [SerializeField] float Transparency;// 透明にするときの値
 
     private GameObject[,] ChildBoard;// 盤のマス
     public GameObject[,] GameBoard; // 盤面の管理
@@ -70,7 +70,7 @@ public class BattleSceneController : MonoBehaviour
         float red = ChildBoard[y, x].GetComponent<Image>().color.r;
         float green = ChildBoard[y, x].GetComponent<Image>().color.g;
         float blue = ChildBoard[y, x].GetComponent<Image>().color.b;
-        float alfa = Opacity;
+        float alfa = Opacity / 255;
         ChildBoard[y, x].GetComponent<Image>().color = new Color(red, green, blue, alfa);
     }
     // 升目を全て透明にする
@@ -83,7 +83,7 @@ public class BattleSceneController : MonoBehaviour
                 float red = ChildBoard[i, j].GetComponent<Image>().color.r;
                 float green = ChildBoard[i, j].GetComponent<Image>().color.g;
                 float blue = ChildBoard[i, j].GetComponent<Image>().color.b;
-                float alfa = Transparency;
+                float alfa = Transparency / 255;
                 ChildBoard[i, j].GetComponent<Image>().color = new Color(red, green, blue, alfa);
             }
         }

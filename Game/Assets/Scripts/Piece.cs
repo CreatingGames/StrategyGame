@@ -16,12 +16,13 @@ public class Piece : PieceData
     [SerializeField] int t_X = 0;
     [SerializeField] int t_Y = 0;
 
+    BattleSceneController BattleSceneController;
 
     // 駒の状態
     public bool evolved { get; set; } = false;
     private void Start()
     {
-
+        BattleSceneController = GameObject.Find("BattleSceneController").GetComponent<BattleSceneController>();
     }
 
     // 行動範囲の初期化
@@ -69,6 +70,6 @@ public class Piece : PieceData
 
     public void OnClicked()
     {
-        print("成功");
+        BattleSceneController.MakeAllChildBoardTransparent();
     }
 }
