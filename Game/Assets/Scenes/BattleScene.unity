@@ -1695,12 +1695,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1237f7fae9ae404ab0e6ea8116574d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ParentBoard: {fileID: 1819504959}
+  Board: {fileID: 1819504959}
   Formation: {fileID: 1824768511}
   PiecePrefab: {fileID: 6433473436612652756, guid: 73264c3a42e40344ea3acb1086cc5ac1, type: 3}
   Canvas: {fileID: 67715138}
   x: 2
   y: 4
+  Opacity: 200
+  Transparency: 30
 --- !u!4 &1036103875
 Transform:
   m_ObjectHideFlags: 0
