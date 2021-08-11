@@ -70,7 +70,7 @@ public class Piece : PieceData
 
     public void OnClicked()
     {
-        BattleSceneController.MakeAllChildBoardTransparent();
+        BattleSceneController.MakeAllBoardSquarTransparent();
         if (Forward != 0)
         {
             int minY;
@@ -84,7 +84,7 @@ public class Piece : PieceData
             }
             for(int i = PositionY - 1; i >= minY; i--)
             {
-                BattleSceneController.MakeChildBoardOpaque(PositionX, i);
+                BattleSceneController.MakeBoardSquarOpaque(PositionX, i);
             }
         }
     }
