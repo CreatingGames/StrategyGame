@@ -57,8 +57,7 @@ public class BattleSceneController : MonoBehaviour
             for (int j = 0; j < BoardSize; j++)
             {
                 ChildBoardPosition[i, j] = ChildBoard[i, j].transform.position + piecePositionZ;
-                //ChildBoardPosition[i, j].z -= piecePositionZ;
-                print(ChildBoardPosition[i, j].z);
+
             }
         }
     }

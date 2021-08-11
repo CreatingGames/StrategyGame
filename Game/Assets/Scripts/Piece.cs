@@ -17,13 +17,13 @@ public class Piece : PieceData
     [SerializeField] int t_Y = 0;
 
 
-
     // 駒の状態
     public bool evolved { get; set; } = false;
     private void Start()
     {
 
     }
+
     // 行動範囲の初期化
     public void InitActionRange(int UpperLeft, int LowerLeft, int UpperRight, int LowerRight, int Left, int Right, int Forward, int Backward)
     {
@@ -65,5 +65,10 @@ public class Piece : PieceData
         t_Backward = Backward;
         t_X = PositionX;
         t_Y = PositionY;
+    }
+
+    public void OnClicked()
+    {
+        print("成功");
     }
 }
