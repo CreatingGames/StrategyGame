@@ -12,6 +12,9 @@ public class BattleSceneController : MonoBehaviour
     [Header("Test用変数")]
     [SerializeField] int x;
     [SerializeField] int y;
+    [Header("升目の透明度")]
+    [SerializeField] float Opacity = 200; // 不透明にするときの値
+    [SerializeField] float Transparency = 30;// 透明にするときの値
 
     private GameObject[,] ChildBoard;// 盤のマス
     public GameObject[,] GameBoard; // 盤面の管理
@@ -32,7 +35,7 @@ public class BattleSceneController : MonoBehaviour
         GameBoard = new GameObject[BoardSize, BoardSize];
         GetAllChildBoard();
         GetAllChildBoardPosition();
-        ChangeImageTransparency(x, y);
+        MakeChildBoardOpaque(x, y);
         StartCoroutine(LoadFormation());
     }
     // インスペクターで取得したBoardから子要素のそれぞれのImageを取得する
@@ -62,13 +65,28 @@ public class BattleSceneController : MonoBehaviour
         }
     }
     // 升目を不透明にする
-    public void ChangeImageTransparency(int x, int y)
+    public void MakeChildBoardOpaque(int x, int y)
     {
         float red = ChildBoard[y, x].GetComponent<Image>().color.r;
         float green = ChildBoard[y, x].GetComponent<Image>().color.g;
         float blue = ChildBoard[y, x].GetComponent<Image>().color.b;
-        float alfa = 255;
+        float alfa = Opacity;
         ChildBoard[y, x].GetComponent<Image>().color = new Color(red, green, blue, alfa);
+    }
+    // 升目を全て透明にする
+    public void MakeAllChildBoardTransparent()
+    {
+        for(int i = 0; i < BoardSize; i++)
+        {
+            for(int j = 0; j < BoardSize; j++)
+            {
+                float red = ChildBoard[i, j].GetComponent<Image>().color.r;
+                float green = ChildBoard[i, j].GetComponent<Image>().color.g;
+                float blue = ChildBoard[i, j].GetComponent<Image>().color.b;
+                float alfa = Transparency;
+                ChildBoard[i, j].GetComponent<Image>().color = new Color(red, green, blue, alfa);
+            }
+        }
     }
     private IEnumerator LoadFormation()
     {
