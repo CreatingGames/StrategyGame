@@ -16,7 +16,7 @@ public class BattleSceneController : MonoBehaviour
     private GameObject[,] ChildBoard;// 盤のマス
     public GameObject[,] GameBoard; // 盤面の管理
     private int BoardSize;// 盤のサイズ
-    private Vector3[,] ChildBoardPosition;
+    private Vector3[,] ChildBoardPosition;// 升目の座標
     private Vector3 piecePositionZ = new Vector3(0.0f, 0.0f, -0.46296296296f);// 生成されるオブジェクト位置をz軸-50にするためにメタ的にこうしてる。
     /*
      * 現在の設定だと生成するオブジェクトをCanvasに追加して、ｚ軸を動かそうとすると１０８倍される。
@@ -61,6 +61,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    // 升目を不透明にする
     public void ChangeImageTransparency(int x, int y)
     {
         float red = ChildBoard[y, x].GetComponent<Image>().color.r;
