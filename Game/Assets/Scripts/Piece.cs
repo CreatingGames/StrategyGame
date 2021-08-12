@@ -67,10 +67,8 @@ public class Piece : PieceData
         t_X = PositionX;
         t_Y = PositionY;
     }
-
-    public void OnClicked()
+    void OnMouseEnter()
     {
-        BattleSceneController.MakeAllBoardSquarTransparent();
         if (Forward != 0)
         {
             int minY;
@@ -185,7 +183,7 @@ public class Piece : PieceData
                 BattleSceneController.MakeBoardSquarOpaque(i, j);
             }
         }
-        if(LowerLeft != 0)
+        if (LowerLeft != 0)
         {
             int minX;
             if (PositionX - Left > 0)
@@ -210,7 +208,7 @@ public class Piece : PieceData
                 BattleSceneController.MakeBoardSquarOpaque(i, j);
             }
         }
-        if(LowerRight != 0)
+        if (LowerRight != 0)
         {
             int maxX;
             if (PositionX + Right < BattleSceneController.BoardSize)
@@ -235,5 +233,9 @@ public class Piece : PieceData
                 BattleSceneController.MakeBoardSquarOpaque(i, j);
             }
         }
+    }
+    void OnMouseExit()
+    {
+        BattleSceneController.MakeAllBoardSquarTransparent();
     }
 }
