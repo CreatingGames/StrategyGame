@@ -96,16 +96,16 @@ public class BattleSceneController : MonoBehaviour
             // childのisComplete変数がtrueになるまで待機
             yield return new WaitForEndOfFrame();
         }
-        PieceData[,] shortBoard = Formation.GetComponent<FormationData>().shortBoard;
+        PieceData[,] myFormationBoard = Formation.GetComponent<FormationData>().MyFormationBoard;
         // ここはいったんメタにループ回数を決める
         for (int i = 0; i < 2; i++)
         {
             for (int j = 0; j < 5; j++)
             {
-                if (Formation.GetComponent<FormationData>().shortBoard[i, j] != null)
+                if (myFormationBoard[i, j] != null)
                 {
                     GameBoard[i + 3, j] = (GameObject)Instantiate(PiecePrefab, BoardSquarPosition[i + 3, j], Quaternion.identity, Canvas.transform);
-                    GameBoard[i + 3, j].GetComponent<Piece>().InitActionRange(shortBoard[i, j].UpperLeft, shortBoard[i, j].LowerLeft, shortBoard[i, j].UpperRight, shortBoard[i, j].LowerRight, shortBoard[i, j].Left, shortBoard[i, j].Right, shortBoard[i, j].Forward, shortBoard[i, j].Backward);
+                    GameBoard[i + 3, j].GetComponent<Piece>().InitActionRange(myFormationBoard[i, j].UpperLeft, myFormationBoard[i, j].LowerLeft, myFormationBoard[i, j].UpperRight, myFormationBoard[i, j].LowerRight, myFormationBoard[i, j].Left, myFormationBoard[i, j].Right, myFormationBoard[i, j].Forward, myFormationBoard[i, j].Backward);
                     GameBoard[i + 3, j].GetComponent<Piece>().InitPosition(j, i + 3);
                 }
             }
