@@ -21,6 +21,9 @@ public class BattleSceneController : MonoBehaviour
     public int BoardSize;// 盤のサイズ
     private Vector3[,] BoardSquarPosition;// 升目の座標
     private Vector3 piecePositionZ = new Vector3(0.0f, 0.0f, -0.46296296296f);// 生成されるオブジェクト位置をz軸-50にするためにメタ的にこうしてる。
+    private Color defaultColor;
+    private Color opponentOpaqueColor;
+    private Color myOpaqueColor;
     /*
      * 現在の設定だと生成するオブジェクトをCanvasに追加して、ｚ軸を動かそうとすると１０８倍される。
      * 原因は不明、調査が必要。
@@ -31,12 +34,21 @@ public class BattleSceneController : MonoBehaviour
         {
             BoardSize = (int)Mathf.Sqrt(Board.transform.childCount);
         }
-
+        InitBoardSquarColor();
         GameBoard = new GameObject[BoardSize, BoardSize];
         GetAllBoardSquar();
         GetAllBoardSquarPosition();
         //MakeBoardSquarOpaque(x, y);
         StartCoroutine(LoadFormation());
+    }
+    // 升目の色合いの調整
+    private void InitBoardSquarColor()
+    {
+        Opacity = 200;
+        Transparency = 30;
+        defaultColor = new Color(0, 1, 1, Transparency / 255);
+        opponentOpaqueColor = new Color(1, 0, 1, Opacity / 255);
+        myOpaqueColor = new Color(0, 1, 1, Opacity / 255);
     }
     // インスペクターで取得したBoardから子要素のそれぞれのImageを取得する
     private void GetAllBoardSquar()
@@ -65,13 +77,10 @@ public class BattleSceneController : MonoBehaviour
         }
     }
     // 升目を不透明にする
-    public void MakeBoardSquarOpaque(int x, int y)
+    public void MakeBoardSquarOpaque(int x, int y, bool opponent)
     {
-        float red = BoardSquar[y, x].GetComponent<Image>().color.r;
-        float green = BoardSquar[y, x].GetComponent<Image>().color.g;
-        float blue = BoardSquar[y, x].GetComponent<Image>().color.b;
-        float alfa = Opacity / 255;
-        BoardSquar[y, x].GetComponent<Image>().color = new Color(red, green, blue, alfa);
+        if (opponent) BoardSquar[y, x].GetComponent<Image>().color = opponentOpaqueColor;
+        else BoardSquar[y, x].GetComponent<Image>().color = myOpaqueColor;
     }
     // 升目を全て透明にする
     public void MakeAllBoardSquarTransparent()
@@ -80,11 +89,7 @@ public class BattleSceneController : MonoBehaviour
         {
             for(int j = 0; j < BoardSize; j++)
             {
-                float red = BoardSquar[i, j].GetComponent<Image>().color.r;
-                float green = BoardSquar[i, j].GetComponent<Image>().color.g;
-                float blue = BoardSquar[i, j].GetComponent<Image>().color.b;
-                float alfa = Transparency / 255;
-                BoardSquar[i, j].GetComponent<Image>().color = new Color(red, green, blue, alfa);
+                BoardSquar[i, j].GetComponent<Image>().color = defaultColor;
             }
         }
     }
