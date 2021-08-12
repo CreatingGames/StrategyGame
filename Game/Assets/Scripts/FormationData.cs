@@ -9,14 +9,14 @@ public class FormationData : MonoBehaviour
     {
         shortBoard = new PieceData[2, 5];
         shortBoard[0, 2] = gameObject.AddComponent<PieceData>();
-        shortBoard[0, 2].Forward = 1;
-        shortBoard[0, 2].Backward = 1;
-        shortBoard[0, 2].Right = 1;
-        shortBoard[0, 2].Left = 1;
-        shortBoard[0, 2].UpperLeft = 1;
-        shortBoard[0, 2].LowerLeft = 1;
-        shortBoard[0, 2].UpperRight = 1;
-        shortBoard[0, 2].LowerLeft = 1;
+        shortBoard[0, 2].Forward = 3;
+        shortBoard[0, 2].Backward = 3;
+        shortBoard[0, 2].Right = 3;
+        shortBoard[0, 2].Left = 3;
+        shortBoard[0, 2].UpperLeft = 3;
+        shortBoard[0, 2].LowerLeft = 3;
+        shortBoard[0, 2].UpperRight = 3;
+        shortBoard[0, 2].LowerRight = 3;
         isComplete = true;
 
     }
