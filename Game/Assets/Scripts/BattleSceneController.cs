@@ -7,7 +7,8 @@ public class BattleSceneController : MonoBehaviour
 {
     [SerializeField] GameObject Board;
     [SerializeField] GameObject Formation;
-    [SerializeField] GameObject PiecePrefab;
+    [SerializeField] GameObject MyPiecePrefab;
+    [SerializeField] GameObject OpponentPiecePrefab;
     [SerializeField] GameObject Canvas;
     [Header("Test用変数")]
     [SerializeField] int x;
@@ -110,7 +111,7 @@ public class BattleSceneController : MonoBehaviour
             {
                 if (myFormationBoard[i, j] != null)
                 {
-                    GameBoard[i + 3, j] = (GameObject)Instantiate(PiecePrefab, BoardSquarPosition[i + 3, j], Quaternion.identity, Canvas.transform);
+                    GameBoard[i + 3, j] = (GameObject)Instantiate(MyPiecePrefab, BoardSquarPosition[i + 3, j], Quaternion.identity, Canvas.transform);
                     GameBoard[i + 3, j].GetComponent<Piece>().InitActionRange(myFormationBoard[i, j].UpperLeft, myFormationBoard[i, j].LowerLeft, myFormationBoard[i, j].UpperRight, myFormationBoard[i, j].LowerRight, myFormationBoard[i, j].Left, myFormationBoard[i, j].Right, myFormationBoard[i, j].Forward, myFormationBoard[i, j].Backward);
                     GameBoard[i + 3, j].GetComponent<Piece>().InitPosition(j, i + 3);
                     GameBoard[i + 3, j].GetComponent<Piece>().Opponent = false;
@@ -144,7 +145,7 @@ public class BattleSceneController : MonoBehaviour
                     int right = opponentFormationBoard[i, j].Left;
                     int forward = opponentFormationBoard[i, j].Backward;
                     int backward = opponentFormationBoard[i, j].Forward;
-                    GameBoard[y, x] = (GameObject)Instantiate(PiecePrefab, BoardSquarPosition[y, x], Quaternion.identity, Canvas.transform);
+                    GameBoard[y, x] = (GameObject)Instantiate(OpponentPiecePrefab, BoardSquarPosition[y, x], Quaternion.identity, Canvas.transform);
                     GameBoard[y, x].GetComponent<Piece>().InitActionRange(upperLeft, lowerLeft, upperRight, lowerRight, left, right, forward, backward);
                     GameBoard[y, x].GetComponent<Piece>().InitPosition(x, y);
                     GameBoard[y, x].GetComponent<Piece>().Opponent = true;
