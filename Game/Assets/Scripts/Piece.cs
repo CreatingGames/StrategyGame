@@ -138,18 +138,18 @@ public class Piece : PieceData
         if (UpperLeft != 0)
         {
             int minX;
-            if (PositionX - Left > 0)
+            if (PositionX - UpperLeft > 0)
             {
-                minX = PositionX - Left;
+                minX = PositionX - UpperLeft;
             }
             else
             {
                 minX = 0;
             }
             int minY;
-            if (PositionY - Forward > 0)
+            if (PositionY - UpperLeft > 0)
             {
-                minY = PositionY - Forward;
+                minY = PositionY - UpperLeft;
             }
             else
             {
@@ -163,18 +163,18 @@ public class Piece : PieceData
         if (UpperRight != 0)
         {
             int maxX;
-            if (PositionX + Right < BattleSceneController.BoardSize)
+            if (PositionX + UpperRight < BattleSceneController.BoardSize)
             {
-                maxX = PositionX + Right;
+                maxX = PositionX + UpperRight;
             }
             else
             {
                 maxX = BattleSceneController.BoardSize - 1;
             }
             int minY;
-            if (PositionY - Forward > 0)
+            if (PositionY - UpperRight > 0)
             {
-                minY = PositionY - Forward;
+                minY = PositionY - UpperRight;
             }
             else
             {
@@ -188,18 +188,18 @@ public class Piece : PieceData
         if (LowerLeft != 0)
         {
             int minX;
-            if (PositionX - Left > 0)
+            if (PositionX - LowerLeft > 0)
             {
-                minX = PositionX - Left;
+                minX = PositionX - LowerLeft;
             }
             else
             {
                 minX = 0;
             }
             int maxY;
-            if (PositionY + Backward < BattleSceneController.BoardSize)
+            if (PositionY + LowerLeft < BattleSceneController.BoardSize)
             {
-                maxY = PositionY + Backward;
+                maxY = PositionY + LowerLeft;
             }
             else
             {
@@ -213,24 +213,24 @@ public class Piece : PieceData
         if (LowerRight != 0)
         {
             int maxX;
-            if (PositionX + Right < BattleSceneController.BoardSize)
+            if (PositionX + LowerRight < BattleSceneController.BoardSize)
             {
-                maxX = PositionX + Right;
+                maxX = PositionX + LowerRight;
             }
             else
             {
                 maxX = BattleSceneController.BoardSize - 1;
             }
             int maxY;
-            if (PositionY + Backward < BattleSceneController.BoardSize)
+            if (PositionY + LowerRight < BattleSceneController.BoardSize)
             {
-                maxY = PositionY + Backward;
+                maxY = PositionY + LowerRight;
             }
             else
             {
                 maxY = BattleSceneController.BoardSize - 1;
             }
-            for (int i = PositionX + 1, j = PositionY + 1; i <= maxX && j <= maxY; i--, j++)
+            for (int i = PositionX + 1, j = PositionY + 1; i <= maxX && j <= maxY; i++, j++)
             {
                 BattleSceneController.MakeBoardSquarOpaque(i, j, Opponent);
             }
