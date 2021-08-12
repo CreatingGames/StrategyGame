@@ -39,7 +39,7 @@ public class BattleSceneController : MonoBehaviour
         GetAllBoardSquar();
         GetAllBoardSquarPosition();
         //MakeBoardSquarOpaque(x, y);
-        StartCoroutine(LoadFormation());
+        StartCoroutine(LoadMyFormation());
     }
     // 升目の色合いの調整
     private void InitBoardSquarColor()
@@ -93,7 +93,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
-    private IEnumerator LoadFormation()
+    private IEnumerator LoadMyFormation()
     {
         Formation.GetComponent<FormationData>().InitFormationData();
         while (!Formation.GetComponent<FormationData>().isComplete)
@@ -112,6 +112,7 @@ public class BattleSceneController : MonoBehaviour
                     GameBoard[i + 3, j] = (GameObject)Instantiate(PiecePrefab, BoardSquarPosition[i + 3, j], Quaternion.identity, Canvas.transform);
                     GameBoard[i + 3, j].GetComponent<Piece>().InitActionRange(myFormationBoard[i, j].UpperLeft, myFormationBoard[i, j].LowerLeft, myFormationBoard[i, j].UpperRight, myFormationBoard[i, j].LowerRight, myFormationBoard[i, j].Left, myFormationBoard[i, j].Right, myFormationBoard[i, j].Forward, myFormationBoard[i, j].Backward);
                     GameBoard[i + 3, j].GetComponent<Piece>().InitPosition(j, i + 3);
+                    GameBoard[i + 3, j].GetComponent<Piece>().Opponent = false;
                 }
             }
         }

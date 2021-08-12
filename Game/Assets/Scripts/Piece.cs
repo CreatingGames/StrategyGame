@@ -17,8 +17,8 @@ public class Piece : PieceData
     [SerializeField] int t_Y = 0;
 
     // 駒の状態
-    public bool evolved { get; set; } = false;
-    public bool opponent { get; set; } = true;
+    public bool Evolved { get; set; } = false;
+    public bool Opponent { get; set; } = true;
 
     BattleSceneController BattleSceneController;
 
@@ -84,7 +84,7 @@ public class Piece : PieceData
             }
             for (int i = PositionY - 1; i >= minY; i--)
             {
-                BattleSceneController.MakeBoardSquarOpaque(PositionX, i, opponent);
+                BattleSceneController.MakeBoardSquarOpaque(PositionX, i, Opponent);
             }
         }
         if (Backward != 0)
@@ -100,7 +100,7 @@ public class Piece : PieceData
             }
             for (int i = PositionY + 1; i <= maxY; i++)
             {
-                BattleSceneController.MakeBoardSquarOpaque(PositionX, i, opponent);
+                BattleSceneController.MakeBoardSquarOpaque(PositionX, i, Opponent);
             }
         }
         if (Left != 0)
@@ -116,7 +116,7 @@ public class Piece : PieceData
             }
             for (int i = PositionX - 1; i >= minX; i--)
             {
-                BattleSceneController.MakeBoardSquarOpaque(i, PositionY, opponent);
+                BattleSceneController.MakeBoardSquarOpaque(i, PositionY, Opponent);
             }
         }
         if (Right != 0)
@@ -132,7 +132,7 @@ public class Piece : PieceData
             }
             for (int i = PositionX + 1; i <= maxX; i++)
             {
-                BattleSceneController.MakeBoardSquarOpaque(i, PositionY, opponent);
+                BattleSceneController.MakeBoardSquarOpaque(i, PositionY, Opponent);
             }
         }
         if (UpperLeft != 0)
@@ -157,7 +157,7 @@ public class Piece : PieceData
             }
             for (int i = PositionX - 1, j = PositionY - 1; i >= minX && j >= minY; i--, j--)
             {
-                BattleSceneController.MakeBoardSquarOpaque(i, j, opponent);
+                BattleSceneController.MakeBoardSquarOpaque(i, j, Opponent);
             }
         }
         if (UpperRight != 0)
@@ -182,7 +182,7 @@ public class Piece : PieceData
             }
             for (int i = PositionX + 1, j = PositionY - 1; i <= maxX && j >= minY; i++, j--)
             {
-                BattleSceneController.MakeBoardSquarOpaque(i, j, opponent);
+                BattleSceneController.MakeBoardSquarOpaque(i, j, Opponent);
             }
         }
         if (LowerLeft != 0)
@@ -207,7 +207,7 @@ public class Piece : PieceData
             }
             for (int i = PositionX - 1, j = PositionY + 1; i >= minX && j <= maxY; i--, j++)
             {
-                BattleSceneController.MakeBoardSquarOpaque(i, j, opponent);
+                BattleSceneController.MakeBoardSquarOpaque(i, j, Opponent);
             }
         }
         if (LowerRight != 0)
@@ -232,7 +232,7 @@ public class Piece : PieceData
             }
             for (int i = PositionX + 1, j = PositionY + 1; i <= maxX && j <= maxY; i--, j++)
             {
-                BattleSceneController.MakeBoardSquarOpaque(i, j, opponent);
+                BattleSceneController.MakeBoardSquarOpaque(i, j, Opponent);
             }
         }
     }
