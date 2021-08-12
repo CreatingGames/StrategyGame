@@ -35,7 +35,7 @@ public class BattleSceneController : MonoBehaviour
         GameBoard = new GameObject[BoardSize, BoardSize];
         GetAllBoardSquar();
         GetAllBoardSquarPosition();
-        MakeBoardSquarOpaque(x, y);
+        //MakeBoardSquarOpaque(x, y);
         StartCoroutine(LoadFormation());
     }
     // インスペクターで取得したBoardから子要素のそれぞれのImageを取得する
