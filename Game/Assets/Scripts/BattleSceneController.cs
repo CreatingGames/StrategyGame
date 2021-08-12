@@ -40,6 +40,7 @@ public class BattleSceneController : MonoBehaviour
         GetAllBoardSquarPosition();
         //MakeBoardSquarOpaque(x, y);
         StartCoroutine(LoadMyFormation());
+        StartCoroutine(LoadOpponentFormation());
     }
     // 升目の色合いの調整
     private void InitBoardSquarColor()
@@ -85,9 +86,9 @@ public class BattleSceneController : MonoBehaviour
     // 升目を全て透明にする
     public void MakeAllBoardSquarTransparent()
     {
-        for(int i = 0; i < BoardSize; i++)
+        for (int i = 0; i < BoardSize; i++)
         {
-            for(int j = 0; j < BoardSize; j++)
+            for (int j = 0; j < BoardSize; j++)
             {
                 BoardSquar[i, j].GetComponent<Image>().color = defaultColor;
             }
@@ -95,8 +96,8 @@ public class BattleSceneController : MonoBehaviour
     }
     private IEnumerator LoadMyFormation()
     {
-        Formation.GetComponent<FormationData>().InitFormationData();
-        while (!Formation.GetComponent<FormationData>().isComplete)
+        Formation.GetComponent<FormationData>().InitMyFormationData();
+        while (!Formation.GetComponent<FormationData>().InitializedMyformation)
         {
             // childのisComplete変数がtrueになるまで待機
             yield return new WaitForEndOfFrame();
@@ -113,6 +114,40 @@ public class BattleSceneController : MonoBehaviour
                     GameBoard[i + 3, j].GetComponent<Piece>().InitActionRange(myFormationBoard[i, j].UpperLeft, myFormationBoard[i, j].LowerLeft, myFormationBoard[i, j].UpperRight, myFormationBoard[i, j].LowerRight, myFormationBoard[i, j].Left, myFormationBoard[i, j].Right, myFormationBoard[i, j].Forward, myFormationBoard[i, j].Backward);
                     GameBoard[i + 3, j].GetComponent<Piece>().InitPosition(j, i + 3);
                     GameBoard[i + 3, j].GetComponent<Piece>().Opponent = false;
+                }
+            }
+        }
+    }
+    private IEnumerator LoadOpponentFormation()
+    {
+        Formation.GetComponent<FormationData>().InitOpponentFormationData();
+        while (!Formation.GetComponent<FormationData>().InitializedOpponentformation)
+        {
+            // childのisComplete変数がtrueになるまで待機
+            yield return new WaitForEndOfFrame();
+        }
+        PieceData[,] opponentFormationBoard = Formation.GetComponent<FormationData>().OpponentFormationBoard;
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                if (opponentFormationBoard[i, j] != null)
+                {
+                    // 敵のデータを自分の盤面に反映するように変換
+                    int x = 4 - j;
+                    int y = 1 - i;
+                    int upperLeft = opponentFormationBoard[i, j].LowerRight;
+                    int lowerLeft = opponentFormationBoard[i, j].UpperRight;
+                    int upperRight = opponentFormationBoard[i, j].LowerLeft;
+                    int lowerRight = opponentFormationBoard[i, j].UpperLeft;
+                    int left = opponentFormationBoard[i, j].Right;
+                    int right = opponentFormationBoard[i, j].Left;
+                    int forward = opponentFormationBoard[i, j].Backward;
+                    int backward = opponentFormationBoard[i, j].Forward;
+                    GameBoard[y, x] = (GameObject)Instantiate(PiecePrefab, BoardSquarPosition[y, x], Quaternion.identity, Canvas.transform);
+                    GameBoard[y, x].GetComponent<Piece>().InitActionRange(upperLeft, lowerLeft, upperRight, lowerRight, left, right, forward, backward);
+                    GameBoard[y, x].GetComponent<Piece>().InitPosition(x, y);
+                    GameBoard[y, x].GetComponent<Piece>().Opponent = true;
                 }
             }
         }
