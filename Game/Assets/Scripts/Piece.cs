@@ -71,6 +71,11 @@ public class Piece : PieceData
     }
     void OnMouseEnter()
     {
+        HighlightActionRange();
+    }
+
+    private void HighlightActionRange()
+    {
         if (Forward != 0)
         {
             int minY;
@@ -236,6 +241,7 @@ public class Piece : PieceData
             }
         }
     }
+
     void OnMouseExit()
     {
         BattleSceneController.MakeAllBoardSquarTransparent();

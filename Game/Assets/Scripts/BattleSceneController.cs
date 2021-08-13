@@ -17,7 +17,7 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] float Opacity; // 不透明にするときの値
     [SerializeField] float Transparency;// 透明にするときの値
 
-    private GameObject[,] BoardSquar;// 盤のマス
+    private GameObject[,] BoardSquare;// 盤のマス
     public GameObject[,] GameBoard; // 盤面の管理
     public int BoardSize;// 盤のサイズ
     private Vector3[,] BoardSquarPosition;// 升目の座標
@@ -37,9 +37,8 @@ public class BattleSceneController : MonoBehaviour
         }
         InitBoardSquarColor();
         GameBoard = new GameObject[BoardSize, BoardSize];
-        GetAllBoardSquar();
-        GetAllBoardSquarPosition();
-        //MakeBoardSquarOpaque(x, y);
+        GetAllBoardSquare();
+        GetAllBoardSquarePosition();
         StartCoroutine(LoadMyFormation());
         StartCoroutine(LoadOpponentFormation());
     }
@@ -53,27 +52,27 @@ public class BattleSceneController : MonoBehaviour
         myOpaqueColor = new Color(0, 1, 1, Opacity / 255);
     }
     // インスペクターで取得したBoardから子要素のそれぞれのImageを取得する
-    private void GetAllBoardSquar()
+    private void GetAllBoardSquare()
     {
-        BoardSquar = new GameObject[BoardSize, BoardSize];
+        BoardSquare = new GameObject[BoardSize, BoardSize];
         int index = 0;
         for (int i = 0; i < BoardSize; i++)
         {
             for (int j = 0; j < BoardSize; j++)
             {
-                BoardSquar[i, j] = Board.transform.GetChild(index).gameObject;
+                BoardSquare[i, j] = Board.transform.GetChild(index).gameObject;
                 index++;
             }
         }
     }
-    private void GetAllBoardSquarPosition()
+    private void GetAllBoardSquarePosition()
     {
         BoardSquarPosition = new Vector3[BoardSize, BoardSize];
         for (int i = 0; i < BoardSize; i++)
         {
             for (int j = 0; j < BoardSize; j++)
             {
-                BoardSquarPosition[i, j] = BoardSquar[i, j].transform.position + piecePositionZ;
+                BoardSquarPosition[i, j] = BoardSquare[i, j].transform.position + piecePositionZ;
 
             }
         }
@@ -81,8 +80,14 @@ public class BattleSceneController : MonoBehaviour
     // 升目を不透明にする
     public void MakeBoardSquarOpaque(int x, int y, bool opponent)
     {
-        if (opponent) BoardSquar[y, x].GetComponent<Image>().color = opponentOpaqueColor;
-        else BoardSquar[y, x].GetComponent<Image>().color = myOpaqueColor;
+        if (opponent)
+        {
+            BoardSquare[y, x].GetComponent<Image>().color = opponentOpaqueColor;
+        }
+        else
+        {
+            BoardSquare[y, x].GetComponent<Image>().color = myOpaqueColor;
+        }
     }
     // 升目を全て透明にする
     public void MakeAllBoardSquarTransparent()
@@ -91,7 +96,7 @@ public class BattleSceneController : MonoBehaviour
         {
             for (int j = 0; j < BoardSize; j++)
             {
-                BoardSquar[i, j].GetComponent<Image>().color = defaultColor;
+                BoardSquare[i, j].GetComponent<Image>().color = defaultColor;
             }
         }
     }
