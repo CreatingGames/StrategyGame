@@ -136,6 +136,7 @@ public class AccountCreateUI : MonoBehaviour
 
 				case AccountManager.ACCOUNTSTATE_SUCCESS:
 					announceText.text = "アカウント作成しました。";
+					toMainSceneButtonObj.SetActive(true);
 					break;
 
 				default:
