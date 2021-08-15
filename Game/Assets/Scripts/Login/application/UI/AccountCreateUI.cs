@@ -9,10 +9,10 @@ public class AccountCreateUI : MonoBehaviour
 {
 	private AccountConnectSequence gs2Manager;
 
-	private GameObject errTextObj, inputFieldObj, loginButtonObj, createButtonObj, logoutButtonObj;
+	private GameObject errTextObj, inputFieldObj, loginButtonObj, createButtonObj, logoutButtonObj, toMainSceneButtonObj;
 	private Text titleText, announceText, errText;
 	private InputField inputField;
-	private Button loginButton, createButton;
+	private Button loginButton, createButton, logoutButton, toMainSceneButton;
 
 	readonly private int MODE_LOGIN = 0;
 	readonly private int MODE_CREATEACCOUNT = 1;
@@ -29,6 +29,7 @@ public class AccountCreateUI : MonoBehaviour
 		loginButtonObj = GameObject.Find("LoginBtn");
 		createButtonObj = GameObject.Find("CreateBtn");
 		logoutButtonObj = GameObject.Find("LogoutBtn");
+		toMainSceneButtonObj = GameObject.Find("ToMainSceneBtn");
 
 		titleText = GameObject.Find("Title").gameObject.GetComponent<Text>();
 		announceText = GameObject.Find("AnnounceMsg").gameObject.GetComponent<Text>();
@@ -38,9 +39,15 @@ public class AccountCreateUI : MonoBehaviour
 
 		loginButton = loginButtonObj.GetComponent<Button>();
 		createButton = createButtonObj.GetComponent<Button>();
+		logoutButton = loginButtonObj.GetComponent<Button>();
+		toMainSceneButton = loginButtonObj.GetComponent<Button>();
+
 
 		// エラー情報はエラー発生時に表示するのでここでは無効にする。
 		errTextObj.SetActive(false);
+
+		//メイン画面へのボタンはここでは無効にする。
+		toMainSceneButtonObj.SetActive(false);
 
 		// 既にアカウント作成済みかチェックする。
 		if (CheckAccountCreated() == true)
@@ -96,6 +103,7 @@ public class AccountCreateUI : MonoBehaviour
 				case AccountManager.ACCOUNTSTATE_SUCCESS:
 					announceText.text = "ログインしました。" + AccountPrefs.GetAccountUsername();
 					logoutButtonObj.SetActive(true);
+					toMainSceneButtonObj.SetActive(true);
 					break;
 
 				case AccountManager.ACCOUNTSTATE_INIT:
