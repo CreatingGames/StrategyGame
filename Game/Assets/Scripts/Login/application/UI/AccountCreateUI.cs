@@ -111,6 +111,7 @@ public class AccountCreateUI : MonoBehaviour
 					logoutButtonObj.SetActive(false);
 					loginButtonObj.SetActive(true);
 					inputFieldObj.SetActive(true);
+					toMainSceneButtonObj.SetActive(false);
 					break;
 
 				default:
@@ -195,6 +196,7 @@ public class AccountCreateUI : MonoBehaviour
 			errTextObj.SetActive(false);
 			gs2Manager.LogoutRequest();
 			logoutButtonObj.SetActive(false);
+			toMainSceneButtonObj.SetActive(false);
 		}
 	}
 
