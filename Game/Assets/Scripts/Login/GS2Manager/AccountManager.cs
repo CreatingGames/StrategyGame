@@ -3,9 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Gs2.Core;
+//using Gs2.Core.AsyncResult;
 using Gs2.Unity.Gs2Account.Model;
 using Gs2.Unity.Gs2Account.Result;
+using Gs2.Unity.Gs2Inventory.Model;
+using Gs2.Unity.Gs2Inventory.Result;
 using Gs2.Unity.Util;
+
+using UnityEngine.UI;
 
 using UnityEngine;
 
@@ -15,11 +20,14 @@ public class AccountManager : MonoBehaviour
 	private static Gs2.Unity.Client gs2;                    // GS2 Client情報
 	private static EzAccount account = null;                // GS2 アカウント情報
 	private static GameSession session = null;              // GS2 セッション情報
+	public static List<EzItemModel> PieceList;
 
 	public const int ACCOUNTSTATE_INIT = 0;     // 未ログイン状態
 	public const int ACCOUNTSTATE_NOW = 1;      // ログイン処理中	
 	public const int ACCOUNTSTATE_FAILED = 2;       // ログイン失敗
 	public const int ACCOUNTSTATE_SUCCESS = 3;  // ログイン成功
+
+	//public static string InventoryItem = "none";
 
 	private static int accountState = ACCOUNTSTATE_INIT;    // アカウント状態
 
@@ -139,6 +147,26 @@ public class AccountManager : MonoBehaviour
 
 		// 状態更新(ログイン成功)
 		accountState = ACCOUNTSTATE_SUCCESS;
+		//コマの情報を取得
+
+		AsyncResult<EzListItemModelsResult> asyncResult = null;
+
+		var PieceCurrent = gs2.Inventory.ListItemModels(
+			callback: r =>
+			{
+				asyncResult = r;
+			},
+			namespaceName: "PieceList",
+			inventoryName: "Piece"
+		);
+		yield return PieceCurrent;
+		if (asyncResult.Error != null)
+		{
+			yield break;
+		}
+
+		var PieceResult = asyncResult.Result;
+		PieceList = PieceResult.Items;
 	}
 
 	// ログイン処理
@@ -222,6 +250,28 @@ public class AccountManager : MonoBehaviour
 
 		// 状態更新(ログイン成功)
 		accountState = ACCOUNTSTATE_SUCCESS;
+
+		//コマの情報を取得
+
+		AsyncResult<EzListItemModelsResult> asyncResult = null;
+
+		var PieceCurrent = gs2.Inventory.ListItemModels(
+			callback: r =>
+			{
+				asyncResult = r;
+			},
+			namespaceName: "PieceList",
+			inventoryName: "Piece"
+		);
+		yield return PieceCurrent;
+		if (asyncResult.Error != null)
+		{
+			yield break;
+		}
+
+		var PieceResult = asyncResult.Result;
+		PieceList = PieceResult.Items;
+
 	}
 
 	//ログアウト処理
@@ -250,4 +300,6 @@ public class AccountManager : MonoBehaviour
 	{
 		return accountState;
 	}
+
+	
 }

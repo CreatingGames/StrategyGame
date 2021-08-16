@@ -1,0 +1,134 @@
+GS2TemplateFormatVersion: "2019-05-01"
+
+Resources:
+  InventoryNamespace:
+    Type: GS2::Inventory::Namespace
+    Properties:
+      Name: PieceList
+
+  InventorySettings:
+    Type: GS2::Inventory::CurrentItemModelMaster
+    Properties:
+      NamespaceName: PieceList
+      Settings:
+        version: "2019-02-05"
+        inventoryModels:
+          - name: Piece
+            initialCapacity: 50
+            maxCapacity: 100
+            protectReferencedItem: false
+            itemModels:
+              - name: Osho
+                metadata:
+                  Name: 王将
+                  F: 1
+                  B: 1
+                  R: 1
+                  L: 1
+                  UL: 1
+                  LL: 1
+                  UR: 1
+                  LR: 1                  
+                stackingLimit: 1
+                allowMultipleStacks: true
+                sortValue: 1
+              - name: Hisha
+                metadata:
+                  Name: 飛車
+                  F: 5
+                  B: 5
+                  R: 5
+                  L: 5
+                  UL: 0
+                  LL: 0
+                  UR: 0
+                  LR: 0                  
+                stackingLimit: 1
+                allowMultipleStacks: true
+                sortValue: 2
+              - name: Kaku
+                metadata:
+                  Name: 角行
+                  F: 0
+                  B: 0
+                  R: 0
+                  L: 0
+                  UL: 5
+                  LL: 5
+                  UR: 5
+                  LR: 5                  
+                stackingLimit: 1
+                allowMultipleStacks: true
+                sortValue: 3
+              - name: Kin
+                metadata:
+                  Name: 金将
+                  F: 1
+                  B: 1
+                  R: 1
+                  L: 1
+                  UL: 1
+                  LL: 1
+                  UR: 0
+                  LR: 0                  
+                stackingLimit: 1
+                allowMultipleStacks: true
+                sortValue: 4
+              - name: Gin
+                metadata:
+                  Name: 銀将
+                  F: 1
+                  B: 0
+                  R: 0
+                  L: 0
+                  UL: 1
+                  LL: 1
+                  UR: 1
+                  LR: 1                  
+                stackingLimit: 1
+                allowMultipleStacks: true
+                sortValue: 5
+              - name: Keima
+                metadata:
+                  Name: 桂馬
+                  F: 0
+                  B: 0
+                  R: 0
+                  L: 0
+                  UL: 2
+                  LL: 0
+                  UR: 2
+                  LR: 0                  
+                stackingLimit: 1
+                allowMultipleStacks: true
+                sortValue: 6
+              - name: Kyousya
+                metadata:
+                  Name: 香車
+                  F: 5
+                  B: 0
+                  R: 0
+                  L: 0
+                  UL: 0
+                  LL: 0
+                  UR: 0
+                  LR: 0                  
+                stackingLimit: 1
+                allowMultipleStacks: true
+                sortValue: 7
+              - name: Hohei
+                metadata:
+                  Name: 歩
+                  F: 1
+                  B: 0
+                  R: 0
+                  L: 0
+                  UL: 0
+                  LL: 0
+                  UR: 0
+                  LR: 0                  
+                stackingLimit: 1
+                allowMultipleStacks: true
+                sortValue: 8
+    DependsOn:
+      - InventoryNamespace
