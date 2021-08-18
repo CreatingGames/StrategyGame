@@ -21,12 +21,19 @@ public class Piece : PieceData
     public bool Opponent { get; set; } = true;
 
     BattleSceneController BattleSceneController;
+    private bool readyMove = false;
 
     private void Start()
     {
         BattleSceneController = GameObject.Find("BattleSceneController").GetComponent<BattleSceneController>();
     }
-
+    private void Update()
+    {
+        if (readyMove)
+        {
+            HighlightActionRange();
+        }
+    }
     // 行動範囲の初期化
     public void InitActionRange(int UpperLeft, int LowerLeft, int UpperRight, int LowerRight, int Left, int Right, int Forward, int Backward)
     {
@@ -252,13 +259,17 @@ public class Piece : PieceData
         {
             case Functions.Move:
                 Debug.Log("Move");
+                readyMove = !readyMove;
                 break;
             case Functions.Create:
                 Debug.Log("Create");
+                readyMove = false;
                 break;
             case Functions.Evolve:
                 Debug.Log("Evolve");
+                readyMove = false;
                 break;
         }
     }
+
 }
