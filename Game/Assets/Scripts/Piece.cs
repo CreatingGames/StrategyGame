@@ -246,4 +246,19 @@ public class Piece : PieceData
     {
         BattleSceneController.MakeAllBoardSquarTransparent();
     }
+    public void OnClicked()
+    {
+        switch (BattleSceneController.Function)
+        {
+            case Functions.Move:
+                Debug.Log("Move");
+                break;
+            case Functions.Create:
+                Debug.Log("Create");
+                break;
+            case Functions.Evolve:
+                Debug.Log("Evolve");
+                break;
+        }
+    }
 }

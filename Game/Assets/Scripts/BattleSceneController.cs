@@ -16,15 +16,18 @@ public class BattleSceneController : MonoBehaviour
     [Header("升目の透明度")]
     [SerializeField] float Opacity; // 不透明にするときの値
     [SerializeField] float Transparency;// 透明にするときの値
-
+    [Header("盤のサイズ")]
+    public int BoardSize;// 盤のサイズ
+    [Header("テキスト")]
+    [SerializeField] Text ModeText;
     private GameObject[,] BoardSquare;// 盤のマス
     public GameObject[,] GameBoard; // 盤面の管理
-    public int BoardSize;// 盤のサイズ
     private Vector3[,] BoardSquarPosition;// 升目の座標
     private Vector3 piecePositionZ = new Vector3(0.0f, 0.0f, -0.46296296296f);// 生成されるオブジェクト位置をz軸-50にするためにメタ的にこうしてる。
     private Color defaultColor;
     private Color opponentOpaqueColor;
     private Color myOpaqueColor;
+    public Functions Function { get; set; }
     /*
      * 現在の設定だと生成するオブジェクトをCanvasに追加して、ｚ軸を動かそうとすると１０８倍される。
      * 原因は不明、調査が必要。
@@ -41,6 +44,10 @@ public class BattleSceneController : MonoBehaviour
         GetAllBoardSquarePosition();
         StartCoroutine(LoadMyFormation());
         StartCoroutine(LoadOpponentFormation());
+    }
+    private void Update()
+    {
+        ModeText.text = Function.ToString();
     }
     // 升目の色合いの調整
     private void InitBoardSquarColor()

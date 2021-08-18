@@ -914,6 +914,7 @@ GameObject:
   - component: {fileID: 333578493}
   - component: {fileID: 333578492}
   - component: {fileID: 333578491}
+  - component: {fileID: 333578494}
   m_Layer: 5
   m_Name: EvolveModeButton
   m_TagString: Untagged
@@ -1023,6 +1024,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 333578489}
   m_CullTransparentMesh: 1
+--- !u!114 &333578494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333578489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ea578d152ca2445b8989a7165c5dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Function: 2
+  BattleSceneController: {fileID: 1036103873}
 --- !u!1 &340102711
 GameObject:
   m_ObjectHideFlags: 0
@@ -2381,6 +2396,7 @@ MonoBehaviour:
   Opacity: 200
   Transparency: 30
   BoardSize: 0
+  ModeText: {fileID: 1767483496}
 --- !u!4 &1036103875
 Transform:
   m_ObjectHideFlags: 0
@@ -2744,6 +2760,7 @@ GameObject:
   - component: {fileID: 1474478923}
   - component: {fileID: 1474478922}
   - component: {fileID: 1474478921}
+  - component: {fileID: 1474478924}
   m_Layer: 5
   m_Name: CreateModeButton
   m_TagString: Untagged
@@ -2853,6 +2870,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474478919}
   m_CullTransparentMesh: 1
+--- !u!114 &1474478924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474478919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ea578d152ca2445b8989a7165c5dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Function: 1
+  BattleSceneController: {fileID: 1036103873}
 --- !u!1 &1565359438
 GameObject:
   m_ObjectHideFlags: 0
@@ -2944,6 +2975,7 @@ GameObject:
   - component: {fileID: 1583285747}
   - component: {fileID: 1583285746}
   - component: {fileID: 1583285745}
+  - component: {fileID: 1583285748}
   m_Layer: 5
   m_Name: MoveModeButton
   m_TagString: Untagged
@@ -3053,6 +3085,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1583285743}
   m_CullTransparentMesh: 1
+--- !u!114 &1583285748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583285743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ea578d152ca2445b8989a7165c5dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Function: 0
+  BattleSceneController: {fileID: 1036103873}
 --- !u!1 &1626052298
 GameObject:
   m_ObjectHideFlags: 0
