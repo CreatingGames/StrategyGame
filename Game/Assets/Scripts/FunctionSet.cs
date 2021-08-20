@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// ‹@”\‚Ì—ñ‹“Œ^
 public enum Functions
 {
     Move,

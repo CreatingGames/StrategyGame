@@ -24,20 +24,21 @@ public class BattleSceneController : MonoBehaviour
     public GameObject[,] GameBoard; // 盤面の管理
     private Vector3[,] BoardSquarPosition;// 升目の座標
     private Vector3 piecePositionZ = new Vector3(0.0f, 0.0f, -0.46296296296f);// 生成されるオブジェクト位置をz軸-50にするためにメタ的にこうしてる。
+    // 色の変更のための変数
     private Color defaultColor;
     private Color opponentOpaqueColor;
     private Color myOpaqueColor;
+    // 駒を移動させるための変数
     private int movingPositionX = 0;
     private int movingPositionY = 0;
     private bool[,] onBoardActionRange = new bool[5, 5];
     public bool movingPieceSelected = false;
-    public Functions Function { get; set; }
-    /*
-     * 現在の設定だと生成するオブジェクトをCanvasに追加して、ｚ軸を動かそうとすると１０８倍される。
-     * 原因は不明、調査が必要。
-     */
+
+    public Functions Function { get; set; }// 移動・生成・進化のどのモードが選択されてるかを格納するための変数
+
     private void Start()
     {
+        // 盤面のサイズを取得している
         if ((int)Mathf.Sqrt(Board.transform.childCount) == Mathf.Sqrt(Board.transform.childCount))
         {
             BoardSize = (int)Mathf.Sqrt(Board.transform.childCount);
@@ -51,6 +52,7 @@ public class BattleSceneController : MonoBehaviour
     }
     private void Update()
     {
+        // 選択している機能（移動・生成・進化）をテキストに入れている
         ModeText.text = Function.ToString();
     }
     // 升目の色合いの調整
@@ -111,6 +113,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    // Formationで初期化された自陣を呼び出して、GameBoardに登録し、Prefabから駒を生成してる
     private IEnumerator LoadMyFormation()
     {
         Formation.GetComponent<FormationData>().InitMyFormationData();
@@ -135,6 +138,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    // Formationで初期化された敵陣を呼び出して、GameBoardに登録し、Prefabから駒を生成してる
     private IEnumerator LoadOpponentFormation()
     {
         Formation.GetComponent<FormationData>().InitOpponentFormationData();
@@ -169,6 +173,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    // 駒を選択したときに移動移動可能範囲を決定する。
     public void SetActionRange(int x, int y)
     {
         movingPositionX = x;
@@ -437,6 +442,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    // 駒の移動可能範囲をハイライトする
     public void HighlightActionRange(int x, int y)
     {
         Piece piece = GameBoard[y, x].GetComponent<Piece>();
@@ -702,6 +708,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    // 駒を選択した状態を解除する
     public void RestMovingPieceSelected()
     {
         if (movingPieceSelected)
@@ -713,7 +720,7 @@ public class BattleSceneController : MonoBehaviour
             InitonBoardActionRange();
         }
     }
-
+    // 行動可能範囲用の変数を初期化する
     private void InitonBoardActionRange()
     {
         for (int i = 0; i < BoardSize; i++)
@@ -724,7 +731,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
-
+    // 升目をクリックしたときに動作する。
     public void OnBoardSquareClicked(int x, int y)
     {
         if (onBoardActionRange[y, x])

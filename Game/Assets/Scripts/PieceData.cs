@@ -22,8 +22,8 @@ public class PieceData : MonoBehaviour
     public int EvolveRight { get; set; } = 0;// 右
     public int EvolveForward { get; set; } = 0;// 前
     public int EvolveBackward { get; set; } = 0;// 後ろ
-    public int PositionX { get; set; } = 0;
-    public int PositionY { get; set; } = 0;
-    public int SumActionRange { get; set; } = 0;
-    public bool King { get; set; } = false;
+    public int PositionX { get; set; } = 0;// 駒の盤面上の座標
+    public int PositionY { get; set; } = 0;// 駒の盤面上の座標
+    public int SumActionRange { get; set; } = 0;// 行動範囲の合計
+    public bool King { get; set; } = false;// 王かどうかの判定
 }
