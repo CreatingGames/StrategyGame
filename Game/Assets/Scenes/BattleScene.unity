@@ -135,7 +135,6 @@ GameObject:
   - component: {fileID: 25689231}
   - component: {fileID: 25689230}
   - component: {fileID: 25689233}
-  - component: {fileID: 25689234}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -224,22 +223,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_MaxRayIntersections: 0
---- !u!114 &25689234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 25689229}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56666c5a40171f54783dd416a44f42bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EventMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_MaxRayIntersections: 0
 --- !u!1 &32287125
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +238,7 @@ GameObject:
   - component: {fileID: 32287130}
   m_Layer: 5
   m_Name: BoardSquare_3_0
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -466,7 +449,7 @@ GameObject:
   - component: {fileID: 101233879}
   m_Layer: 5
   m_Name: BoardSquare_0_1
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -571,7 +554,7 @@ GameObject:
   - component: {fileID: 111720211}
   m_Layer: 5
   m_Name: BoardSquare_2_3
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -713,7 +696,7 @@ GameObject:
   - component: {fileID: 130949336}
   m_Layer: 5
   m_Name: BoardSquare_0_3
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -818,7 +801,7 @@ GameObject:
   - component: {fileID: 131859175}
   m_Layer: 5
   m_Name: BoardSquare_1_3
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1232,7 +1215,7 @@ GameObject:
   - component: {fileID: 340102716}
   m_Layer: 5
   m_Name: BoardSquare_1_4
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1532,7 +1515,7 @@ GameObject:
   - component: {fileID: 543202517}
   m_Layer: 5
   m_Name: BoardSquare_1_0
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1637,7 +1620,7 @@ GameObject:
   - component: {fileID: 555580106}
   m_Layer: 5
   m_Name: BoardSquare_0_4
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1742,7 +1725,7 @@ GameObject:
   - component: {fileID: 600113600}
   m_Layer: 5
   m_Name: BoardSquare_2_2
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1847,7 +1830,7 @@ GameObject:
   - component: {fileID: 663907482}
   m_Layer: 5
   m_Name: BoardSquare_3_1
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2027,7 +2010,7 @@ GameObject:
   - component: {fileID: 747547436}
   m_Layer: 5
   m_Name: BoardSquare_2_4
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2273,7 +2256,7 @@ GameObject:
   - component: {fileID: 895355912}
   m_Layer: 5
   m_Name: BoardSquare_4_3
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2378,7 +2361,7 @@ GameObject:
   - component: {fileID: 913276355}
   m_Layer: 5
   m_Name: BoardSquare_0_2
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2641,7 +2624,7 @@ GameObject:
   - component: {fileID: 1005568748}
   m_Layer: 5
   m_Name: BoardSquare_3_3
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2746,7 +2729,7 @@ GameObject:
   - component: {fileID: 1013153572}
   m_Layer: 5
   m_Name: BoardSquare_4_1
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2872,6 +2855,10 @@ MonoBehaviour:
   Canvas: {fileID: 67715138}
   x: 2
   y: 4
+  MySP: 20
+  OpponentSP: 20
+  MySPText: {fileID: 535582344}
+  OpponentSPText: {fileID: 978188142}
   Opacity: 200
   Transparency: 30
   BoardSize: 0
@@ -2906,7 +2893,7 @@ GameObject:
   - component: {fileID: 1090503294}
   m_Layer: 5
   m_Name: BoardSquare_0_0
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3048,7 +3035,7 @@ GameObject:
   - component: {fileID: 1238677646}
   m_Layer: 5
   m_Name: BoardSquare_2_0
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3153,7 +3140,7 @@ GameObject:
   - component: {fileID: 1321125048}
   m_Layer: 5
   m_Name: BoardSquare_3_4
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3258,7 +3245,7 @@ GameObject:
   - component: {fileID: 1383072881}
   m_Layer: 5
   m_Name: BoardSquare_4_0
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3896,7 +3883,7 @@ GameObject:
   - component: {fileID: 1655590469}
   m_Layer: 5
   m_Name: BoardSquare_2_1
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4001,7 +3988,7 @@ GameObject:
   - component: {fileID: 1689475056}
   m_Layer: 5
   m_Name: BoardSquare_4_4
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4461,7 +4448,7 @@ GameObject:
   - component: {fileID: 1858568249}
   m_Layer: 5
   m_Name: BoardSquare_4_2
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4871,7 +4858,7 @@ GameObject:
   - component: {fileID: 2020582802}
   m_Layer: 5
   m_Name: BoardSquare_1_1
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4976,7 +4963,7 @@ GameObject:
   - component: {fileID: 2090446185}
   m_Layer: 5
   m_Name: BoardSquare_3_2
-  m_TagString: Untagged
+  m_TagString: BoardSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

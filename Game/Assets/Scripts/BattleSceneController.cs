@@ -13,6 +13,11 @@ public class BattleSceneController : MonoBehaviour
     [Header("Test用変数")]
     [SerializeField] int x;
     [SerializeField] int y;
+    [Header("StrategyPoint")]
+    [SerializeField] int MySP;
+    [SerializeField] int OpponentSP;
+    [SerializeField] Text MySPText;
+    [SerializeField] Text OpponentSPText;
     [Header("升目の透明度")]
     [SerializeField] float Opacity; // 不透明にするときの値
     [SerializeField] float Transparency;// 透明にするときの値
@@ -54,6 +59,8 @@ public class BattleSceneController : MonoBehaviour
     {
         // 選択している機能（移動・生成・進化）をテキストに入れている
         ModeText.text = Function.ToString();
+        MySPText.text = MySP.ToString();
+        OpponentSPText.text = OpponentSP.ToString();
     }
     // 升目の色合いの調整
     private void InitBoardSquarColor()
