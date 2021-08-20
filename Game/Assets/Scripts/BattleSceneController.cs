@@ -169,7 +169,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
-    public void SetActionRange(int x,int y)
+    public void SetActionRange(int x, int y)
     {
         movingPositionX = x;
         movingPositionY = y;
@@ -525,5 +525,9 @@ public class BattleSceneController : MonoBehaviour
             piece.readyMove = false;
             movingPieceSelected = false;
         }
+    }
+    public void OnBoardSquareClicked(int x, int y)
+    {
+        Debug.Log("Clicked : " + x.ToString() + "," + y.ToString());
     }
 }
