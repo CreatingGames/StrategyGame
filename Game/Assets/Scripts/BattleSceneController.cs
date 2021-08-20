@@ -754,4 +754,17 @@ public class BattleSceneController : MonoBehaviour
             MakeAllBoardSquarTransparent();
         }
     }
+    public void ChangeOpponentFlag()
+    {
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                if(GameBoard[i,j] != null)
+                {
+                    GameBoard[i, j].GetComponent<Piece>().Opponent = !GameBoard[i, j].GetComponent<Piece>().Opponent;
+                }
+            }
+        }
+    }
 }
