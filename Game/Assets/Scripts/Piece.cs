@@ -78,7 +78,10 @@ public class Piece : PieceData
     }
     void OnMouseEnter()
     {
+        if (!battleSceneController.movingPieceSelected)
+        {
         battleSceneController.HighlightActionRange(PositionX, PositionY);
+        }
     }
 
     void OnMouseExit()

@@ -174,13 +174,7 @@ public class BattleSceneController : MonoBehaviour
         movingPositionX = x;
         movingPositionY = y;
         movingPieceSelected = true;
-        for (int i = 0; i < BoardSize; i++)
-        {
-            for (int j = 0; j < BoardSize; j++)
-            {
-                onBoardActionRange[i, j] = false;
-            }
-        }
+        InitonBoardActionRange();
         Piece piece = GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>();
         if (piece.Forward != 0)
         {
@@ -195,6 +189,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionY - 1; i >= minY; i--)
             {
+                if (GameBoard[i, x] != null)
+                {
+                    if (GameBoard[i, x].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[i, piece.PositionX] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 onBoardActionRange[i, piece.PositionX] = true;
             }
         }
@@ -211,6 +217,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionY + 1; i <= maxY; i++)
             {
+                if (GameBoard[i, x] != null)
+                {
+                    if (GameBoard[i, x].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[i, piece.PositionX] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 onBoardActionRange[i, piece.PositionX] = true;
             }
         }
@@ -227,6 +245,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionX - 1; i >= minX; i--)
             {
+                if (GameBoard[y, i] != null)
+                {
+                    if (GameBoard[y, i].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[piece.PositionY, i] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 onBoardActionRange[piece.PositionY, i] = true;
             }
         }
@@ -243,6 +273,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionX + 1; i <= maxX; i++)
             {
+                if (GameBoard[y, i] != null)
+                {
+                    if (GameBoard[y, i].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[piece.PositionY, i] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 onBoardActionRange[piece.PositionY, i] = true;
             }
         }
@@ -268,6 +310,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionX - 1, j = piece.PositionY - 1; i >= minX && j >= minY; i--, j--)
             {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[j, i] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 onBoardActionRange[j, i] = true;
             }
         }
@@ -293,6 +347,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionX + 1, j = piece.PositionY - 1; i <= maxX && j >= minY; i++, j--)
             {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[j, i] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 onBoardActionRange[j, i] = true;
             }
         }
@@ -318,6 +384,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionX - 1, j = piece.PositionY + 1; i >= minX && j <= maxY; i--, j++)
             {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[j, i] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 onBoardActionRange[j, i] = true;
             }
         }
@@ -343,6 +421,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionX + 1, j = piece.PositionY + 1; i <= maxX && j <= maxY; i++, j++)
             {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[j, i] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 onBoardActionRange[j, i] = true;
             }
         }
@@ -364,6 +454,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionY - 1; i >= minY; i--)
             {
+                if (GameBoard[i, x] != null)
+                {
+                    if(GameBoard[i, x].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(x, i, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 MakeBoardSquarOpaque(x, i, opponent);
             }
         }
@@ -380,6 +482,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionY + 1; i <= maxY; i++)
             {
+                if (GameBoard[i, x] != null)
+                {
+                    if (GameBoard[i, x].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(x, i, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 MakeBoardSquarOpaque(x, i, opponent);
             }
         }
@@ -396,6 +510,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionX - 1; i >= minX; i--)
             {
+                if (GameBoard[y, i] != null)
+                {
+                    if (GameBoard[y, i].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(i, y, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 MakeBoardSquarOpaque(i, y, opponent);
             }
         }
@@ -412,6 +538,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionX + 1; i <= maxX; i++)
             {
+                if (GameBoard[y, i] != null)
+                {
+                    if (GameBoard[y, i].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(i, y, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 MakeBoardSquarOpaque(i, y, opponent);
             }
         }
@@ -437,6 +575,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionX - 1, j = piece.PositionY - 1; i >= minX && j >= minY; i--, j--)
             {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(i, j, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 MakeBoardSquarOpaque(i, j, opponent);
             }
         }
@@ -462,6 +612,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionX + 1, j = piece.PositionY - 1; i <= maxX && j >= minY; i++, j--)
             {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(i, j, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 MakeBoardSquarOpaque(i, j, opponent);
             }
         }
@@ -487,6 +649,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionX - 1, j = piece.PositionY + 1; i >= minX && j <= maxY; i--, j++)
             {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(i, j, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 MakeBoardSquarOpaque(i, j, opponent);
             }
         }
@@ -512,6 +686,18 @@ public class BattleSceneController : MonoBehaviour
             }
             for (int i = piece.PositionX + 1, j = piece.PositionY + 1; i <= maxX && j <= maxY; i++, j++)
             {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(i, j, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 MakeBoardSquarOpaque(i, j, opponent);
             }
         }
@@ -524,10 +710,26 @@ public class BattleSceneController : MonoBehaviour
             Piece piece = GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>();
             piece.readyMove = false;
             movingPieceSelected = false;
+            InitonBoardActionRange();
         }
     }
+
+    private void InitonBoardActionRange()
+    {
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                onBoardActionRange[i, j] = false;
+            }
+        }
+    }
+
     public void OnBoardSquareClicked(int x, int y)
     {
-        Debug.Log("Clicked : " + x.ToString() + "," + y.ToString());
+        if (onBoardActionRange[y, x])
+        {
+            Debug.Log("Clicked : " + x.ToString() + "," + y.ToString());
+        }
     }
 }
