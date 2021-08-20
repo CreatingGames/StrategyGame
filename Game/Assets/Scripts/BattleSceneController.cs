@@ -737,6 +737,14 @@ public class BattleSceneController : MonoBehaviour
         if (onBoardActionRange[y, x])
         {
             Debug.Log("Clicked : " + x.ToString() + "," + y.ToString());
+            GameBoard[y, x] = GameBoard[movingPositionY, movingPositionX];
+            GameBoard[y, x].GetComponent<Piece>().InitPosition(x, y);
+            GameBoard[y, x].GetComponent<Piece>().readyMove = false;
+            GameBoard[y, x].transform.position = BoardSquarPosition[y, x];
+            GameBoard[movingPositionY, movingPositionX] = null;
+            movingPieceSelected = false;
+            InitonBoardActionRange();
+            MakeAllBoardSquarTransparent();
         }
     }
 }
