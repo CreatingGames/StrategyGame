@@ -18,20 +18,20 @@ public class Piece : PieceData
 
     // 駒の状態
     public bool Evolved { get; set; } = false;
-    public bool Opponent { get; set; } = true;
+    public bool Opponent { get; set; } = false;
 
-    BattleSceneController BattleSceneController;
-    private bool readyMove = false;
-
+    BattleSceneController battleSceneController;
+    public bool readyMove = false;
+    private bool[,] OnBoardActionRange = new bool[5, 5];
     private void Start()
     {
-        BattleSceneController = GameObject.Find("BattleSceneController").GetComponent<BattleSceneController>();
+        battleSceneController = GameObject.Find("BattleSceneController").GetComponent<BattleSceneController>();
     }
     private void Update()
     {
         if (readyMove)
         {
-            HighlightActionRange();
+            battleSceneController.HighlightActionRange(PositionX, PositionY);
         }
     }
     // 行動範囲の初期化
@@ -78,198 +78,38 @@ public class Piece : PieceData
     }
     void OnMouseEnter()
     {
-        HighlightActionRange();
-    }
-
-    private void HighlightActionRange()
-    {
-        if (Forward != 0)
-        {
-            int minY;
-            if (PositionY - Forward > 0)
-            {
-                minY = PositionY - Forward;
-            }
-            else
-            {
-                minY = 0;
-            }
-            for (int i = PositionY - 1; i >= minY; i--)
-            {
-                BattleSceneController.MakeBoardSquarOpaque(PositionX, i, Opponent);
-            }
-        }
-        if (Backward != 0)
-        {
-            int maxY;
-            if (PositionY + Backward < BattleSceneController.BoardSize)
-            {
-                maxY = PositionY + Backward;
-            }
-            else
-            {
-                maxY = BattleSceneController.BoardSize - 1;
-            }
-            for (int i = PositionY + 1; i <= maxY; i++)
-            {
-                BattleSceneController.MakeBoardSquarOpaque(PositionX, i, Opponent);
-            }
-        }
-        if (Left != 0)
-        {
-            int minX;
-            if (PositionX - Left > 0)
-            {
-                minX = PositionX - Left;
-            }
-            else
-            {
-                minX = 0;
-            }
-            for (int i = PositionX - 1; i >= minX; i--)
-            {
-                BattleSceneController.MakeBoardSquarOpaque(i, PositionY, Opponent);
-            }
-        }
-        if (Right != 0)
-        {
-            int maxX;
-            if (PositionX + Right < BattleSceneController.BoardSize)
-            {
-                maxX = PositionX + Right;
-            }
-            else
-            {
-                maxX = BattleSceneController.BoardSize - 1;
-            }
-            for (int i = PositionX + 1; i <= maxX; i++)
-            {
-                BattleSceneController.MakeBoardSquarOpaque(i, PositionY, Opponent);
-            }
-        }
-        if (UpperLeft != 0)
-        {
-            int minX;
-            if (PositionX - UpperLeft > 0)
-            {
-                minX = PositionX - UpperLeft;
-            }
-            else
-            {
-                minX = 0;
-            }
-            int minY;
-            if (PositionY - UpperLeft > 0)
-            {
-                minY = PositionY - UpperLeft;
-            }
-            else
-            {
-                minY = 0;
-            }
-            for (int i = PositionX - 1, j = PositionY - 1; i >= minX && j >= minY; i--, j--)
-            {
-                BattleSceneController.MakeBoardSquarOpaque(i, j, Opponent);
-            }
-        }
-        if (UpperRight != 0)
-        {
-            int maxX;
-            if (PositionX + UpperRight < BattleSceneController.BoardSize)
-            {
-                maxX = PositionX + UpperRight;
-            }
-            else
-            {
-                maxX = BattleSceneController.BoardSize - 1;
-            }
-            int minY;
-            if (PositionY - UpperRight > 0)
-            {
-                minY = PositionY - UpperRight;
-            }
-            else
-            {
-                minY = 0;
-            }
-            for (int i = PositionX + 1, j = PositionY - 1; i <= maxX && j >= minY; i++, j--)
-            {
-                BattleSceneController.MakeBoardSquarOpaque(i, j, Opponent);
-            }
-        }
-        if (LowerLeft != 0)
-        {
-            int minX;
-            if (PositionX - LowerLeft > 0)
-            {
-                minX = PositionX - LowerLeft;
-            }
-            else
-            {
-                minX = 0;
-            }
-            int maxY;
-            if (PositionY + LowerLeft < BattleSceneController.BoardSize)
-            {
-                maxY = PositionY + LowerLeft;
-            }
-            else
-            {
-                maxY = BattleSceneController.BoardSize - 1;
-            }
-            for (int i = PositionX - 1, j = PositionY + 1; i >= minX && j <= maxY; i--, j++)
-            {
-                BattleSceneController.MakeBoardSquarOpaque(i, j, Opponent);
-            }
-        }
-        if (LowerRight != 0)
-        {
-            int maxX;
-            if (PositionX + LowerRight < BattleSceneController.BoardSize)
-            {
-                maxX = PositionX + LowerRight;
-            }
-            else
-            {
-                maxX = BattleSceneController.BoardSize - 1;
-            }
-            int maxY;
-            if (PositionY + LowerRight < BattleSceneController.BoardSize)
-            {
-                maxY = PositionY + LowerRight;
-            }
-            else
-            {
-                maxY = BattleSceneController.BoardSize - 1;
-            }
-            for (int i = PositionX + 1, j = PositionY + 1; i <= maxX && j <= maxY; i++, j++)
-            {
-                BattleSceneController.MakeBoardSquarOpaque(i, j, Opponent);
-            }
-        }
+        battleSceneController.HighlightActionRange(PositionX, PositionY);
     }
 
     void OnMouseExit()
     {
-        BattleSceneController.MakeAllBoardSquarTransparent();
+        battleSceneController.MakeAllBoardSquarTransparent();
     }
     public void OnClicked()
     {
-        switch (BattleSceneController.Function)
+        if (!Opponent)
         {
-            case Functions.Move:
-                Debug.Log("Move");
-                readyMove = !readyMove;
-                break;
-            case Functions.Create:
-                Debug.Log("Create");
-                readyMove = false;
-                break;
-            case Functions.Evolve:
-                Debug.Log("Evolve");
-                readyMove = false;
-                break;
+            switch (battleSceneController.Function)
+            {
+                case Functions.Move:
+                    if (!battleSceneController.movingPieceSelected)
+                    {
+                        Debug.Log("Move");
+                        readyMove = true;
+                        battleSceneController.SetActionRange(PositionX, PositionY);
+                    }
+                    else
+                    {
+                        battleSceneController.RestMovingPieceSelected();
+                    }
+                    break;
+                case Functions.Create:
+                    Debug.Log("Create");
+                    break;
+                case Functions.Evolve:
+                    Debug.Log("Evolve");
+                    break;
+            }
         }
     }
-
 }

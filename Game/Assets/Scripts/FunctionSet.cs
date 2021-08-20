@@ -21,5 +21,18 @@ public class FunctionSet : MonoBehaviour
     public void OnClicked()
     {
         battleSceneController.Function = Function;
+        switch (battleSceneController.Function)
+        {
+            case Functions.Move:
+                break;
+            case Functions.Create:
+                Debug.Log("Create");
+                battleSceneController.RestMovingPieceSelected();
+                break;
+            case Functions.Evolve:
+                Debug.Log("Evolve");
+                battleSceneController.RestMovingPieceSelected();
+                break;
+        }
     }
 }

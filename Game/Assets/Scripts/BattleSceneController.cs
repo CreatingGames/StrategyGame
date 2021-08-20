@@ -27,6 +27,10 @@ public class BattleSceneController : MonoBehaviour
     private Color defaultColor;
     private Color opponentOpaqueColor;
     private Color myOpaqueColor;
+    private int movingPositionX = 0;
+    private int movingPositionY = 0;
+    private bool[,] onBoardActionRange = new bool[5, 5];
+    public bool movingPieceSelected = false;
     public Functions Function { get; set; }
     /*
      * 現在の設定だと生成するオブジェクトをCanvasに追加して、ｚ軸を動かそうとすると１０８倍される。
@@ -163,6 +167,363 @@ public class BattleSceneController : MonoBehaviour
                     GameBoard[y, x].GetComponent<Piece>().Opponent = true;
                 }
             }
+        }
+    }
+    public void SetActionRange(int x,int y)
+    {
+        movingPositionX = x;
+        movingPositionY = y;
+        movingPieceSelected = true;
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                onBoardActionRange[i, j] = false;
+            }
+        }
+        Piece piece = GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>();
+        if (piece.Forward != 0)
+        {
+            int minY;
+            if (piece.PositionY - piece.Forward > 0)
+            {
+                minY = piece.PositionY - piece.Forward;
+            }
+            else
+            {
+                minY = 0;
+            }
+            for (int i = piece.PositionY - 1; i >= minY; i--)
+            {
+                onBoardActionRange[i, piece.PositionX] = true;
+            }
+        }
+        if (piece.Backward != 0)
+        {
+            int maxY;
+            if (piece.PositionY + piece.Backward < BoardSize)
+            {
+                maxY = piece.PositionY + piece.Backward;
+            }
+            else
+            {
+                maxY = BoardSize - 1;
+            }
+            for (int i = piece.PositionY + 1; i <= maxY; i++)
+            {
+                onBoardActionRange[i, piece.PositionX] = true;
+            }
+        }
+        if (piece.Left != 0)
+        {
+            int minX;
+            if (piece.PositionX - piece.Left > 0)
+            {
+                minX = piece.PositionX - piece.Left;
+            }
+            else
+            {
+                minX = 0;
+            }
+            for (int i = piece.PositionX - 1; i >= minX; i--)
+            {
+                onBoardActionRange[piece.PositionY, i] = true;
+            }
+        }
+        if (piece.Right != 0)
+        {
+            int maxX;
+            if (piece.PositionX + piece.Right < BoardSize)
+            {
+                maxX = piece.PositionX + piece.Right;
+            }
+            else
+            {
+                maxX = BoardSize - 1;
+            }
+            for (int i = piece.PositionX + 1; i <= maxX; i++)
+            {
+                onBoardActionRange[piece.PositionY, i] = true;
+            }
+        }
+        if (piece.UpperLeft != 0)
+        {
+            int minX;
+            if (piece.PositionX - piece.UpperLeft > 0)
+            {
+                minX = piece.PositionX - piece.UpperLeft;
+            }
+            else
+            {
+                minX = 0;
+            }
+            int minY;
+            if (piece.PositionY - piece.UpperLeft > 0)
+            {
+                minY = piece.PositionY - piece.UpperLeft;
+            }
+            else
+            {
+                minY = 0;
+            }
+            for (int i = piece.PositionX - 1, j = piece.PositionY - 1; i >= minX && j >= minY; i--, j--)
+            {
+                onBoardActionRange[j, i] = true;
+            }
+        }
+        if (piece.UpperRight != 0)
+        {
+            int maxX;
+            if (piece.PositionX + piece.UpperRight < BoardSize)
+            {
+                maxX = piece.PositionX + piece.UpperRight;
+            }
+            else
+            {
+                maxX = BoardSize - 1;
+            }
+            int minY;
+            if (piece.PositionY - piece.UpperRight > 0)
+            {
+                minY = piece.PositionY - piece.UpperRight;
+            }
+            else
+            {
+                minY = 0;
+            }
+            for (int i = piece.PositionX + 1, j = piece.PositionY - 1; i <= maxX && j >= minY; i++, j--)
+            {
+                onBoardActionRange[j, i] = true;
+            }
+        }
+        if (piece.LowerLeft != 0)
+        {
+            int minX;
+            if (piece.PositionX - piece.LowerLeft > 0)
+            {
+                minX = piece.PositionX - piece.LowerLeft;
+            }
+            else
+            {
+                minX = 0;
+            }
+            int maxY;
+            if (piece.PositionY + piece.LowerLeft < BoardSize)
+            {
+                maxY = piece.PositionY + piece.LowerLeft;
+            }
+            else
+            {
+                maxY = BoardSize - 1;
+            }
+            for (int i = piece.PositionX - 1, j = piece.PositionY + 1; i >= minX && j <= maxY; i--, j++)
+            {
+                onBoardActionRange[j, i] = true;
+            }
+        }
+        if (piece.LowerRight != 0)
+        {
+            int maxX;
+            if (piece.PositionX + piece.LowerRight < BoardSize)
+            {
+                maxX = piece.PositionX + piece.LowerRight;
+            }
+            else
+            {
+                maxX = BoardSize - 1;
+            }
+            int maxY;
+            if (piece.PositionY + piece.LowerRight < BoardSize)
+            {
+                maxY = piece.PositionY + piece.LowerRight;
+            }
+            else
+            {
+                maxY = BoardSize - 1;
+            }
+            for (int i = piece.PositionX + 1, j = piece.PositionY + 1; i <= maxX && j <= maxY; i++, j++)
+            {
+                onBoardActionRange[j, i] = true;
+            }
+        }
+    }
+    public void HighlightActionRange(int x, int y)
+    {
+        Piece piece = GameBoard[y, x].GetComponent<Piece>();
+        bool opponent = piece.Opponent;
+        if (piece.Forward != 0)
+        {
+            int minY;
+            if (piece.PositionY - piece.Forward > 0)
+            {
+                minY = piece.PositionY - piece.Forward;
+            }
+            else
+            {
+                minY = 0;
+            }
+            for (int i = piece.PositionY - 1; i >= minY; i--)
+            {
+                MakeBoardSquarOpaque(x, i, opponent);
+            }
+        }
+        if (piece.Backward != 0)
+        {
+            int maxY;
+            if (piece.PositionY + piece.Backward < BoardSize)
+            {
+                maxY = piece.PositionY + piece.Backward;
+            }
+            else
+            {
+                maxY = BoardSize - 1;
+            }
+            for (int i = piece.PositionY + 1; i <= maxY; i++)
+            {
+                MakeBoardSquarOpaque(x, i, opponent);
+            }
+        }
+        if (piece.Left != 0)
+        {
+            int minX;
+            if (piece.PositionX - piece.Left > 0)
+            {
+                minX = piece.PositionX - piece.Left;
+            }
+            else
+            {
+                minX = 0;
+            }
+            for (int i = piece.PositionX - 1; i >= minX; i--)
+            {
+                MakeBoardSquarOpaque(i, y, opponent);
+            }
+        }
+        if (piece.Right != 0)
+        {
+            int maxX;
+            if (piece.PositionX + piece.Right < BoardSize)
+            {
+                maxX = piece.PositionX + piece.Right;
+            }
+            else
+            {
+                maxX = BoardSize - 1;
+            }
+            for (int i = piece.PositionX + 1; i <= maxX; i++)
+            {
+                MakeBoardSquarOpaque(i, y, opponent);
+            }
+        }
+        if (piece.UpperLeft != 0)
+        {
+            int minX;
+            if (piece.PositionX - piece.UpperLeft > 0)
+            {
+                minX = piece.PositionX - piece.UpperLeft;
+            }
+            else
+            {
+                minX = 0;
+            }
+            int minY;
+            if (piece.PositionY - piece.UpperLeft > 0)
+            {
+                minY = piece.PositionY - piece.UpperLeft;
+            }
+            else
+            {
+                minY = 0;
+            }
+            for (int i = piece.PositionX - 1, j = piece.PositionY - 1; i >= minX && j >= minY; i--, j--)
+            {
+                MakeBoardSquarOpaque(i, j, opponent);
+            }
+        }
+        if (piece.UpperRight != 0)
+        {
+            int maxX;
+            if (piece.PositionX + piece.UpperRight < BoardSize)
+            {
+                maxX = piece.PositionX + piece.UpperRight;
+            }
+            else
+            {
+                maxX = BoardSize - 1;
+            }
+            int minY;
+            if (piece.PositionY - piece.UpperRight > 0)
+            {
+                minY = piece.PositionY - piece.UpperRight;
+            }
+            else
+            {
+                minY = 0;
+            }
+            for (int i = piece.PositionX + 1, j = piece.PositionY - 1; i <= maxX && j >= minY; i++, j--)
+            {
+                MakeBoardSquarOpaque(i, j, opponent);
+            }
+        }
+        if (piece.LowerLeft != 0)
+        {
+            int minX;
+            if (piece.PositionX - piece.LowerLeft > 0)
+            {
+                minX = piece.PositionX - piece.LowerLeft;
+            }
+            else
+            {
+                minX = 0;
+            }
+            int maxY;
+            if (piece.PositionY + piece.LowerLeft < BoardSize)
+            {
+                maxY = piece.PositionY + piece.LowerLeft;
+            }
+            else
+            {
+                maxY = BoardSize - 1;
+            }
+            for (int i = piece.PositionX - 1, j = piece.PositionY + 1; i >= minX && j <= maxY; i--, j++)
+            {
+                MakeBoardSquarOpaque(i, j, opponent);
+            }
+        }
+        if (piece.LowerRight != 0)
+        {
+            int maxX;
+            if (piece.PositionX + piece.LowerRight < BoardSize)
+            {
+                maxX = piece.PositionX + piece.LowerRight;
+            }
+            else
+            {
+                maxX = BoardSize - 1;
+            }
+            int maxY;
+            if (piece.PositionY + piece.LowerRight < BoardSize)
+            {
+                maxY = piece.PositionY + piece.LowerRight;
+            }
+            else
+            {
+                maxY = BoardSize - 1;
+            }
+            for (int i = piece.PositionX + 1, j = piece.PositionY + 1; i <= maxX && j <= maxY; i++, j++)
+            {
+                MakeBoardSquarOpaque(i, j, opponent);
+            }
+        }
+    }
+    public void RestMovingPieceSelected()
+    {
+        if (movingPieceSelected)
+        {
+            MakeAllBoardSquarTransparent();
+            Piece piece = GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>();
+            piece.readyMove = false;
+            movingPieceSelected = false;
         }
     }
 }
