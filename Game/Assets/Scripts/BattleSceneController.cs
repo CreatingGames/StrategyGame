@@ -13,24 +13,37 @@ public class BattleSceneController : MonoBehaviour
     [Header("Test用変数")]
     [SerializeField] int x;
     [SerializeField] int y;
+    [Header("StrategyPoint")]
+    [SerializeField] int MySP;
+    [SerializeField] int OpponentSP;
+    [SerializeField] Text MySPText;
+    [SerializeField] Text OpponentSPText;
     [Header("升目の透明度")]
     [SerializeField] float Opacity; // 不透明にするときの値
     [SerializeField] float Transparency;// 透明にするときの値
-
+    [Header("盤のサイズ")]
+    public int BoardSize;// 盤のサイズ
+    [Header("テキスト")]
+    [SerializeField] Text ModeText;
     private GameObject[,] BoardSquare;// 盤のマス
     public GameObject[,] GameBoard; // 盤面の管理
-    public int BoardSize;// 盤のサイズ
     private Vector3[,] BoardSquarPosition;// 升目の座標
     private Vector3 piecePositionZ = new Vector3(0.0f, 0.0f, -0.46296296296f);// 生成されるオブジェクト位置をz軸-50にするためにメタ的にこうしてる。
+    // 色の変更のための変数
     private Color defaultColor;
     private Color opponentOpaqueColor;
     private Color myOpaqueColor;
-    /*
-     * 現在の設定だと生成するオブジェクトをCanvasに追加して、ｚ軸を動かそうとすると１０８倍される。
-     * 原因は不明、調査が必要。
-     */
+    // 駒を移動させるための変数
+    private int movingPositionX = 0;
+    private int movingPositionY = 0;
+    private bool[,] onBoardActionRange = new bool[5, 5];
+    public bool movingPieceSelected = false;
+
+    public Functions Function { get; set; }// 移動・生成・進化のどのモードが選択されてるかを格納するための変数
+
     private void Start()
     {
+        // 盤面のサイズを取得している
         if ((int)Mathf.Sqrt(Board.transform.childCount) == Mathf.Sqrt(Board.transform.childCount))
         {
             BoardSize = (int)Mathf.Sqrt(Board.transform.childCount);
@@ -41,6 +54,13 @@ public class BattleSceneController : MonoBehaviour
         GetAllBoardSquarePosition();
         StartCoroutine(LoadMyFormation());
         StartCoroutine(LoadOpponentFormation());
+    }
+    private void Update()
+    {
+        // 選択している機能（移動・生成・進化）をテキストに入れている
+        ModeText.text = Function.ToString();
+        MySPText.text = MySP.ToString();
+        OpponentSPText.text = OpponentSP.ToString();
     }
     // 升目の色合いの調整
     private void InitBoardSquarColor()
@@ -100,6 +120,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    // Formationで初期化された自陣を呼び出して、GameBoardに登録し、Prefabから駒を生成してる
     private IEnumerator LoadMyFormation()
     {
         Formation.GetComponent<FormationData>().InitMyFormationData();
@@ -124,6 +145,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    // Formationで初期化された敵陣を呼び出して、GameBoardに登録し、Prefabから駒を生成してる
     private IEnumerator LoadOpponentFormation()
     {
         Formation.GetComponent<FormationData>().InitOpponentFormationData();
@@ -154,6 +176,593 @@ public class BattleSceneController : MonoBehaviour
                     GameBoard[y, x].GetComponent<Piece>().InitActionRange(upperLeft, lowerLeft, upperRight, lowerRight, left, right, forward, backward);
                     GameBoard[y, x].GetComponent<Piece>().InitPosition(x, y);
                     GameBoard[y, x].GetComponent<Piece>().Opponent = true;
+                }
+            }
+        }
+    }
+    // 駒を選択したときに移動移動可能範囲を決定する。
+    public void SetActionRange(int x, int y)
+    {
+        movingPositionX = x;
+        movingPositionY = y;
+        movingPieceSelected = true;
+        InitonBoardActionRange();
+        Piece piece = GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>();
+        if (piece.Forward != 0)
+        {
+            int minY;
+            if (piece.PositionY - piece.Forward > 0)
+            {
+                minY = piece.PositionY - piece.Forward;
+            }
+            else
+            {
+                minY = 0;
+            }
+            for (int i = piece.PositionY - 1; i >= minY; i--)
+            {
+                if (GameBoard[i, x] != null)
+                {
+                    if (GameBoard[i, x].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[i, piece.PositionX] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                onBoardActionRange[i, piece.PositionX] = true;
+            }
+        }
+        if (piece.Backward != 0)
+        {
+            int maxY;
+            if (piece.PositionY + piece.Backward < BoardSize)
+            {
+                maxY = piece.PositionY + piece.Backward;
+            }
+            else
+            {
+                maxY = BoardSize - 1;
+            }
+            for (int i = piece.PositionY + 1; i <= maxY; i++)
+            {
+                if (GameBoard[i, x] != null)
+                {
+                    if (GameBoard[i, x].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[i, piece.PositionX] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                onBoardActionRange[i, piece.PositionX] = true;
+            }
+        }
+        if (piece.Left != 0)
+        {
+            int minX;
+            if (piece.PositionX - piece.Left > 0)
+            {
+                minX = piece.PositionX - piece.Left;
+            }
+            else
+            {
+                minX = 0;
+            }
+            for (int i = piece.PositionX - 1; i >= minX; i--)
+            {
+                if (GameBoard[y, i] != null)
+                {
+                    if (GameBoard[y, i].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[piece.PositionY, i] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                onBoardActionRange[piece.PositionY, i] = true;
+            }
+        }
+        if (piece.Right != 0)
+        {
+            int maxX;
+            if (piece.PositionX + piece.Right < BoardSize)
+            {
+                maxX = piece.PositionX + piece.Right;
+            }
+            else
+            {
+                maxX = BoardSize - 1;
+            }
+            for (int i = piece.PositionX + 1; i <= maxX; i++)
+            {
+                if (GameBoard[y, i] != null)
+                {
+                    if (GameBoard[y, i].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[piece.PositionY, i] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                onBoardActionRange[piece.PositionY, i] = true;
+            }
+        }
+        if (piece.UpperLeft != 0)
+        {
+            int minX;
+            if (piece.PositionX - piece.UpperLeft > 0)
+            {
+                minX = piece.PositionX - piece.UpperLeft;
+            }
+            else
+            {
+                minX = 0;
+            }
+            int minY;
+            if (piece.PositionY - piece.UpperLeft > 0)
+            {
+                minY = piece.PositionY - piece.UpperLeft;
+            }
+            else
+            {
+                minY = 0;
+            }
+            for (int i = piece.PositionX - 1, j = piece.PositionY - 1; i >= minX && j >= minY; i--, j--)
+            {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[j, i] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                onBoardActionRange[j, i] = true;
+            }
+        }
+        if (piece.UpperRight != 0)
+        {
+            int maxX;
+            if (piece.PositionX + piece.UpperRight < BoardSize)
+            {
+                maxX = piece.PositionX + piece.UpperRight;
+            }
+            else
+            {
+                maxX = BoardSize - 1;
+            }
+            int minY;
+            if (piece.PositionY - piece.UpperRight > 0)
+            {
+                minY = piece.PositionY - piece.UpperRight;
+            }
+            else
+            {
+                minY = 0;
+            }
+            for (int i = piece.PositionX + 1, j = piece.PositionY - 1; i <= maxX && j >= minY; i++, j--)
+            {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[j, i] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                onBoardActionRange[j, i] = true;
+            }
+        }
+        if (piece.LowerLeft != 0)
+        {
+            int minX;
+            if (piece.PositionX - piece.LowerLeft > 0)
+            {
+                minX = piece.PositionX - piece.LowerLeft;
+            }
+            else
+            {
+                minX = 0;
+            }
+            int maxY;
+            if (piece.PositionY + piece.LowerLeft < BoardSize)
+            {
+                maxY = piece.PositionY + piece.LowerLeft;
+            }
+            else
+            {
+                maxY = BoardSize - 1;
+            }
+            for (int i = piece.PositionX - 1, j = piece.PositionY + 1; i >= minX && j <= maxY; i--, j++)
+            {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[j, i] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                onBoardActionRange[j, i] = true;
+            }
+        }
+        if (piece.LowerRight != 0)
+        {
+            int maxX;
+            if (piece.PositionX + piece.LowerRight < BoardSize)
+            {
+                maxX = piece.PositionX + piece.LowerRight;
+            }
+            else
+            {
+                maxX = BoardSize - 1;
+            }
+            int maxY;
+            if (piece.PositionY + piece.LowerRight < BoardSize)
+            {
+                maxY = piece.PositionY + piece.LowerRight;
+            }
+            else
+            {
+                maxY = BoardSize - 1;
+            }
+            for (int i = piece.PositionX + 1, j = piece.PositionY + 1; i <= maxX && j <= maxY; i++, j++)
+            {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        onBoardActionRange[j, i] = true;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                onBoardActionRange[j, i] = true;
+            }
+        }
+    }
+    // 駒の移動可能範囲をハイライトする
+    public void HighlightActionRange(int x, int y)
+    {
+        Piece piece = GameBoard[y, x].GetComponent<Piece>();
+        bool opponent = piece.Opponent;
+        if (piece.Forward != 0)
+        {
+            int minY;
+            if (piece.PositionY - piece.Forward > 0)
+            {
+                minY = piece.PositionY - piece.Forward;
+            }
+            else
+            {
+                minY = 0;
+            }
+            for (int i = piece.PositionY - 1; i >= minY; i--)
+            {
+                if (GameBoard[i, x] != null)
+                {
+                    if(GameBoard[i, x].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(x, i, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                MakeBoardSquarOpaque(x, i, opponent);
+            }
+        }
+        if (piece.Backward != 0)
+        {
+            int maxY;
+            if (piece.PositionY + piece.Backward < BoardSize)
+            {
+                maxY = piece.PositionY + piece.Backward;
+            }
+            else
+            {
+                maxY = BoardSize - 1;
+            }
+            for (int i = piece.PositionY + 1; i <= maxY; i++)
+            {
+                if (GameBoard[i, x] != null)
+                {
+                    if (GameBoard[i, x].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(x, i, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                MakeBoardSquarOpaque(x, i, opponent);
+            }
+        }
+        if (piece.Left != 0)
+        {
+            int minX;
+            if (piece.PositionX - piece.Left > 0)
+            {
+                minX = piece.PositionX - piece.Left;
+            }
+            else
+            {
+                minX = 0;
+            }
+            for (int i = piece.PositionX - 1; i >= minX; i--)
+            {
+                if (GameBoard[y, i] != null)
+                {
+                    if (GameBoard[y, i].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(i, y, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                MakeBoardSquarOpaque(i, y, opponent);
+            }
+        }
+        if (piece.Right != 0)
+        {
+            int maxX;
+            if (piece.PositionX + piece.Right < BoardSize)
+            {
+                maxX = piece.PositionX + piece.Right;
+            }
+            else
+            {
+                maxX = BoardSize - 1;
+            }
+            for (int i = piece.PositionX + 1; i <= maxX; i++)
+            {
+                if (GameBoard[y, i] != null)
+                {
+                    if (GameBoard[y, i].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(i, y, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                MakeBoardSquarOpaque(i, y, opponent);
+            }
+        }
+        if (piece.UpperLeft != 0)
+        {
+            int minX;
+            if (piece.PositionX - piece.UpperLeft > 0)
+            {
+                minX = piece.PositionX - piece.UpperLeft;
+            }
+            else
+            {
+                minX = 0;
+            }
+            int minY;
+            if (piece.PositionY - piece.UpperLeft > 0)
+            {
+                minY = piece.PositionY - piece.UpperLeft;
+            }
+            else
+            {
+                minY = 0;
+            }
+            for (int i = piece.PositionX - 1, j = piece.PositionY - 1; i >= minX && j >= minY; i--, j--)
+            {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(i, j, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                MakeBoardSquarOpaque(i, j, opponent);
+            }
+        }
+        if (piece.UpperRight != 0)
+        {
+            int maxX;
+            if (piece.PositionX + piece.UpperRight < BoardSize)
+            {
+                maxX = piece.PositionX + piece.UpperRight;
+            }
+            else
+            {
+                maxX = BoardSize - 1;
+            }
+            int minY;
+            if (piece.PositionY - piece.UpperRight > 0)
+            {
+                minY = piece.PositionY - piece.UpperRight;
+            }
+            else
+            {
+                minY = 0;
+            }
+            for (int i = piece.PositionX + 1, j = piece.PositionY - 1; i <= maxX && j >= minY; i++, j--)
+            {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(i, j, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                MakeBoardSquarOpaque(i, j, opponent);
+            }
+        }
+        if (piece.LowerLeft != 0)
+        {
+            int minX;
+            if (piece.PositionX - piece.LowerLeft > 0)
+            {
+                minX = piece.PositionX - piece.LowerLeft;
+            }
+            else
+            {
+                minX = 0;
+            }
+            int maxY;
+            if (piece.PositionY + piece.LowerLeft < BoardSize)
+            {
+                maxY = piece.PositionY + piece.LowerLeft;
+            }
+            else
+            {
+                maxY = BoardSize - 1;
+            }
+            for (int i = piece.PositionX - 1, j = piece.PositionY + 1; i >= minX && j <= maxY; i--, j++)
+            {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(i, j, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                MakeBoardSquarOpaque(i, j, opponent);
+            }
+        }
+        if (piece.LowerRight != 0)
+        {
+            int maxX;
+            if (piece.PositionX + piece.LowerRight < BoardSize)
+            {
+                maxX = piece.PositionX + piece.LowerRight;
+            }
+            else
+            {
+                maxX = BoardSize - 1;
+            }
+            int maxY;
+            if (piece.PositionY + piece.LowerRight < BoardSize)
+            {
+                maxY = piece.PositionY + piece.LowerRight;
+            }
+            else
+            {
+                maxY = BoardSize - 1;
+            }
+            for (int i = piece.PositionX + 1, j = piece.PositionY + 1; i <= maxX && j <= maxY; i++, j++)
+            {
+                if (GameBoard[j, i] != null)
+                {
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    {
+                        MakeBoardSquarOpaque(i, j, opponent);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                MakeBoardSquarOpaque(i, j, opponent);
+            }
+        }
+    }
+    // 駒を選択した状態を解除する
+    public void RestMovingPieceSelected()
+    {
+        if (movingPieceSelected)
+        {
+            MakeAllBoardSquarTransparent();
+            Piece piece = GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>();
+            piece.readyMove = false;
+            movingPieceSelected = false;
+            InitonBoardActionRange();
+        }
+    }
+    // 行動可能範囲用の変数を初期化する
+    private void InitonBoardActionRange()
+    {
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                onBoardActionRange[i, j] = false;
+            }
+        }
+    }
+    // 升目をクリックしたときに動作する。
+    public void OnBoardSquareClicked(int x, int y)
+    {
+        if (onBoardActionRange[y, x])
+        {
+            Debug.Log("Clicked : " + x.ToString() + "," + y.ToString());
+            GameBoard[y, x] = GameBoard[movingPositionY, movingPositionX];
+            GameBoard[y, x].GetComponent<Piece>().InitPosition(x, y);
+            GameBoard[y, x].GetComponent<Piece>().readyMove = false;
+            GameBoard[y, x].transform.position = BoardSquarPosition[y, x];
+            GameBoard[movingPositionY, movingPositionX] = null;
+            movingPieceSelected = false;
+            InitonBoardActionRange();
+            MakeAllBoardSquarTransparent();
+        }
+    }
+    public void ChangeOpponentFlag()
+    {
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                if(GameBoard[i,j] != null)
+                {
+                    GameBoard[i, j].GetComponent<Piece>().Opponent = !GameBoard[i, j].GetComponent<Piece>().Opponent;
                 }
             }
         }
