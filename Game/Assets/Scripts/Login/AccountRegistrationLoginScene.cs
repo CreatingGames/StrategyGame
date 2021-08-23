@@ -172,6 +172,7 @@ namespace Gs2.Sample.AccountRegistrationLoginSample
                     {
                         announceMsg.text = "Username: " + _repository.GetUsername() + "でログインしますか？";
                     }
+                    Debug.Log(_repository.GetUsername());
                     transform.Find("AnnounceMsg").gameObject.SetActive(true);
                     transform.Find("LoginBtn").gameObject.SetActive(true);
                     transform.Find("RemoveBtn").gameObject.SetActive(true);
@@ -206,6 +207,13 @@ namespace Gs2.Sample.AccountRegistrationLoginSample
         /// </summary>
         public void ClickToCreateAccount()
         {
+            string UsernameBuf = transform.Find("UsernameInput").gameObject.GetComponent<InputField>().text;
+            Debug.Log(UsernameBuf.Length);
+            if ( UsernameBuf == "" || UsernameBuf == null || UsernameBuf.Length > 20)
+            {
+                announceMsg.text = "ユーザー名は20文字以内の文字列で入力してください";
+                return;
+            }
             var stateMachine = GetComponent<Animator>();
             stateMachine.SetTrigger(AccountRegistrationLoginStateMachine.Trigger.SelectCreateAccount.ToString());
         }

@@ -9,6 +9,7 @@ using UnityEngine;
 	 [System.Serializable]
 	public class AccountRepository
 	{
+        public AccountRegistrationLoginScene _scene;
         private static string Username; //アカウントのユーザー名
 
         /// <summary>
@@ -97,6 +98,7 @@ using UnityEngine;
 	        {
 	            File.Delete(AccountDataPath());
 	        }
+            Username = null;
 	    }
 
         //ユーザー名を返す
@@ -108,6 +110,10 @@ using UnityEngine;
         //ユーザー名を保存する為の処理
         public void LoadUsername(string username)
         {
+            if(username == null || username == "")
+            {
+                Debug.Log("username is null");
+            }
             Username = username;
         }
 	}
