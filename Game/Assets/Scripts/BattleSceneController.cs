@@ -751,8 +751,11 @@ public class BattleSceneController : MonoBehaviour
         {
             if (GameBoard[y, x] != null)
             {
-                MySP += StrategyPointSetting.CalcurateBreakingPiecePoints(GameBoard[y, x].GetComponent<Piece>());
-                Destroy(GameBoard[y, x]);
+                BreakingPiece(x, y);
+            }
+            if(y < 2 && !GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>().Invasion)
+            {
+                InvasionOpponentFormation();
             }
             GameBoard[y, x] = GameBoard[movingPositionY, movingPositionX];
             GameBoard[y, x].GetComponent<Piece>().InitPosition(x, y);
@@ -765,6 +768,19 @@ public class BattleSceneController : MonoBehaviour
 
         }
     }
+
+    private void InvasionOpponentFormation()
+    {
+        MySP += StrategyPointSetting.CalcurateInvasionPoint;
+        GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>().Invasion = true;
+    }
+
+    private void BreakingPiece(int x, int y)
+    {
+        MySP += StrategyPointSetting.CalcurateBreakingPiecePoints(GameBoard[y, x].GetComponent<Piece>());
+        Destroy(GameBoard[y, x]);
+    }
+
     public void ChangeOpponentFlag()
     {
         for (int i = 0; i < BoardSize; i++)

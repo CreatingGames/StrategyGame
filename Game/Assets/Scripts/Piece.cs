@@ -23,6 +23,7 @@ public class Piece : PieceData
     public bool readyMove = false;
     private bool[,] OnBoardActionRange = new bool[5, 5];
     public int StrategyPoint { get; set; } = 0;// 行動範囲の合計
+    public bool Invasion = false;// 敵陣地に侵入したことがあるか
     private void Start()
     {
         battleSceneController = GameObject.Find("BattleSceneController").GetComponent<BattleSceneController>();
