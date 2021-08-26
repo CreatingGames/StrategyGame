@@ -38,7 +38,7 @@ public class BattleSceneController : MonoBehaviour
     private int movingPositionY = 0;
     private bool[,] onBoardActionRange = new bool[5, 5];
     public bool movingPieceSelected = false;
-
+    private bool nowMoving = false;
     public Functions Function { get; set; }// 移動・生成・進化のどのモードが選択されてるかを格納するための変数
 
     private void Start()
@@ -751,9 +751,16 @@ public class BattleSceneController : MonoBehaviour
         {
             if (GameBoard[y, x] != null)
             {
-                BreakingPiece(x, y);
+                if (nowMoving)
+                {
+                    BreakingPiece(x, y);
+                }
+                else
+                {
+                    GameBoard[y, x].SetActive(false);
+                }
             }
-            if(y < 2 && !GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>().Invasion)
+            if (y < 2 && !GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>().Invasion && nowMoving)
             {
                 InvasionOpponentFormation();
             }
