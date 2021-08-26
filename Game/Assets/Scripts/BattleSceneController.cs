@@ -39,6 +39,8 @@ public class BattleSceneController : MonoBehaviour
     private bool[,] onBoardActionRange = new bool[5, 5];
     public bool movingPieceSelected = false;
     private bool nowMoving = false;
+    private static int actionNumber = 0;
+    public int ActionMax = 3;
     public Functions Function { get; set; }// 移動・生成・進化のどのモードが選択されてるかを格納するための変数
 
     private void Start()
