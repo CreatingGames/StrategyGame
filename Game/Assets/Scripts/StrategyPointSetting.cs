@@ -7,7 +7,7 @@ public class StrategyPointSetting : MonoBehaviour
 {
     public static int InitialStrategyPoint { get; } = 100;
 
-    public static int CalcuratePieaceStrategyPoint(Piece piece)
+    public static int CalcuratePieceStrategyPoint(Piece piece)
     {
         if (piece is null)
         {
