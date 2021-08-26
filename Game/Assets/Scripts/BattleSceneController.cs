@@ -54,6 +54,8 @@ public class BattleSceneController : MonoBehaviour
         GetAllBoardSquarePosition();
         StartCoroutine(LoadMyFormation());
         StartCoroutine(LoadOpponentFormation());
+        MySP = StrategyPointSetting.InitialStrategyPoint;
+        OpponentSP = StrategyPointSetting.InitialStrategyPoint;
     }
     private void Update()
     {
@@ -473,7 +475,7 @@ public class BattleSceneController : MonoBehaviour
             {
                 if (GameBoard[i, x] != null)
                 {
-                    if(GameBoard[i, x].GetComponent<Piece>().Opponent)
+                    if (GameBoard[i, x].GetComponent<Piece>().Opponent)
                     {
                         MakeBoardSquarOpaque(x, i, opponent);
                         break;
@@ -745,9 +747,13 @@ public class BattleSceneController : MonoBehaviour
     // 升目をクリックしたときに動作する。
     public void OnBoardSquareClicked(int x, int y)
     {
-        if (onBoardActionRange[y, x])
+        if (onBoardActionRange[y, x] && Function == Functions.Move)
         {
-            Debug.Log("Clicked : " + x.ToString() + "," + y.ToString());
+            if (GameBoard[y, x] != null)
+            {
+                MySP += StrategyPointSetting.CalcurateBreakingPiecePoints(GameBoard[y, x].GetComponent<Piece>());
+                Destroy(GameBoard[y, x]);
+            }
             GameBoard[y, x] = GameBoard[movingPositionY, movingPositionX];
             GameBoard[y, x].GetComponent<Piece>().InitPosition(x, y);
             GameBoard[y, x].GetComponent<Piece>().readyMove = false;
@@ -756,6 +762,7 @@ public class BattleSceneController : MonoBehaviour
             movingPieceSelected = false;
             InitonBoardActionRange();
             MakeAllBoardSquarTransparent();
+
         }
     }
     public void ChangeOpponentFlag()
@@ -764,7 +771,7 @@ public class BattleSceneController : MonoBehaviour
         {
             for (int j = 0; j < BoardSize; j++)
             {
-                if(GameBoard[i,j] != null)
+                if (GameBoard[i, j] != null)
                 {
                     GameBoard[i, j].GetComponent<Piece>().Opponent = !GameBoard[i, j].GetComponent<Piece>().Opponent;
                 }
