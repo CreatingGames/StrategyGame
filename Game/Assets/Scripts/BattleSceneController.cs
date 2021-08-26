@@ -141,6 +141,8 @@ public class BattleSceneController : MonoBehaviour
                     GameBoard[i + 3, j].GetComponent<Piece>().InitActionRange(myFormationBoard[i, j].UpperLeft, myFormationBoard[i, j].LowerLeft, myFormationBoard[i, j].UpperRight, myFormationBoard[i, j].LowerRight, myFormationBoard[i, j].Left, myFormationBoard[i, j].Right, myFormationBoard[i, j].Forward, myFormationBoard[i, j].Backward);
                     GameBoard[i + 3, j].GetComponent<Piece>().InitPosition(j, i + 3);
                     GameBoard[i + 3, j].GetComponent<Piece>().Opponent = false;
+                    GameBoard[i + 3, j].GetComponent<Piece>().StrategyPoint = StrategyPointSetting.CalcuratePieaceStrategyPoint(GameBoard[i + 3, j].GetComponent<Piece>());
+                    GameBoard[i + 3, j].GetComponent<Piece>().ToInspector();
                 }
             }
         }
@@ -176,6 +178,8 @@ public class BattleSceneController : MonoBehaviour
                     GameBoard[y, x].GetComponent<Piece>().InitActionRange(upperLeft, lowerLeft, upperRight, lowerRight, left, right, forward, backward);
                     GameBoard[y, x].GetComponent<Piece>().InitPosition(x, y);
                     GameBoard[y, x].GetComponent<Piece>().Opponent = true;
+                    GameBoard[y, x].GetComponent<Piece>().StrategyPoint = StrategyPointSetting.CalcuratePieaceStrategyPoint(GameBoard[y, x].GetComponent<Piece>());
+                    GameBoard[y, x].GetComponent<Piece>().ToInspector();
                 }
             }
         }
