@@ -25,8 +25,13 @@ public class BattleSceneController : MonoBehaviour
     public int BoardSize;// 盤のサイズ
     [Header("テキスト")]
     [SerializeField] Text ModeText;
+    [SerializeField] Text ActionNumberText;
+    [SerializeField] Button ResetButton;
+    [SerializeField] Button EnterButton;
     private GameObject[,] BoardSquare;// 盤のマス
     public GameObject[,] GameBoard; // 盤面の管理
+    public GameObject[,] GameBoardBuffer; // 盤面の管理（ターン開始時の状況を保存）
+    public List<GameObject[,]> ActionGameBoard; // 盤面の管理（１手毎の状況を保存）
     private Vector3[,] BoardSquarPosition;// 升目の座標
     private Vector3 piecePositionZ = new Vector3(0.0f, 0.0f, -0.46296296296f);// 生成されるオブジェクト位置をz軸-50にするためにメタ的にこうしてる。
     // 色の変更のための変数
@@ -38,7 +43,7 @@ public class BattleSceneController : MonoBehaviour
     private int movingPositionY = 0;
     private bool[,] onBoardActionRange = new bool[5, 5];
     public bool movingPieceSelected = false;
-    private bool nowMoving = false;
+    public bool nowMoving = false;
     private static int actionNumber = 0;
     public int ActionMax = 3;
     public Functions Function { get; set; }// 移動・生成・進化のどのモードが選択されてるかを格納するための変数
@@ -52,20 +57,42 @@ public class BattleSceneController : MonoBehaviour
         }
         InitBoardSquarColor();
         GameBoard = new GameObject[BoardSize, BoardSize];
+        GameBoardBuffer = new GameObject[BoardSize, BoardSize];
         GetAllBoardSquare();
         GetAllBoardSquarePosition();
         StartCoroutine(LoadMyFormation());
         StartCoroutine(LoadOpponentFormation());
         MySP = StrategyPointSetting.InitialStrategyPoint;
         OpponentSP = StrategyPointSetting.InitialStrategyPoint;
+        ActionGameBoard = new List<GameObject[,]>();
+        for (int i = 0; i < ActionMax; i++)
+        {
+            ActionGameBoard.Add(new GameObject[BoardSize, BoardSize]);
+        }
+        ResetButton.interactable = false;
+        EnterButton.interactable = false;
     }
     private void Update()
     {
         // 選択している機能（移動・生成・進化）をテキストに入れている
+        TextUpdate();
+    }
+
+    private void TextUpdate()
+    {
         ModeText.text = Function.ToString();
         MySPText.text = MySP.ToString();
         OpponentSPText.text = OpponentSP.ToString();
+        if(actionNumber == ActionMax)
+        {
+            ActionNumberText.text = "全手登録済み";
+        }
+        else
+        {
+            ActionNumberText.text = (actionNumber + 1).ToString() + "手目";
+        }
     }
+
     // 升目の色合いの調整
     private void InitBoardSquarColor()
     {
@@ -150,6 +177,7 @@ public class BattleSceneController : MonoBehaviour
                 }
             }
         }
+        CopyGameBoard(GameBoard, GameBoardBuffer);
     }
     // Formationで初期化された敵陣を呼び出して、GameBoardに登録し、Prefabから駒を生成してる
     private IEnumerator LoadOpponentFormation()
@@ -187,6 +215,7 @@ public class BattleSceneController : MonoBehaviour
                 }
             }
         }
+        CopyGameBoard(GameBoard, GameBoardBuffer);
     }
     // 駒を選択したときに移動移動可能範囲を決定する。
     public void SetActionRange(int x, int y)
@@ -774,7 +803,14 @@ public class BattleSceneController : MonoBehaviour
             movingPieceSelected = false;
             InitonBoardActionRange();
             MakeAllBoardSquarTransparent();
-
+            CopyGameBoard(GameBoard, ActionGameBoard[actionNumber]);
+            actionNumber++;
+            ResetButton.interactable = true;
+            if(actionNumber == ActionMax)
+            {
+                nowMoving = true;
+                EnterButton.interactable = true;
+            }
         }
     }
 
@@ -800,6 +836,49 @@ public class BattleSceneController : MonoBehaviour
                 {
                     GameBoard[i, j].GetComponent<Piece>().Opponent = !GameBoard[i, j].GetComponent<Piece>().Opponent;
                 }
+            }
+        }
+    }
+    public void ResetGameBoard()
+    {
+        if(actionNumber > 1)
+        {
+            actionNumber--;
+            ResetPiecePosition(ActionGameBoard[actionNumber - 1]);
+            CopyGameBoard(ActionGameBoard[actionNumber], GameBoard);
+        }
+        else if(actionNumber == 1)
+        {
+            actionNumber--;
+            ResetPiecePosition(GameBoardBuffer);
+            CopyGameBoard(GameBoardBuffer, GameBoard);
+            ResetButton.interactable = false;
+        }
+    }
+    private void ResetPiecePosition(GameObject[,] gameObjects)
+    {
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                if (gameObjects[i, j] != null)
+                {
+                    gameObjects[i, j].GetComponent<Piece>().InitPosition(j, i);
+                    gameObjects[i, j].transform.position = BoardSquarPosition[i, j];
+                    gameObjects[i, j].GetComponent<Piece>().ToInspector();
+                    gameObjects[i, j].SetActive(true);
+                }
+            }
+        }
+    }
+    // gameObjects1をgameObjects2にコピーする
+    private void CopyGameBoard(GameObject[,] gameObjects1, GameObject[,] gameObjects2)
+    {
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                gameObjects2[i, j] = gameObjects1[i, j];
             }
         }
     }

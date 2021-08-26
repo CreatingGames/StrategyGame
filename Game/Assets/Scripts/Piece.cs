@@ -85,7 +85,7 @@ public class Piece : PieceData
     // 駒がクリックされたときに作動する
     public void OnClicked()
     {
-        if (!Opponent)
+        if (!Opponent && !battleSceneController.nowMoving)
         {
             switch (battleSceneController.Function)
             {
