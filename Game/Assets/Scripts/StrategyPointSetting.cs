@@ -51,5 +51,14 @@ public class StrategyPointSetting : MonoBehaviour
         }
         return StrategyPoint;
     }
-
+    public static int CalcurateBreakingPiecePoints(Piece piece)
+    {
+        if (piece is null)
+        {
+            throw new ArgumentNullException(nameof(piece));
+        }
+        // 今は相手の戦略ポイントをそのまま出してる
+        return piece.StrategyPoint;
+    }
+    public static int CalcurateInvasionPoint { get; } = 3; // 駒が敵陣に侵入したときに得られるポイント
 }
