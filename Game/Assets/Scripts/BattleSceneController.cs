@@ -38,7 +38,7 @@ public class BattleSceneController : MonoBehaviour
     private int movingPositionY = 0;
     private bool[,] onBoardActionRange = new bool[5, 5];
     public bool movingPieceSelected = false;
-
+    private bool nowMoving = false;
     public Functions Function { get; set; }// 移動・生成・進化のどのモードが選択されてるかを格納するための変数
 
     private void Start()
@@ -54,6 +54,8 @@ public class BattleSceneController : MonoBehaviour
         GetAllBoardSquarePosition();
         StartCoroutine(LoadMyFormation());
         StartCoroutine(LoadOpponentFormation());
+        MySP = StrategyPointSetting.InitialStrategyPoint;
+        OpponentSP = StrategyPointSetting.InitialStrategyPoint;
     }
     private void Update()
     {
@@ -141,6 +143,8 @@ public class BattleSceneController : MonoBehaviour
                     GameBoard[i + 3, j].GetComponent<Piece>().InitActionRange(myFormationBoard[i, j].UpperLeft, myFormationBoard[i, j].LowerLeft, myFormationBoard[i, j].UpperRight, myFormationBoard[i, j].LowerRight, myFormationBoard[i, j].Left, myFormationBoard[i, j].Right, myFormationBoard[i, j].Forward, myFormationBoard[i, j].Backward);
                     GameBoard[i + 3, j].GetComponent<Piece>().InitPosition(j, i + 3);
                     GameBoard[i + 3, j].GetComponent<Piece>().Opponent = false;
+                    GameBoard[i + 3, j].GetComponent<Piece>().StrategyPoint = StrategyPointSetting.CalcuratePieceStrategyPoint(GameBoard[i + 3, j].GetComponent<Piece>());
+                    GameBoard[i + 3, j].GetComponent<Piece>().ToInspector();
                 }
             }
         }
@@ -176,6 +180,8 @@ public class BattleSceneController : MonoBehaviour
                     GameBoard[y, x].GetComponent<Piece>().InitActionRange(upperLeft, lowerLeft, upperRight, lowerRight, left, right, forward, backward);
                     GameBoard[y, x].GetComponent<Piece>().InitPosition(x, y);
                     GameBoard[y, x].GetComponent<Piece>().Opponent = true;
+                    GameBoard[y, x].GetComponent<Piece>().StrategyPoint = StrategyPointSetting.CalcuratePieceStrategyPoint(GameBoard[y, x].GetComponent<Piece>());
+                    GameBoard[y, x].GetComponent<Piece>().ToInspector();
                 }
             }
         }
@@ -469,7 +475,7 @@ public class BattleSceneController : MonoBehaviour
             {
                 if (GameBoard[i, x] != null)
                 {
-                    if(GameBoard[i, x].GetComponent<Piece>().Opponent)
+                    if (GameBoard[i, x].GetComponent<Piece>().Opponent)
                     {
                         MakeBoardSquarOpaque(x, i, opponent);
                         break;
@@ -741,9 +747,23 @@ public class BattleSceneController : MonoBehaviour
     // 升目をクリックしたときに動作する。
     public void OnBoardSquareClicked(int x, int y)
     {
-        if (onBoardActionRange[y, x])
+        if (onBoardActionRange[y, x] && Function == Functions.Move)
         {
-            Debug.Log("Clicked : " + x.ToString() + "," + y.ToString());
+            if (GameBoard[y, x] != null)
+            {
+                if (nowMoving)
+                {
+                    BreakPiece(x, y);
+                }
+                else
+                {
+                    GameBoard[y, x].SetActive(false);
+                }
+            }
+            if (y < 2 && !GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>().Invasion && nowMoving)
+            {
+                InvadeOpponentFormation();
+            }
             GameBoard[y, x] = GameBoard[movingPositionY, movingPositionX];
             GameBoard[y, x].GetComponent<Piece>().InitPosition(x, y);
             GameBoard[y, x].GetComponent<Piece>().readyMove = false;
@@ -752,15 +772,29 @@ public class BattleSceneController : MonoBehaviour
             movingPieceSelected = false;
             InitonBoardActionRange();
             MakeAllBoardSquarTransparent();
+
         }
     }
+
+    private void InvadeOpponentFormation()
+    {
+        MySP += StrategyPointSetting.CalcurateInvasionPoint;
+        GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>().Invasion = true;
+    }
+
+    private void BreakPiece(int x, int y)
+    {
+        MySP += StrategyPointSetting.CalcurateBreakingPiecePoints(GameBoard[y, x].GetComponent<Piece>());
+        Destroy(GameBoard[y, x]);
+    }
+
     public void ChangeOpponentFlag()
     {
         for (int i = 0; i < BoardSize; i++)
         {
             for (int j = 0; j < BoardSize; j++)
             {
-                if(GameBoard[i,j] != null)
+                if (GameBoard[i, j] != null)
                 {
                     GameBoard[i, j].GetComponent<Piece>().Opponent = !GameBoard[i, j].GetComponent<Piece>().Opponent;
                 }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Piece : PieceData
 {
@@ -15,6 +13,7 @@ public class Piece : PieceData
     [SerializeField] int t_Backward = 0;
     [SerializeField] int t_X = 0;
     [SerializeField] int t_Y = 0;
+    [SerializeField] int t_StrategyPoint = 0;
 
     // 駒の状態
     public bool Evolved { get; set; } = false;// 進化済みかどうか
@@ -23,6 +22,8 @@ public class Piece : PieceData
     BattleSceneController battleSceneController;
     public bool readyMove = false;
     private bool[,] OnBoardActionRange = new bool[5, 5];
+    public int StrategyPoint { get; set; } = 0;// 行動範囲の合計
+    public bool Invasion = false;// 敵陣地に侵入したことがあるか
     private void Start()
     {
         battleSceneController = GameObject.Find("BattleSceneController").GetComponent<BattleSceneController>();
@@ -46,26 +47,15 @@ public class Piece : PieceData
         this.Right = Right;
         this.Forward = Forward;
         this.Backward = Backward;
-        ToInspector();
-        SumActionRange = GetSumActionRange();
     }
     // 駒の座標の初期化
     public void InitPosition(int x, int y)
     {
         PositionX = x;
         PositionY = y;
-        ToInspector();
-        SumActionRange = GetSumActionRange();
-    }
-
-    // 駒が保有する行動範囲の合計を返す。
-    public int GetSumActionRange()
-    {
-        int sum = UpperLeft + LowerLeft + UpperRight + LowerRight + Left + Right + Forward + Backward;
-        return sum;
     }
     // インスペクター用変数に代入していく
-    private void ToInspector()
+    public void ToInspector()
     {
         t_UpperLeft = UpperLeft;
         t_LowerLeft = LowerLeft;
@@ -77,6 +67,7 @@ public class Piece : PieceData
         t_Backward = Backward;
         t_X = PositionX;
         t_Y = PositionY;
+        t_StrategyPoint = StrategyPoint;
     }
     // Colliderの範囲内にマウスが入ってきたときに作動する
     void OnMouseEnter()
