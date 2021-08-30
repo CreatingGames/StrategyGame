@@ -85,14 +85,13 @@ public class Piece : PieceData
     // 駒がクリックされたときに作動する
     public void OnClicked()
     {
-        if (!Opponent)
+        if (!Opponent && !battleSceneController.nowMoving)
         {
             switch (battleSceneController.Function)
             {
                 case Functions.Move:
                     if (!battleSceneController.movingPieceSelected)
                     {
-                        Debug.Log("Move");
                         readyMove = true;
                         battleSceneController.SetActionRange(PositionX, PositionY);
                     }
@@ -102,10 +101,8 @@ public class Piece : PieceData
                     }
                     break;
                 case Functions.Create:
-                    Debug.Log("Create");
                     break;
                 case Functions.Evolve:
-                    Debug.Log("Evolve");
                     break;
             }
         }

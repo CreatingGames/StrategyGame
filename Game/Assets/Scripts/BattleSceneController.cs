@@ -830,6 +830,7 @@ public class BattleSceneController : MonoBehaviour
             if (actionNumber == ActionMax)
             {
                 EnterButton.interactable = true;
+                nowMoving = true;
             }
         }
     }
@@ -896,6 +897,7 @@ public class BattleSceneController : MonoBehaviour
             CopyGameBoard(GameBoardBuffer, GameBoard);
             ResetButton.interactable = false;
         }
+        nowMoving = false;
     }
     private void ResetPiecePosition(GameObject[,] gameObjects)
     {
@@ -926,13 +928,7 @@ public class BattleSceneController : MonoBehaviour
     }
     public void OnEnterButtonClicked()
     {
-        nowMoving = true;
         ResetButton.interactable = false;
-
-        for (int i = 0; i < ActionMax; i++)
-        {
-            Debug.Log(myActionData[i].MoveData.PositionX.ToString() + ":" + myActionData[i].MoveData.PositionY.ToString() + " :: " + myActionData[i].MoveData.ToX.ToString() + ":" + myActionData[i].MoveData.ToY.ToString());
-        }
         ResetPiecePosition(GameBoardBuffer);
         CopyGameBoard(GameBoardBuffer, GameBoard);
         if (!myTurn)
@@ -940,6 +936,11 @@ public class BattleSceneController : MonoBehaviour
             makeTotalActionData();
             NextButton.interactable = true;
             EnterButton.interactable = false;
+            nowMoving = true;
+        }
+        else
+        {
+            nowMoving = false;
         }
         totalActionDataIndex = 0;
         actionNumber = 0;
@@ -949,7 +950,6 @@ public class BattleSceneController : MonoBehaviour
     {
         for (int i = 0, j = 0; i < ActionMax; i++)
         {
-            Debug.Log(j);
             totalActionData[j] = myActionData[i];
             j++;
             totalActionData[j] = opponentActionData[i];
@@ -975,6 +975,7 @@ public class BattleSceneController : MonoBehaviour
             NextButton.interactable = false;
             EnterButton.interactable = false;
             CopyGameBoard(GameBoard, GameBoardBuffer);
+            nowMoving = false;
         }
     }
     private void ReflectMoveData(ActionData actionData)
@@ -984,7 +985,6 @@ public class BattleSceneController : MonoBehaviour
         {
             if (GameBoard[moveData.PositionY, moveData.PositionX].GetComponent<Piece>().Opponent == actionData.Opponent)
             {
-                Debug.Log("ReflectMoveData " + moveData.PositionX.ToString() + ":" + moveData.PositionY.ToString() + " :: " + moveData.ToX.ToString() + ":" + moveData.ToY.ToString());
                 if (GameBoard[moveData.ToY, moveData.ToX] != null)
                 {
                     BreakPiece(moveData.ToX, moveData.ToY);
