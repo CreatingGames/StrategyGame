@@ -933,7 +933,7 @@ public class BattleSceneController : MonoBehaviour
         CopyGameBoard(GameBoardBuffer, GameBoard);
         if (!myTurn)
         {
-            makeTotalActionData();
+            MakeTotalActionData();
             NextButton.interactable = true;
             EnterButton.interactable = false;
             nowMoving = true;
@@ -946,7 +946,7 @@ public class BattleSceneController : MonoBehaviour
         actionNumber = 0;
         ChangeOpponentFlag();
     }
-    private void makeTotalActionData()
+    private void MakeTotalActionData()
     {
         for (int i = 0, j = 0; i < ActionMax; i++)
         {
