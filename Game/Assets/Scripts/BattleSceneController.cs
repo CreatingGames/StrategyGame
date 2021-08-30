@@ -28,6 +28,7 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] Text ActionNumberText;
     [SerializeField] Button ResetButton;
     [SerializeField] Button EnterButton;
+    [SerializeField] Button NextButton;
     private GameObject[,] BoardSquare;// 盤のマス
     public GameObject[,] GameBoard; // 盤面の管理
     public GameObject[,] GameBoardBuffer; // 盤面の管理（ターン開始時の状況を保存）
@@ -46,6 +47,9 @@ public class BattleSceneController : MonoBehaviour
     public bool nowMoving = false;
     private static int actionNumber = 0;
     public int ActionMax = 3;
+    private List<ActionData> myActionData;
+    private List<ActionData> totalActionData;
+    private int totalActionDataIndex = 0;
     public Functions Function { get; set; }// 移動・生成・進化のどのモードが選択されてるかを格納するための変数
 
     private void Start()
@@ -65,13 +69,25 @@ public class BattleSceneController : MonoBehaviour
         MySP = StrategyPointSetting.InitialStrategyPoint;
         OpponentSP = StrategyPointSetting.InitialStrategyPoint;
         ActionGameBoard = new List<GameObject[,]>();
+        myActionData = new List<ActionData>();
+        totalActionData = new List<ActionData>();
         for (int i = 0; i < ActionMax; i++)
         {
             ActionGameBoard.Add(new GameObject[BoardSize, BoardSize]);
+            myActionData.Add(new ActionData() { });
+            totalActionData.Add(new ActionData() { });
+            totalActionData.Add(new ActionData() { });
         }
+        InitButton();
+    }
+
+    private void InitButton()
+    {
         ResetButton.interactable = false;
         EnterButton.interactable = false;
+        NextButton.interactable = false;
     }
+
     private void Update()
     {
         // 選択している機能（移動・生成・進化）をテキストに入れている
@@ -83,7 +99,7 @@ public class BattleSceneController : MonoBehaviour
         ModeText.text = Function.ToString();
         MySPText.text = MySP.ToString();
         OpponentSPText.text = OpponentSP.ToString();
-        if(actionNumber == ActionMax)
+        if (actionNumber == ActionMax)
         {
             ActionNumberText.text = "全手登録済み";
         }
@@ -782,18 +798,7 @@ public class BattleSceneController : MonoBehaviour
         {
             if (GameBoard[y, x] != null)
             {
-                if (nowMoving)
-                {
-                    BreakPiece(x, y);
-                }
-                else
-                {
-                    GameBoard[y, x].SetActive(false);
-                }
-            }
-            if (y < 2 && !GameBoard[movingPositionY, movingPositionX].GetComponent<Piece>().Invasion && nowMoving)
-            {
-                InvadeOpponentFormation();
+                GameBoard[y, x].SetActive(false);
             }
             GameBoard[y, x] = GameBoard[movingPositionY, movingPositionX];
             GameBoard[y, x].GetComponent<Piece>().InitPosition(x, y);
@@ -804,11 +809,12 @@ public class BattleSceneController : MonoBehaviour
             InitonBoardActionRange();
             MakeAllBoardSquarTransparent();
             CopyGameBoard(GameBoard, ActionGameBoard[actionNumber]);
+            myActionData[actionNumber].Function = Functions.Move;
+            myActionData[actionNumber].MoveData = new MoveData(movingPositionX, movingPositionY, x, y);
             actionNumber++;
             ResetButton.interactable = true;
-            if(actionNumber == ActionMax)
+            if (actionNumber == ActionMax)
             {
-                nowMoving = true;
                 EnterButton.interactable = true;
             }
         }
@@ -841,13 +847,13 @@ public class BattleSceneController : MonoBehaviour
     }
     public void ResetGameBoard()
     {
-        if(actionNumber > 1)
+        if (actionNumber > 1)
         {
             actionNumber--;
             ResetPiecePosition(ActionGameBoard[actionNumber - 1]);
             CopyGameBoard(ActionGameBoard[actionNumber], GameBoard);
         }
-        else if(actionNumber == 1)
+        else if (actionNumber == 1)
         {
             actionNumber--;
             ResetPiecePosition(GameBoardBuffer);
@@ -881,5 +887,58 @@ public class BattleSceneController : MonoBehaviour
                 gameObjects2[i, j] = gameObjects1[i, j];
             }
         }
+    }
+    public void OnEnterButtonClicked()
+    {
+        nowMoving = true;
+        EnterButton.interactable = false;
+        ResetButton.interactable = false;
+        NextButton.interactable = true;
+        for (int i = 0; i < ActionMax; i++)
+        {
+            Debug.Log(myActionData[i].MoveData.PositionX.ToString() + ":" + myActionData[i].MoveData.PositionY.ToString() + " :: " + myActionData[i].MoveData.ToX.ToString() + ":" + myActionData[i].MoveData.ToY.ToString());
+        }
+        ResetPiecePosition(GameBoardBuffer);
+        CopyGameBoard(GameBoardBuffer, GameBoard);
+        makeTotalActionData();
+        totalActionDataIndex = 0;
+    }
+    private void makeTotalActionData()
+    {
+        for (int i = 0; i < ActionMax; i++)
+        {
+            totalActionData[i] = myActionData[i];
+        }
+    }
+    public void ReflectAction()
+    {
+        switch (totalActionData[totalActionDataIndex].Function)
+        {
+            case Functions.Move:
+                ReflectMoveData(totalActionData[totalActionDataIndex].MoveData);
+                totalActionDataIndex++;
+                break;
+            case Functions.Create:
+                break;
+            case Functions.Evolve:
+                break;
+        }
+    }
+    private void ReflectMoveData(MoveData moveData)
+    {
+        Debug.Log("ReflectMoveData "+moveData.PositionX.ToString() + ":" + moveData.PositionY.ToString() + " :: " + moveData.ToX.ToString() + ":" + moveData.ToY.ToString());
+        if (GameBoard[moveData.ToY, moveData.ToX] != null)
+        {
+            BreakPiece(moveData.ToX, moveData.ToY);
+        }
+        if (moveData.ToY < 2 
+            && !GameBoard[moveData.PositionY, moveData.PositionX].GetComponent<Piece>().Invasion)
+        {
+            InvadeOpponentFormation();
+        }
+        GameBoard[moveData.ToY, moveData.ToX] = GameBoard[moveData.PositionY, moveData.PositionX];
+        GameBoard[moveData.ToY, moveData.ToX].GetComponent<Piece>().InitPosition(moveData.ToX, moveData.ToY);
+        GameBoard[moveData.ToY, moveData.ToX].transform.position = BoardSquarPosition[moveData.ToY, moveData.ToX];
+        GameBoard[moveData.PositionY, moveData.PositionX] = null;
     }
 }

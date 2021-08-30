@@ -71,8 +71,9 @@ public struct EvolveData
         this.EvolveBackward = Backward;
     }
 }
-public class ActionData : MonoBehaviour
+public class ActionData
 {
+    public ActionData() { }
     public Functions Function;
     public MoveData MoveData;
     public CreateData CreateData;
