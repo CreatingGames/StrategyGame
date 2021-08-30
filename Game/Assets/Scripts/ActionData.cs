@@ -78,4 +78,5 @@ public class ActionData
     public MoveData MoveData;
     public CreateData CreateData;
     public EvolveData EvolveData;
+    public bool Opponent;
 }
