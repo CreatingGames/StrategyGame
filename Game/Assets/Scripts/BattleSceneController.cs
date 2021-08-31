@@ -42,16 +42,16 @@ public class BattleSceneController : MonoBehaviour
     // 駒を移動させるための変数
     private int movingPositionX = 0;
     private int movingPositionY = 0;
-    private bool[,] onBoardActionRange = new bool[5, 5];
-    public bool movingPieceSelected = false;
-    public bool nowMoving = false;
-    private static int actionNumber = 0;
-    public int ActionMax = 3;
-    private List<ActionData> myActionData;
-    private List<ActionData> opponentActionData;
-    private List<ActionData> totalActionData;
-    private int totalActionDataIndex = 0;
-    private bool myTurn = true;
+    private bool[,] onBoardActionRange = new bool[5, 5]; // 移動可能先を判別するための配列
+    public bool movingPieceSelected = false; // 駒がクリックされ、移動する駒が選択されている状態化を判別
+    public bool StopMoving = false; // 駒がクリックされた時に移動できないようにする
+    private static int actionNumber = 0; // 何手目かを記録するための変数
+    public int ActionMax = 3; // 何手まで登録するかの変数
+    private List<ActionData> myActionData; // 自身の手を登録するためのリスト
+    private List<ActionData> opponentActionData; // 敵の手を登録するためのリスト
+    private List<ActionData> totalActionData; // 全体の手を登録するためのリスト
+    private int totalActionDataIndex = 0; // 全体の手を登録するためのリストのインデックスに使用する変数
+    private bool myTurn = true; // 自身の手を登録するターンか相手の手を登録するターンかを判別するための変数
     public Functions Function { get; set; }// 移動・生成・進化のどのモードが選択されてるかを格納するための変数
 
     private void Start()
@@ -84,7 +84,7 @@ public class BattleSceneController : MonoBehaviour
         }
         InitButton();
     }
-
+    // ボタンの状態を押せないようにしている
     private void InitButton()
     {
         ResetButton.interactable = false;
@@ -97,7 +97,7 @@ public class BattleSceneController : MonoBehaviour
         // 選択している機能（移動・生成・進化）をテキストに入れている
         TextUpdate();
     }
-
+    // UIに表示されるテキストの更新
     private void TextUpdate()
     {
         ModeText.text = Function.ToString();
@@ -136,6 +136,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    // 駒の出現位置を格納するためのメソッド
     private void GetAllBoardSquarePosition()
     {
         BoardSquarPosition = new Vector3[BoardSize, BoardSize];
@@ -830,11 +831,11 @@ public class BattleSceneController : MonoBehaviour
             if (actionNumber == ActionMax)
             {
                 EnterButton.interactable = true;
-                nowMoving = true;
+                StopMoving = true;
             }
         }
     }
-
+    // 駒が敵陣地に侵入した際の処理
     private void InvadeOpponentFormation(int y, int positionX, int positionY)
     {
         if (!GameBoard[positionY, positionX].GetComponent<Piece>().Opponent)
@@ -854,7 +855,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
-
+    // 敵の駒を取った時の処理
     private void BreakPiece(int x, int y)
     {
         if (GameBoard[y, x].GetComponent<Piece>().Opponent)
@@ -867,7 +868,7 @@ public class BattleSceneController : MonoBehaviour
         }
         Destroy(GameBoard[y, x]);
     }
-
+    // 自身の手を登録するターンと相手の手を登録するターンを切り替えるためのメソッド
     public void ChangeOpponentFlag()
     {
         for (int i = 0; i < BoardSize; i++)
@@ -882,6 +883,7 @@ public class BattleSceneController : MonoBehaviour
         }
         myTurn = !myTurn;
     }
+    // 登録した手を巻き戻すためのメソッド
     public void ResetGameBoard()
     {
         if (actionNumber > 1)
@@ -897,8 +899,9 @@ public class BattleSceneController : MonoBehaviour
             CopyGameBoard(GameBoardBuffer, GameBoard);
             ResetButton.interactable = false;
         }
-        nowMoving = false;
+        StopMoving = false;
     }
+    // 盤面にある手を入力された盤面の位置に戻す
     private void ResetPiecePosition(GameObject[,] gameObjects)
     {
         for (int i = 0; i < BoardSize; i++)
@@ -926,6 +929,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    // 確定ボタンが押されたときの処理
     public void OnEnterButtonClicked()
     {
         ResetButton.interactable = false;
@@ -936,16 +940,17 @@ public class BattleSceneController : MonoBehaviour
             MakeTotalActionData();
             NextButton.interactable = true;
             EnterButton.interactable = false;
-            nowMoving = true;
+            StopMoving = true;
         }
         else
         {
-            nowMoving = false;
+            StopMoving = false;
         }
         totalActionDataIndex = 0;
         actionNumber = 0;
         ChangeOpponentFlag();
     }
+    // 公開していく順番に自分と味方の手を登録していく
     private void MakeTotalActionData()
     {
         for (int i = 0, j = 0; i < ActionMax; i++)
@@ -956,6 +961,7 @@ public class BattleSceneController : MonoBehaviour
             j++;
         }
     }
+    // 全体の手を順に公開していく
     public void ReflectAction()
     {
         switch (totalActionData[totalActionDataIndex].Function)
@@ -975,9 +981,10 @@ public class BattleSceneController : MonoBehaviour
             NextButton.interactable = false;
             EnterButton.interactable = false;
             CopyGameBoard(GameBoard, GameBoardBuffer);
-            nowMoving = false;
+            StopMoving = false;
         }
     }
+    // 登録された手が移動だった時の処理
     private void ReflectMoveData(ActionData actionData)
     {
         MoveData moveData = actionData.MoveData;
