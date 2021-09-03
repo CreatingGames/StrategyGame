@@ -37,13 +37,13 @@ public class FormationData : MonoBehaviour
         OpponentFormationBoard = new PieceData[2, 5];
         OpponentFormationBoard[0, 2] = gameObject.AddComponent<PieceData>();
         OpponentFormationBoard[0, 2].Forward = 0;
-        OpponentFormationBoard[0, 2].Backward = 0;
+        OpponentFormationBoard[0, 2].Backward = 1;
         OpponentFormationBoard[0, 2].Right = 0;
         OpponentFormationBoard[0, 2].Left = 0;
         OpponentFormationBoard[0, 2].UpperLeft = 3;
-        OpponentFormationBoard[0, 2].LowerLeft = 0;
+        OpponentFormationBoard[0, 2].LowerLeft = 1;
         OpponentFormationBoard[0, 2].UpperRight = 3;
-        OpponentFormationBoard[0, 2].LowerRight = 0;
+        OpponentFormationBoard[0, 2].LowerRight = 1;
         InitializedOpponentformation = true;
     }
 }

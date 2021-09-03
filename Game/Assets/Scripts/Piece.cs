@@ -21,7 +21,6 @@ public class Piece : PieceData
 
     BattleSceneController battleSceneController;
     public bool readyMove = false;
-    private bool[,] OnBoardActionRange = new bool[5, 5];
     public int StrategyPoint { get; set; } = 0;// 行動範囲の合計
     public bool Invasion = false;// 敵陣地に侵入したことがあるか
     private void Start()
@@ -85,14 +84,13 @@ public class Piece : PieceData
     // 駒がクリックされたときに作動する
     public void OnClicked()
     {
-        if (!Opponent)
+        if (!Opponent && !battleSceneController.StopMoving)
         {
             switch (battleSceneController.Function)
             {
                 case Functions.Move:
                     if (!battleSceneController.movingPieceSelected)
                     {
-                        Debug.Log("Move");
                         readyMove = true;
                         battleSceneController.SetActionRange(PositionX, PositionY);
                     }
@@ -102,10 +100,8 @@ public class Piece : PieceData
                     }
                     break;
                 case Functions.Create:
-                    Debug.Log("Create");
                     break;
                 case Functions.Evolve:
-                    Debug.Log("Evolve");
                     break;
             }
         }
