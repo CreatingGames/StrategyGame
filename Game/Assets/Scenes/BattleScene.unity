@@ -2981,6 +2981,7 @@ MonoBehaviour:
   MyPiecePrefab: {fileID: 6433473436612652756, guid: 73264c3a42e40344ea3acb1086cc5ac1, type: 3}
   OpponentPiecePrefab: {fileID: 6433473436612652756, guid: cde67a6ed80d2cb47ae01f9718e6f87f, type: 3}
   Canvas: {fileID: 67715138}
+  createPalette: {fileID: 8105969117290526239, guid: ebfb8b35b299b4d4bbfc759e3e328711, type: 3}
   x: 2
   y: 4
   MySP: 20
@@ -2996,7 +2997,7 @@ MonoBehaviour:
   EnterButton: {fileID: 1867522845}
   NextButton: {fileID: 1136326338}
   movingPieceSelected: 0
-  nowMoving: 0
+  StopMoving: 0
   ActionMax: 3
 --- !u!4 &1036103875
 Transform:
