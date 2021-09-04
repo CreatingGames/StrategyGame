@@ -10,7 +10,7 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] GameObject MyPiecePrefab;
     [SerializeField] GameObject OpponentPiecePrefab;
     [SerializeField] GameObject Canvas;
-    [SerializeField] CreatePalette createPalette;
+    [SerializeField] GameObject createPalette;
     [SerializeField] GameObject boardSquareClickController;
     [Header("Test用変数")]
     [SerializeField] int x;
@@ -839,22 +839,16 @@ public class BattleSceneController : MonoBehaviour
         if(Function == Functions.Create)
         {
             // 生成してCanvasの子要素に設定
-            var _dialog = Instantiate(createPalette);
-            _dialog.transform.SetParent(Canvas.transform, false);
-            boardSquareClickController.GetComponent<BoardSquareClickController>().DialogCheck = true; // CreatePaletteが１枚しか生成されないようにする
-            // ボタンが押されたときのイベント処理
-            _dialog.FixDialog = result => CreateAction(result);
+            createPalette.SetActive(true);
+            boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = true; // CreatePaletteが１枚しか生成されないようにする
+            createPalette.GetComponent<CreatePalette>().FixDialog = result => CreatePaletteButtonAction(result);
         }
     }
 
-    private void CreateAction(CreatePalette.DialogResult result)
+    private void CreatePaletteButtonAction(CreatePalette.CreatePaletteResult result)
     {
-        Debug.Log("Button Clicked "+result);
-        boardSquareClickController.GetComponent<BoardSquareClickController>().DialogCheck = false;
-        if(result == CreatePalette.DialogResult.OK)
-        {
-            
-        }
+        boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = false;
+        Debug.Log(result);
     }
 
     // 駒が敵陣地に侵入した際の処理
