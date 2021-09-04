@@ -8,7 +8,14 @@ public class CreatePalette : MonoBehaviour
         OK,
         Cancel,
     }
-
+    public int UpperLeft;
+    public int UpperRight;
+    public int LowerLeft;
+    public int LowerRight;
+    public int Forward;
+    public int Backward;
+    public int Right;
+    public int Left;
     // ダイアログが操作されたときに発生するイベント
     public Action<CreatePaletteResult> FixDialog { get; set; }
 
