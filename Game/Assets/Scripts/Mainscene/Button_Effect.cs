@@ -31,6 +31,7 @@ public class Button_Effect : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         
         this.animator = GetComponent<Animator>();
+        animator.SetBool("hude_effect", false);
     }
 
     // Update is called once per frame
