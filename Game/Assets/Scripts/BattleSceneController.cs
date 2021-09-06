@@ -41,6 +41,7 @@ public class BattleSceneController : MonoBehaviour
     private Color defaultColor;
     private Color opponentOpaqueColor;
     private Color myOpaqueColor;
+    private Color whiteColor;
     // 駒を移動させるための変数
     private int movingPositionX = 0;
     private int movingPositionY = 0;
@@ -123,6 +124,7 @@ public class BattleSceneController : MonoBehaviour
         defaultColor = new Color(0, 1, 1, Transparency / 255);
         opponentOpaqueColor = new Color(1, 0, 1, Opacity / 255);
         myOpaqueColor = new Color(0, 1, 1, Opacity / 255);
+        whiteColor = new Color(1, 1, 1, Opacity / 255);
     }
     // インスペクターで取得したBoardから子要素のそれぞれのImageを取得する
     private void GetAllBoardSquare()
@@ -163,6 +165,11 @@ public class BattleSceneController : MonoBehaviour
             BoardSquare[y, x].GetComponent<Image>().color = myOpaqueColor;
         }
     }
+    // 升目を透明にする
+    public void MakeBoardSquareTransparent(int x, int y)
+    {
+        BoardSquare[y, x].GetComponent<Image>().color = defaultColor;
+    }
     // 升目を全て透明にする
     public void MakeAllBoardSquarTransparent()
     {
@@ -173,6 +180,10 @@ public class BattleSceneController : MonoBehaviour
                 BoardSquare[i, j].GetComponent<Image>().color = defaultColor;
             }
         }
+    }
+    public void MakeBoardSquareWhite(int x, int y)
+    {
+        BoardSquare[y, x].GetComponent<Image>().color = whiteColor;
     }
     // Formationで初期化された自陣を呼び出して、GameBoardに登録し、Prefabから駒を生成してる
     private IEnumerator LoadMyFormation()
@@ -509,7 +520,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
-    // 駒の移動可能範囲をハイライトする
+    // 駒の移動可能範囲をハイライトする:Move機能時に使用
     public void HighlightActionRange(int x, int y)
     {
         Piece piece = GameBoard[y, x].GetComponent<Piece>();
@@ -836,18 +847,22 @@ public class BattleSceneController : MonoBehaviour
                 StopMoving = true;
             }
         }
-        if(Function == Functions.Create)
+        if (Function == Functions.Create)
         {
             // 生成してCanvasの子要素に設定
             createPalette.SetActive(true);
             boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = true; // CreatePaletteが１枚しか生成されないようにする
             createPalette.GetComponent<CreatePalette>().FixDialog = result => CreatePaletteButtonAction(result);
+            createPalette.GetComponent<CreatePalette>().InitActionRange();
+            createPalette.GetComponent<CreatePalette>().SetPosition(x, y);
+            MakeBoardSquareWhite(x, y);
         }
     }
 
     private void CreatePaletteButtonAction(CreatePalette.CreatePaletteResult result)
     {
         boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = false;
+        MakeAllBoardSquarTransparent();
         Debug.Log(result);
     }
 
@@ -991,7 +1006,7 @@ public class BattleSceneController : MonoBehaviour
             case Functions.Evolve:
                 break;
         }
-        if(totalActionDataIndex == ActionMax * 2)
+        if (totalActionDataIndex == ActionMax * 2)
         {
             ResetButton.interactable = false;
             NextButton.interactable = false;
