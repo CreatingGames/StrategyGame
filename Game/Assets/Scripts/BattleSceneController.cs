@@ -839,13 +839,7 @@ public class BattleSceneController : MonoBehaviour
                 opponentActionData[actionNumber].MoveData = new MoveData(movingPositionX, movingPositionY, x, y);
                 opponentActionData[actionNumber].Opponent = true;
             }
-            actionNumber++;
-            ResetButton.interactable = true;
-            if (actionNumber == ActionMax)
-            {
-                EnterButton.interactable = true;
-                StopMoving = true;
-            }
+            ActionNumberPlus();
         }
         if (Function == Functions.Create)
         {
@@ -858,16 +852,47 @@ public class BattleSceneController : MonoBehaviour
             MakeBoardSquareWhite(x, y);
         }
     }
+    // actionNumber++にまつわる処理を関数化した
+    private void ActionNumberPlus()
+    {
+        actionNumber++;
+        ResetButton.interactable = true;
+        if (actionNumber == ActionMax)
+        {
+            EnterButton.interactable = true;
+            StopMoving = true;
+        }
+    }
 
     private void CreatePaletteButtonAction(CreatePalette.CreatePaletteResult result)
     {
         boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = false;
         MakeAllBoardSquarTransparent();
         Debug.Log(result);
-        if(result == CreatePalette.CreatePaletteResult.OK)
+        if (result == CreatePalette.CreatePaletteResult.OK)
         {
             CreateData createData = createPalette.GetComponent<CreatePalette>().GetCreateData();
-            Debug.Log(createData.LowerLeft.ToString());
+            GameBoard[createData.PositionY, createData.PositionX] = Instantiate(MyPiecePrefab, BoardSquarPosition[createData.PositionY, createData.PositionX], Quaternion.identity, Canvas.transform);
+            GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().InitActionRange(createData.UpperLeft, createData.LowerLeft, createData.UpperRight, createData.LowerRight, createData.Left, createData.Right, createData.Forward, createData.Backward);
+            GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().InitPosition(createData.PositionX, createData.PositionY);
+            GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().Opponent = false;
+            GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().StrategyPoint = StrategyPointSetting.CalcuratePieceStrategyPoint(GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>());
+            GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().ToInspector();
+            GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().StoppingAction = true;
+            CopyGameBoard(GameBoard, ActionGameBoard[actionNumber]);
+            if (myTurn)
+            {
+                myActionData[actionNumber].Function = Functions.Create;
+                myActionData[actionNumber].CreateData = createData;
+                myActionData[actionNumber].Opponent = false;
+            }
+            else
+            {
+                opponentActionData[actionNumber].Function = Functions.Create;
+                opponentActionData[actionNumber].CreateData = createData;
+                opponentActionData[actionNumber].Opponent = true;
+            }
+            ActionNumberPlus();
         }
     }
 
@@ -925,12 +950,14 @@ public class BattleSceneController : MonoBehaviour
         if (actionNumber > 1)
         {
             actionNumber--;
+            ResetCreatePiece(ActionGameBoard[actionNumber - 1], ActionGameBoard[actionNumber]);
             ResetPiecePosition(ActionGameBoard[actionNumber - 1]);
             CopyGameBoard(ActionGameBoard[actionNumber], GameBoard);
         }
         else if (actionNumber == 1)
         {
             actionNumber--;
+            ResetCreatePiece(GameBoardBuffer, ActionGameBoard[actionNumber]);
             ResetPiecePosition(GameBoardBuffer);
             CopyGameBoard(GameBoardBuffer, GameBoard);
             ResetButton.interactable = false;
@@ -954,6 +981,23 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    private void ResetCreatePiece(GameObject[,] before, GameObject[,] after)
+    {
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                if (before[i, j] == null && after[i, j] != null)
+                {
+                    if (after[i, j].GetComponent<Piece>().StoppingAction && !after[i, j].GetComponent<Piece>().Evolved)
+                    {
+                        Destroy(after[i, j]);
+                    }
+                }
+
+            }
+        }
+    }
     // gameObjects1をgameObjects2にコピーする
     private void CopyGameBoard(GameObject[,] gameObjects1, GameObject[,] gameObjects2)
     {
@@ -969,6 +1013,7 @@ public class BattleSceneController : MonoBehaviour
     public void OnEnterButtonClicked()
     {
         ResetButton.interactable = false;
+        ResetCreatePiece(GameBoardBuffer, GameBoard);
         ResetPiecePosition(GameBoardBuffer);
         CopyGameBoard(GameBoardBuffer, GameBoard);
         if (!myTurn)
@@ -985,6 +1030,17 @@ public class BattleSceneController : MonoBehaviour
         totalActionDataIndex = 0;
         actionNumber = 0;
         ChangeOpponentFlag();
+        UnlockStoppingAction();
+    }
+    private void UnlockStoppingAction()
+    {
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                GameBoard[i, j].GetComponent<Piece>().StoppingAction = false;
+            }
+        }
     }
     // 公開していく順番に自分と味方の手を登録していく
     private void MakeTotalActionData()
