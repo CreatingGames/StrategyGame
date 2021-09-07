@@ -176,6 +176,11 @@ public class CreatePalette : MonoBehaviour
         this.FixDialog?.Invoke(CreatePaletteResult.Cancel);
         gameObject.SetActive(false);
     }
+    public CreateData GetCreateData()
+    {
+        CreateData createData = new CreateData(x, y, upperLeft, lowerLeft, upperRight, lowerRight, left, right, forward, backward);
+        return createData;
+    }
     public void OnULPlus()
     {
         upperLeft++;

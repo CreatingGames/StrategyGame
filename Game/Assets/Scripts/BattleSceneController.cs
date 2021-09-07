@@ -864,6 +864,11 @@ public class BattleSceneController : MonoBehaviour
         boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = false;
         MakeAllBoardSquarTransparent();
         Debug.Log(result);
+        if(result == CreatePalette.CreatePaletteResult.OK)
+        {
+            CreateData createData = createPalette.GetComponent<CreatePalette>().GetCreateData();
+            Debug.Log(createData.LowerLeft.ToString());
+        }
     }
 
     // 駒が敵陣地に侵入した際の処理
