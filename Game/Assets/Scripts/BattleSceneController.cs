@@ -871,8 +871,17 @@ public class BattleSceneController : MonoBehaviour
         Debug.Log(result);
         if (result == CreatePalette.CreatePaletteResult.OK)
         {
+            GameObject Prefab;
+            if (myTurn)
+            {
+                Prefab = MyPiecePrefab;
+            }
+            else
+            {
+                Prefab = OpponentPiecePrefab;
+            }
             CreateData createData = createPalette.GetComponent<CreatePalette>().GetCreateData();
-            GameBoard[createData.PositionY, createData.PositionX] = Instantiate(MyPiecePrefab, BoardSquarPosition[createData.PositionY, createData.PositionX], Quaternion.identity, Canvas.transform);
+            GameBoard[createData.PositionY, createData.PositionX] = Instantiate(Prefab, BoardSquarPosition[createData.PositionY, createData.PositionX], Quaternion.identity, Canvas.transform);
             GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().InitActionRange(createData.UpperLeft, createData.LowerLeft, createData.UpperRight, createData.LowerRight, createData.Left, createData.Right, createData.Forward, createData.Backward);
             GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().InitPosition(createData.PositionX, createData.PositionY);
             GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().Opponent = false;
@@ -994,7 +1003,6 @@ public class BattleSceneController : MonoBehaviour
                         Destroy(after[i, j]);
                     }
                 }
-
             }
         }
     }
@@ -1038,7 +1046,11 @@ public class BattleSceneController : MonoBehaviour
         {
             for (int j = 0; j < BoardSize; j++)
             {
-                GameBoard[i, j].GetComponent<Piece>().StoppingAction = false;
+                if (GameBoard[i, j] != null && GameBoard[i, j].GetComponent<Piece>().StoppingAction)
+                {
+                    GameBoard[i, j].GetComponent<Piece>().StoppingAction = false;
+                }
+
             }
         }
     }
