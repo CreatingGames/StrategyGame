@@ -13,11 +13,36 @@ public class CreatePalette : MonoBehaviour
     [SerializeField] Text RText;
     [SerializeField] Text LText;
     [SerializeField] GameObject BattleSceneController;
+    [SerializeField] Text BeforeStrategyPointText;
+    [SerializeField] Text AfterStrategyPointText;
+    [SerializeField] Text UseStrategyPointText;
     BattleSceneController battleSceneController;
+    private int upperLeft;
+    private int upperRight;
+    private int lowerLeft;
+    private int lowerRight;
+    private int forward;
+    private int backward;
+    private int right;
+    private int left;
+    private int x;
+    private int y;
+    private int beforeStrategyPoint;
+    private int useStrategyPoint;
+    private int afterStarategyPoint;
     private void Start()
     {
         battleSceneController = BattleSceneController.GetComponent<BattleSceneController>();
+        Init();
     }
+
+    public void Init()
+    {
+        InitActionRange();
+        UseStrategyPointText.text = "0";
+        useStrategyPoint = 0;
+    }
+
     private void Update()
     {
         battleSceneController.MakeBoardSquareWhite(x, y);
@@ -38,16 +63,13 @@ public class CreatePalette : MonoBehaviour
         Right,
         Left
     }
-    private int upperLeft;
-    private int upperRight;
-    private int lowerLeft;
-    private int lowerRight;
-    private int forward;
-    private int backward;
-    private int right;
-    private int left;
-    private int x;
-    private int y;
+    public void SetStrategyPoint(int SP)
+    {
+        beforeStrategyPoint = SP;
+        afterStarategyPoint = SP;
+        UpdateText();
+    }
+
     // ダイアログが操作されたときに発生するイベント
     public Action<CreatePaletteResult> FixDialog { get; set; }
     private void ChangeBoardColorOpaque(int range, Direction direction)
@@ -148,7 +170,7 @@ public class CreatePalette : MonoBehaviour
         this.x = x;
         this.y = y;
     }
-    public void InitActionRange()
+    private void InitActionRange()
     {
         upperLeft = 0;
         upperRight = 0;
@@ -170,6 +192,9 @@ public class CreatePalette : MonoBehaviour
         BText.text = backward.ToString();
         RText.text = right.ToString();
         LText.text = left.ToString();
+        BeforeStrategyPointText.text = beforeStrategyPoint.ToString();
+        AfterStrategyPointText.text = afterStarategyPoint.ToString();
+        UseStrategyPointText.text = useStrategyPoint.ToString();
     }
     // OKボタンが押されたとき
     public void OnOk()
@@ -193,6 +218,7 @@ public class CreatePalette : MonoBehaviour
     public void OnULPlus()
     {
         upperLeft++;
+        CalcuratingUseStrategyPoint();
         UpdateText();
         ChangeBoardColorOpaque(upperLeft, Direction.UpperLeft);
     }
@@ -202,14 +228,15 @@ public class CreatePalette : MonoBehaviour
         {
 
             upperLeft--;
+            CalcuratingUseStrategyPoint();
             UpdateText();
-
             ChangeBoardSquareDefault(upperLeft, Direction.UpperLeft);
         }
     }
     public void OnURPlus()
     {
         upperRight++;
+        CalcuratingUseStrategyPoint();
         UpdateText();
         ChangeBoardColorOpaque(upperRight, Direction.UpperRight);
     }
@@ -219,6 +246,7 @@ public class CreatePalette : MonoBehaviour
         {
 
             upperRight--;
+            CalcuratingUseStrategyPoint();
             UpdateText();
             ChangeBoardSquareDefault(upperRight, Direction.UpperRight);
         }
@@ -226,6 +254,7 @@ public class CreatePalette : MonoBehaviour
     public void OnLLPlus()
     {
         lowerLeft++;
+        CalcuratingUseStrategyPoint();
         UpdateText();
         ChangeBoardColorOpaque(lowerLeft, Direction.LowerLeft);
     }
@@ -234,6 +263,7 @@ public class CreatePalette : MonoBehaviour
         if (lowerLeft > 0)
         {
             lowerLeft--;
+            CalcuratingUseStrategyPoint();
             UpdateText();
             ChangeBoardSquareDefault(lowerLeft, Direction.LowerLeft);
         }
@@ -241,6 +271,7 @@ public class CreatePalette : MonoBehaviour
     public void OnLRPlus()
     {
         lowerRight++;
+        CalcuratingUseStrategyPoint();
         UpdateText();
         ChangeBoardColorOpaque(lowerRight, Direction.LowerRight);
     }
@@ -249,6 +280,7 @@ public class CreatePalette : MonoBehaviour
         if (lowerRight > 0)
         {
             lowerRight--;
+            CalcuratingUseStrategyPoint();
             UpdateText();
             ChangeBoardSquareDefault(lowerRight, Direction.LowerRight);
         }
@@ -256,6 +288,7 @@ public class CreatePalette : MonoBehaviour
     public void OnFPlus()
     {
         forward++;
+        CalcuratingUseStrategyPoint();
         UpdateText();
         ChangeBoardColorOpaque(forward, Direction.Forward);
     }
@@ -264,6 +297,7 @@ public class CreatePalette : MonoBehaviour
         if (forward > 0)
         {
             forward--;
+            CalcuratingUseStrategyPoint();
             UpdateText();
             ChangeBoardSquareDefault(forward, Direction.Forward);
         }
@@ -271,6 +305,7 @@ public class CreatePalette : MonoBehaviour
     public void OnBPlus()
     {
         backward++;
+        CalcuratingUseStrategyPoint();
         UpdateText();
         ChangeBoardColorOpaque(backward, Direction.Backward);
     }
@@ -279,6 +314,7 @@ public class CreatePalette : MonoBehaviour
         if (backward > 0)
         {
             backward--;
+            CalcuratingUseStrategyPoint();
             UpdateText();
             ChangeBoardSquareDefault(backward, Direction.Backward);
         }
@@ -286,6 +322,7 @@ public class CreatePalette : MonoBehaviour
     public void OnRPlus()
     {
         right++;
+        CalcuratingUseStrategyPoint();
         UpdateText();
         ChangeBoardColorOpaque(right, Direction.Right);
     }
@@ -294,6 +331,7 @@ public class CreatePalette : MonoBehaviour
         if (right > 0)
         {
             right--;
+            CalcuratingUseStrategyPoint();
             UpdateText();
             ChangeBoardSquareDefault(right, Direction.Right);
         }
@@ -301,6 +339,7 @@ public class CreatePalette : MonoBehaviour
     public void OnLPlus()
     {
         left++;
+        CalcuratingUseStrategyPoint();
         UpdateText();
         ChangeBoardColorOpaque(left, Direction.Left);
     }
@@ -309,8 +348,14 @@ public class CreatePalette : MonoBehaviour
         if (left > 0)
         {
             left--;
+            CalcuratingUseStrategyPoint();
             UpdateText();
             ChangeBoardSquareDefault(left, Direction.Left);
         }
+    }
+    public void CalcuratingUseStrategyPoint()
+    {
+        useStrategyPoint = StrategyPointSetting.CalcurateCreatingPoint(upperLeft, upperRight, lowerLeft, lowerRight, right, left, forward, backward);
+        afterStarategyPoint = beforeStrategyPoint - useStrategyPoint;
     }
 }

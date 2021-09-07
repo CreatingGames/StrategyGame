@@ -61,4 +61,43 @@ public class StrategyPointSetting : MonoBehaviour
         return piece.StrategyPoint;
     }
     public static int CalcurateInvasionPoint { get; } = 3; // 駒が敵陣に侵入したときに得られるポイント
+
+    public static int CalcurateCreatingPoint(int UL, int UR, int LL, int LR, int R, int L, int F, int B)
+    {
+        int sum = UL + UR + LL + LR + B + F + L + R;
+        int StrategyPoint = sum;
+        if (F != 0)
+        {
+            StrategyPoint++;
+        }
+        if (B != 0)
+        {
+            StrategyPoint++;
+        }
+        if (L != 0)
+        {
+            StrategyPoint++;
+        }
+        if (R != 0)
+        {
+            StrategyPoint++;
+        }
+        if (UL != 0)
+        {
+            StrategyPoint++;
+        }
+        if (UR != 0)
+        {
+            StrategyPoint++;
+        }
+        if (LL != 0)
+        {
+            StrategyPoint++;
+        }
+        if (LR != 0)
+        {
+            StrategyPoint++;
+        }
+        return StrategyPoint;
+    }
 }

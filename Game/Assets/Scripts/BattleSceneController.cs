@@ -847,10 +847,11 @@ public class BattleSceneController : MonoBehaviour
             {
                 // 生成してCanvasの子要素に設定
                 createPalette.SetActive(true);
+                createPalette.GetComponent<CreatePalette>().Init();
                 boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = true; // CreatePaletteが１枚しか生成されないようにする
                 createPalette.GetComponent<CreatePalette>().FixDialog = result => CreatePaletteButtonAction(result);
-                createPalette.GetComponent<CreatePalette>().InitActionRange();
                 createPalette.GetComponent<CreatePalette>().SetPosition(x, y);
+                createPalette.GetComponent<CreatePalette>().SetStrategyPoint(MySP);
             }
         }
     }
@@ -1040,7 +1041,6 @@ public class BattleSceneController : MonoBehaviour
         totalActionDataIndex = 0;
         actionNumber = 0;
         ChangeOpponentFlag();
-        UnlockStoppingAction();
     }
     private void UnlockStoppingAction()
     {
@@ -1077,6 +1077,8 @@ public class BattleSceneController : MonoBehaviour
                 totalActionDataIndex++;
                 break;
             case Functions.Create:
+                ReflectCreateData(totalActionData[totalActionDataIndex]);
+                totalActionDataIndex++;
                 break;
             case Functions.Evolve:
                 break;
@@ -1088,6 +1090,7 @@ public class BattleSceneController : MonoBehaviour
             EnterButton.interactable = false;
             CopyGameBoard(GameBoard, GameBoardBuffer);
             StopMoving = false;
+            UnlockStoppingAction();
         }
     }
     // 登録された手が移動だった時の処理
@@ -1111,6 +1114,32 @@ public class BattleSceneController : MonoBehaviour
                 GameBoard[moveData.ToY, moveData.ToX].transform.position = BoardSquarPosition[moveData.ToY, moveData.ToX];
                 GameBoard[moveData.PositionY, moveData.PositionX] = null;
             }
+        }
+    }
+    // 登録された手が生成だった時の処理
+    private void ReflectCreateData(ActionData actionData)
+    {
+        CreateData createData = actionData.CreateData;
+        if (GameBoard[createData.PositionY, createData.PositionX] == null)
+        {
+            GameObject Prefab;
+            if (actionData.Opponent)
+            {
+                Prefab = OpponentPiecePrefab;
+                OpponentSP -= StrategyPointSetting.CalcurateCreatingPoint(createData.UpperLeft, createData.UpperRight, createData.LowerLeft, createData.LowerRight, createData.Right, createData.Left, createData.Forward, createData.Backward);
+            }
+            else
+            {
+                Prefab = MyPiecePrefab;
+                MySP -= StrategyPointSetting.CalcurateCreatingPoint(createData.UpperLeft, createData.UpperRight, createData.LowerLeft, createData.LowerRight, createData.Right, createData.Left, createData.Forward, createData.Backward);
+            }
+            GameBoard[createData.PositionY, createData.PositionX] = Instantiate(Prefab, BoardSquarPosition[createData.PositionY, createData.PositionX], Quaternion.identity, Canvas.transform);
+            GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().InitActionRange(createData.UpperLeft, createData.LowerLeft, createData.UpperRight, createData.LowerRight, createData.Left, createData.Right, createData.Forward, createData.Backward);
+            GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().InitPosition(createData.PositionX, createData.PositionY);
+            GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().Opponent = actionData.Opponent;
+            GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().StrategyPoint = StrategyPointSetting.CalcuratePieceStrategyPoint(GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>());
+            GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().ToInspector();
+            GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().StoppingAction = true;
         }
     }
 }
