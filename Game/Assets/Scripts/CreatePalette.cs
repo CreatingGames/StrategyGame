@@ -13,6 +13,15 @@ public class CreatePalette : MonoBehaviour
     [SerializeField] Text RText;
     [SerializeField] Text LText;
     [SerializeField] GameObject BattleSceneController;
+    BattleSceneController battleSceneController;
+    private void Start()
+    {
+        battleSceneController = BattleSceneController.GetComponent<BattleSceneController>();
+    }
+    private void Update()
+    {
+        battleSceneController.MakeBoardSquareWhite(x, y);
+    }
     public enum CreatePaletteResult
     {
         OK,

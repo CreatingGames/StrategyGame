@@ -843,13 +843,15 @@ public class BattleSceneController : MonoBehaviour
         }
         if (Function == Functions.Create)
         {
-            // 生成してCanvasの子要素に設定
-            createPalette.SetActive(true);
-            boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = true; // CreatePaletteが１枚しか生成されないようにする
-            createPalette.GetComponent<CreatePalette>().FixDialog = result => CreatePaletteButtonAction(result);
-            createPalette.GetComponent<CreatePalette>().InitActionRange();
-            createPalette.GetComponent<CreatePalette>().SetPosition(x, y);
-            MakeBoardSquareWhite(x, y);
+            if(GameBoard[y,x] == null || GameBoard[y, x].GetComponent<Piece>().Opponent)
+            {
+                // 生成してCanvasの子要素に設定
+                createPalette.SetActive(true);
+                boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = true; // CreatePaletteが１枚しか生成されないようにする
+                createPalette.GetComponent<CreatePalette>().FixDialog = result => CreatePaletteButtonAction(result);
+                createPalette.GetComponent<CreatePalette>().InitActionRange();
+                createPalette.GetComponent<CreatePalette>().SetPosition(x, y);
+            }
         }
     }
     // actionNumber++にまつわる処理を関数化した
