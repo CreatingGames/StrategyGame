@@ -11,6 +11,7 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] GameObject OpponentPiecePrefab;
     [SerializeField] GameObject Canvas;
     [SerializeField] GameObject createPalette;
+    [SerializeField] GameObject evolvePalette;
     [SerializeField] GameObject boardSquareClickController;
     [Header("Test用変数")]
     [SerializeField] int x;
@@ -848,10 +849,24 @@ public class BattleSceneController : MonoBehaviour
                 // 生成してCanvasの子要素に設定
                 createPalette.SetActive(true);
                 createPalette.GetComponent<CreatePalette>().Init();
-                boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = true; // CreatePaletteが１枚しか生成されないようにする
+                boardSquareClickController.GetComponent<BoardSquareClickController>().PaletteCheck = true; // Paletteが１枚しか生成されないようにする
                 createPalette.GetComponent<CreatePalette>().FixDialog = result => CreatePaletteButtonAction(result);
                 createPalette.GetComponent<CreatePalette>().SetPosition(x, y);
                 createPalette.GetComponent<CreatePalette>().SetStrategyPoint(MySP);
+            }
+        }
+        if (Function == Functions.Evolve)
+        {
+            if (GameBoard[y, x] != null && !GameBoard[y, x].GetComponent<Piece>().Opponent)
+            {
+                evolvePalette.SetActive(true);
+                evolvePalette.GetComponent<EvolvePalette>().Init();
+                evolvePalette.GetComponent<EvolvePalette>().SetActionRange(GameBoard[y, x].GetComponent<Piece>());
+                boardSquareClickController.GetComponent<BoardSquareClickController>().PaletteCheck = true; // Paletteが１枚しか生成されないようにする
+                //createPalette.GetComponent<CreatePalette>().FixDialog = result => CreatePaletteButtonAction(result);
+                evolvePalette.GetComponent<EvolvePalette>().SetPosition(x, y);
+                evolvePalette.GetComponent<EvolvePalette>().SetStrategyPoint(MySP);
+
             }
         }
     }
@@ -869,7 +884,7 @@ public class BattleSceneController : MonoBehaviour
 
     private void CreatePaletteButtonAction(CreatePalette.CreatePaletteResult result)
     {
-        boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = false;
+        boardSquareClickController.GetComponent<BoardSquareClickController>().PaletteCheck = false;
         MakeAllBoardSquarTransparent();
         Debug.Log(result);
         if (result == CreatePalette.CreatePaletteResult.OK)
