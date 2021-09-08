@@ -18,6 +18,7 @@ public class Piece : PieceData
     // 駒の状態
     public bool Evolved { get; set; } = false;// 進化済みかどうか
     public bool Opponent { get; set; } = false;// 敵かどうか
+    public bool StoppingAction { get; set; } = false;// 進化又は生成直後どうか
 
     BattleSceneController battleSceneController;
     public bool readyMove = false;
@@ -84,7 +85,7 @@ public class Piece : PieceData
     // 駒がクリックされたときに作動する
     public void OnClicked()
     {
-        if (!Opponent && !battleSceneController.StopMoving)
+        if (!Opponent && !battleSceneController.StopMoving && !StoppingAction)
         {
             switch (battleSceneController.Function)
             {
