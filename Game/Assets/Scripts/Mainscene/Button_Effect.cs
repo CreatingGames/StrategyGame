@@ -9,6 +9,8 @@ public class Button_Effect : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 {
     //public Image image;
     public Animator animator;
+    public AudioClip sound1;
+    AudioSource audioSource;
 
 
     // オブジェクトの範囲内にマウスポインタが入った際に呼び出されます。
@@ -17,6 +19,7 @@ public class Button_Effect : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
    {
       Debug.Log("true");
       animator.SetBool("hude_effect", true);
+      audioSource.PlayOneShot(sound1);
     }
 
    public void OnPointerExit(PointerEventData eventData)
@@ -32,6 +35,7 @@ public class Button_Effect : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         
         this.animator = GetComponent<Animator>();
         animator.SetBool("hude_effect", false);
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
