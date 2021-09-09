@@ -540,7 +540,7 @@ public class BattleSceneController : MonoBehaviour
             {
                 if (GameBoard[i, x] != null)
                 {
-                    if (GameBoard[i, x].GetComponent<Piece>().Opponent)
+                    if (GameBoard[i, x].GetComponent<Piece>().Opponent != opponent)
                     {
                         MakeBoardSquarOpaque(x, i, opponent);
                         break;
@@ -568,7 +568,7 @@ public class BattleSceneController : MonoBehaviour
             {
                 if (GameBoard[i, x] != null)
                 {
-                    if (GameBoard[i, x].GetComponent<Piece>().Opponent)
+                    if (GameBoard[i, x].GetComponent<Piece>().Opponent != opponent)
                     {
                         MakeBoardSquarOpaque(x, i, opponent);
                         break;
@@ -596,7 +596,7 @@ public class BattleSceneController : MonoBehaviour
             {
                 if (GameBoard[y, i] != null)
                 {
-                    if (GameBoard[y, i].GetComponent<Piece>().Opponent)
+                    if (GameBoard[y, i].GetComponent<Piece>().Opponent != opponent)
                     {
                         MakeBoardSquarOpaque(i, y, opponent);
                         break;
@@ -624,7 +624,7 @@ public class BattleSceneController : MonoBehaviour
             {
                 if (GameBoard[y, i] != null)
                 {
-                    if (GameBoard[y, i].GetComponent<Piece>().Opponent)
+                    if (GameBoard[y, i].GetComponent<Piece>().Opponent != opponent)
                     {
                         MakeBoardSquarOpaque(i, y, opponent);
                         break;
@@ -661,7 +661,7 @@ public class BattleSceneController : MonoBehaviour
             {
                 if (GameBoard[j, i] != null)
                 {
-                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent != opponent)
                     {
                         MakeBoardSquarOpaque(i, j, opponent);
                         break;
@@ -698,7 +698,7 @@ public class BattleSceneController : MonoBehaviour
             {
                 if (GameBoard[j, i] != null)
                 {
-                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent != opponent)
                     {
                         MakeBoardSquarOpaque(i, j, opponent);
                         break;
@@ -735,7 +735,7 @@ public class BattleSceneController : MonoBehaviour
             {
                 if (GameBoard[j, i] != null)
                 {
-                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent != opponent)
                     {
                         MakeBoardSquarOpaque(i, j, opponent);
                         break;
@@ -772,7 +772,7 @@ public class BattleSceneController : MonoBehaviour
             {
                 if (GameBoard[j, i] != null)
                 {
-                    if (GameBoard[j, i].GetComponent<Piece>().Opponent)
+                    if (GameBoard[j, i].GetComponent<Piece>().Opponent != opponent)
                     {
                         MakeBoardSquarOpaque(i, j, opponent);
                         break;
