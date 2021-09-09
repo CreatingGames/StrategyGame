@@ -8,8 +8,8 @@ public class Button_Effect : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
 {
     //public Image image;
-    public Animator animator;
-    public AudioClip sound1;
+    public Animator Animator;
+    public AudioClip Sound1;
     AudioSource audioSource;
 
 
@@ -17,24 +17,24 @@ public class Button_Effect : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     // this method called by mouse-pointer enter the object.
    public void OnPointerEnter(PointerEventData eventData)
    {
-      Debug.Log("true");
-      animator.SetBool("hude_effect", true);
-      audioSource.PlayOneShot(sound1);
+      //Debug.Log("true");
+      Animator.SetBool("hude_effect", true);
+      audioSource.PlayOneShot(Sound1);
     }
 
    public void OnPointerExit(PointerEventData eventData)
    {
-       Debug.Log("false");
+       //Debug.Log("false");
         //animator.SetFloat(Animator.StringToHash("speed"), -1);
-        animator.SetBool("hude_effect", false);
+        Animator.SetBool("hude_effect", false);
     }
 
     // Use this for initialization
     void Start()
     {
         
-        this.animator = GetComponent<Animator>();
-        animator.SetBool("hude_effect", false);
+        this.Animator = GetComponent<Animator>();
+        Animator.SetBool("hude_effect", false);
         audioSource = GetComponent<AudioSource>();
     }
 
