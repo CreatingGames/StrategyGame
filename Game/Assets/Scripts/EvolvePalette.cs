@@ -239,14 +239,14 @@ public class EvolvePalette : MonoBehaviour
     }
     public void UpdateText()
     {
-        ULText.text = (upperLeft - evolveUpperLeft).ToString();
-        URText.text = (upperRight - evolveUpperRight).ToString();
-        LLText.text = (lowerLeft - evolveLowerLeft).ToString();
-        LRText.text = (lowerRight - evolveLowerRight).ToString();
-        FText.text = (forward - evolveForward).ToString();
-        BText.text = (backward - evolveBackward).ToString();
-        RText.text = (right - evolveRight).ToString();
-        LText.text = (left - evolveLeft).ToString();
+        ULText.text = (upperLeft + evolveUpperLeft).ToString();
+        URText.text = (upperRight + evolveUpperRight).ToString();
+        LLText.text = (lowerLeft + evolveLowerLeft).ToString();
+        LRText.text = (lowerRight + evolveLowerRight).ToString();
+        FText.text = (forward + evolveForward).ToString();
+        BText.text = (backward + evolveBackward).ToString();
+        RText.text = (right + evolveRight).ToString();
+        LText.text = (left + evolveLeft).ToString();
         BeforeStrategyPointText.text = beforeStrategyPoint.ToString();
         AfterStrategyPointText.text = afterStarategyPoint.ToString();
         UseStrategyPointText.text = useStrategyPoint.ToString();
@@ -275,7 +275,7 @@ public class EvolvePalette : MonoBehaviour
         evolveUpperLeft++;
         CalcuratingUseStrategyPoint();
         UpdateText();
-        ChangeBoardColorOpaque(evolveUpperLeft, Direction.UpperLeft);
+        ChangeBoardColorOpaque(upperLeft + evolveUpperLeft, Direction.UpperLeft);
     }
     public void OnULMinus()
     {
@@ -285,7 +285,7 @@ public class EvolvePalette : MonoBehaviour
             evolveUpperLeft--;
             CalcuratingUseStrategyPoint();
             UpdateText();
-            ChangeBoardSquareDefault(evolveUpperLeft, Direction.UpperLeft);
+            ChangeBoardSquareDefault(upperLeft + evolveUpperLeft, Direction.UpperLeft);
         }
     }
     public void OnURPlus()
@@ -293,7 +293,7 @@ public class EvolvePalette : MonoBehaviour
         evolveUpperRight++;
         CalcuratingUseStrategyPoint();
         UpdateText();
-        ChangeBoardColorOpaque(evolveUpperRight, Direction.UpperRight);
+        ChangeBoardColorOpaque(upperRight + evolveUpperRight, Direction.UpperRight);
     }
     public void OnURMinus()
     {
@@ -303,7 +303,7 @@ public class EvolvePalette : MonoBehaviour
             evolveUpperRight--;
             CalcuratingUseStrategyPoint();
             UpdateText();
-            ChangeBoardSquareDefault(evolveUpperRight, Direction.UpperRight);
+            ChangeBoardSquareDefault(upperRight + evolveUpperRight, Direction.UpperRight);
         }
     }
     public void OnLLPlus()
@@ -311,7 +311,7 @@ public class EvolvePalette : MonoBehaviour
         evolveLowerLeft++;
         CalcuratingUseStrategyPoint();
         UpdateText();
-        ChangeBoardColorOpaque(evolveLowerLeft, Direction.LowerLeft);
+        ChangeBoardColorOpaque(lowerLeft + evolveLowerLeft, Direction.LowerLeft);
     }
     public void OnLLMinus()
     {
@@ -320,7 +320,7 @@ public class EvolvePalette : MonoBehaviour
             evolveLowerLeft--;
             CalcuratingUseStrategyPoint();
             UpdateText();
-            ChangeBoardSquareDefault(evolveLowerLeft, Direction.LowerLeft);
+            ChangeBoardSquareDefault(lowerLeft + evolveLowerLeft, Direction.LowerLeft);
         }
     }
     public void OnLRPlus()
@@ -328,7 +328,7 @@ public class EvolvePalette : MonoBehaviour
         evolveLowerRight++;
         CalcuratingUseStrategyPoint();
         UpdateText();
-        ChangeBoardColorOpaque(evolveLowerRight, Direction.LowerRight);
+        ChangeBoardColorOpaque(lowerRight + evolveLowerRight, Direction.LowerRight);
     }
     public void OnLRMinus()
     {
@@ -337,7 +337,7 @@ public class EvolvePalette : MonoBehaviour
             evolveLowerRight--;
             CalcuratingUseStrategyPoint();
             UpdateText();
-            ChangeBoardSquareDefault(evolveLowerRight, Direction.LowerRight);
+            ChangeBoardSquareDefault(lowerRight + evolveLowerRight, Direction.LowerRight);
         }
     }
     public void OnFPlus()
@@ -345,7 +345,7 @@ public class EvolvePalette : MonoBehaviour
         evolveForward++;
         CalcuratingUseStrategyPoint();
         UpdateText();
-        ChangeBoardColorOpaque(evolveForward, Direction.Forward);
+        ChangeBoardColorOpaque(forward + evolveForward, Direction.Forward);
     }
     public void OnFMinus()
     {
@@ -354,7 +354,7 @@ public class EvolvePalette : MonoBehaviour
             evolveForward--;
             CalcuratingUseStrategyPoint();
             UpdateText();
-            ChangeBoardSquareDefault(evolveForward, Direction.Forward);
+            ChangeBoardSquareDefault(forward + evolveForward, Direction.Forward);
         }
     }
     public void OnBPlus()
@@ -362,7 +362,7 @@ public class EvolvePalette : MonoBehaviour
         evolveBackward++;
         CalcuratingUseStrategyPoint();
         UpdateText();
-        ChangeBoardColorOpaque(evolveBackward, Direction.Backward);
+        ChangeBoardColorOpaque(backward + evolveBackward, Direction.Backward);
     }
     public void OnBMinus()
     {
@@ -371,7 +371,7 @@ public class EvolvePalette : MonoBehaviour
             evolveBackward--;
             CalcuratingUseStrategyPoint();
             UpdateText();
-            ChangeBoardSquareDefault(evolveBackward, Direction.Backward);
+            ChangeBoardSquareDefault(backward + evolveBackward, Direction.Backward);
         }
     }
     public void OnRPlus()
@@ -379,7 +379,7 @@ public class EvolvePalette : MonoBehaviour
         evolveRight++;
         CalcuratingUseStrategyPoint();
         UpdateText();
-        ChangeBoardColorOpaque(evolveRight, Direction.Right);
+        ChangeBoardColorOpaque(right + evolveRight, Direction.Right);
     }
     public void OnRMinus()
     {
@@ -388,7 +388,7 @@ public class EvolvePalette : MonoBehaviour
             evolveRight--;
             CalcuratingUseStrategyPoint();
             UpdateText();
-            ChangeBoardSquareDefault(evolveRight, Direction.Right);
+            ChangeBoardSquareDefault(right + evolveRight, Direction.Right);
         }
     }
     public void OnLPlus()
@@ -396,7 +396,7 @@ public class EvolvePalette : MonoBehaviour
         evolveLeft++;
         CalcuratingUseStrategyPoint();
         UpdateText();
-        ChangeBoardColorOpaque(evolveLeft, Direction.Left);
+        ChangeBoardColorOpaque(left + evolveLeft, Direction.Left);
     }
     public void OnLMinus()
     {
@@ -405,7 +405,7 @@ public class EvolvePalette : MonoBehaviour
             evolveLeft--;
             CalcuratingUseStrategyPoint();
             UpdateText();
-            ChangeBoardSquareDefault(evolveLeft, Direction.Left);
+            ChangeBoardSquareDefault(left + evolveLeft, Direction.Left);
         }
     }
     public void CalcuratingUseStrategyPoint()

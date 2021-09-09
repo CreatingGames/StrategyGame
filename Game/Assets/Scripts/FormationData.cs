@@ -21,14 +21,14 @@ public class FormationData : MonoBehaviour
         MyFormationBoard[0, 2].LowerRight = 3;
 
         MyFormationBoard[0, 1] = gameObject.AddComponent<PieceData>();
-        MyFormationBoard[0, 1].Forward = 3;
-        MyFormationBoard[0, 1].Backward = 3;
-        MyFormationBoard[0, 1].Right = 3;
-        MyFormationBoard[0, 1].Left = 3;
-        MyFormationBoard[0, 1].UpperLeft = 3;
-        MyFormationBoard[0, 1].LowerLeft = 3;
-        MyFormationBoard[0, 1].UpperRight = 3;
-        MyFormationBoard[0, 1].LowerRight = 3;
+        MyFormationBoard[0, 1].Forward = 1;
+        MyFormationBoard[0, 1].Backward = 1;
+        MyFormationBoard[0, 1].Right = 1;
+        MyFormationBoard[0, 1].Left = 1;
+        MyFormationBoard[0, 1].UpperLeft = 1;
+        MyFormationBoard[0, 1].LowerLeft = 1;
+        MyFormationBoard[0, 1].UpperRight = 1;
+        MyFormationBoard[0, 1].LowerRight = 1;
         InitializedMyformation = true;
 
     }
