@@ -55,6 +55,7 @@ public class EvolvePalette : MonoBehaviour
     private void Update()
     {
         battleSceneController.MakeBoardSquareWhite(x, y);
+        InitActionRangeBoardSquare();
     }
     public enum EvolvePaletteResult
     {
@@ -92,35 +93,35 @@ public class EvolvePalette : MonoBehaviour
     }
     private void InitActionRangeBoardSquare()
     {
-        for(int i = 1; i < upperLeft; i++)
+        for(int i = 1; i <= upperLeft; i++)
         {
             ChangeBoardColorOpaque(i, Direction.UpperLeft);
         }
-        for (int i = 1; i < upperRight; i++)
+        for (int i = 1; i <= upperRight; i++)
         {
             ChangeBoardColorOpaque(i, Direction.UpperRight);
         }
-        for (int i = 1; i < lowerLeft; i++)
+        for (int i = 1; i <= lowerLeft; i++)
         {
             ChangeBoardColorOpaque(i, Direction.LowerLeft);
         }
-        for (int i = 1; i < lowerRight; i++)
+        for (int i = 1; i <=  lowerRight; i++)
         {
             ChangeBoardColorOpaque(i, Direction.LowerRight);
         }
-        for (int i = 1; i < forward; i++)
+        for (int i = 1; i <= forward; i++)
         {
             ChangeBoardColorOpaque(i, Direction.Forward);
         }
-        for (int i = 1; i < backward; i++)
+        for (int i = 1; i <= backward; i++)
         {
             ChangeBoardColorOpaque(i, Direction.Backward);
         }
-        for (int i = 1; i < right; i++)
+        for (int i = 1; i <= right; i++)
         {
             ChangeBoardColorOpaque(i, Direction.Right);
         }
-        for (int i = 1; i < left; i++)
+        for (int i = 1; i <= left; i++)
         {
             ChangeBoardColorOpaque(i, Direction.Left);
         }

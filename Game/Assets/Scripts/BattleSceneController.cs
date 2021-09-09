@@ -861,10 +861,10 @@ public class BattleSceneController : MonoBehaviour
             {
                 evolvePalette.SetActive(true);
                 evolvePalette.GetComponent<EvolvePalette>().Init();
+                evolvePalette.GetComponent<EvolvePalette>().SetPosition(x, y);
                 evolvePalette.GetComponent<EvolvePalette>().SetActionRange(GameBoard[y, x].GetComponent<Piece>());
                 boardSquareClickController.GetComponent<BoardSquareClickController>().PaletteCheck = true; // Paletteが１枚しか生成されないようにする
                 evolvePalette.GetComponent<EvolvePalette>().FixDialog = result => EvolvePaletteButtonAction(result);
-                evolvePalette.GetComponent<EvolvePalette>().SetPosition(x, y);
                 evolvePalette.GetComponent<EvolvePalette>().SetStrategyPoint(MySP);
 
             }
@@ -886,6 +886,10 @@ public class BattleSceneController : MonoBehaviour
         boardSquareClickController.GetComponent<BoardSquareClickController>().PaletteCheck = false;
         MakeAllBoardSquarTransparent();
         Debug.Log(result);
+        if(result == EvolvePalette.EvolvePaletteResult.OK)
+        {
+
+        }
     }
     private void CreatePaletteButtonAction(CreatePalette.CreatePaletteResult result)
     {
