@@ -32,7 +32,6 @@ public class Button_Effect : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     // Use this for initialization
     void Start()
     {
-        
         this.Animator = GetComponent<Animator>();
         Animator.SetBool("hude_effect", false);
         audioSource = GetComponent<AudioSource>();
