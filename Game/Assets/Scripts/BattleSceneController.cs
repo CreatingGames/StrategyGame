@@ -857,7 +857,7 @@ public class BattleSceneController : MonoBehaviour
         }
         if (Function == Functions.Evolve)
         {
-            if (GameBoard[y, x] != null && !GameBoard[y, x].GetComponent<Piece>().Opponent)
+            if (GameBoard[y, x] != null && !GameBoard[y, x].GetComponent<Piece>().Opponent && !GameBoard[y, x].GetComponent<Piece>().Evolved)
             {
                 evolvePalette.SetActive(true);
                 evolvePalette.GetComponent<EvolvePalette>().Init();
@@ -888,7 +888,22 @@ public class BattleSceneController : MonoBehaviour
         Debug.Log(result);
         if(result == EvolvePalette.EvolvePaletteResult.OK)
         {
-
+            EvolveData  evolve = evolvePalette.GetComponent<EvolvePalette>().GetEvolveData();
+            GameBoard[evolve.PositionY, evolve.PositionX].GetComponent<Piece>().SetEvolveData(evolve);
+            if (myTurn)
+            {
+                myActionData[actionNumber].Function = Functions.Evolve;
+                myActionData[actionNumber].EvolveData = evolve;
+                myActionData[actionNumber].Opponent = false;
+            }
+            else
+            {
+                opponentActionData[actionNumber].Function = Functions.Evolve;
+                opponentActionData[actionNumber].EvolveData = evolve;
+                opponentActionData[actionNumber].Opponent = true;
+            }
+            CopyGameBoard(GameBoard, ActionGameBoard[actionNumber]);
+            ActionNumberPlus();
         }
     }
     private void CreatePaletteButtonAction(CreatePalette.CreatePaletteResult result)
@@ -983,16 +998,33 @@ public class BattleSceneController : MonoBehaviour
     // 登録した手を巻き戻すためのメソッド
     public void ResetGameBoard()
     {
-        if (actionNumber > 1)
+        //TODO: Forループを回さずにFunctionのEnumのスイッチ判定でActionDataからリセット機能を付ける。
+        actionNumber--;
+        ActionData actionData;
+        if (myTurn)
         {
-            actionNumber--;
+            actionData = myActionData[actionNumber];
+        }
+        else
+        {
+            actionData = opponentActionData[actionNumber];
+        }
+        if (actionNumber > 0)
+        {
+            if (actionData.Function == Functions.Evolve)
+            {
+                ResetEvolvePiece(ActionGameBoard[actionNumber], actionData.EvolveData);
+            }
             ResetCreatePiece(ActionGameBoard[actionNumber - 1], ActionGameBoard[actionNumber]);
             ResetPiecePosition(ActionGameBoard[actionNumber - 1]);
             CopyGameBoard(ActionGameBoard[actionNumber], GameBoard);
         }
-        else if (actionNumber == 1)
+        else if (actionNumber == 0)
         {
-            actionNumber--;
+            if (actionData.Function == Functions.Evolve)
+            {
+                ResetEvolvePiece(ActionGameBoard[actionNumber], actionData.EvolveData);
+            }
             ResetCreatePiece(GameBoardBuffer, ActionGameBoard[actionNumber]);
             ResetPiecePosition(GameBoardBuffer);
             CopyGameBoard(GameBoardBuffer, GameBoard);
@@ -1032,6 +1064,10 @@ public class BattleSceneController : MonoBehaviour
                 }
             }
         }
+    }
+    private void ResetEvolvePiece(GameObject[,] gameObject, EvolveData evolveData)
+    {
+        gameObject[evolveData.PositionY, evolveData.PositionX].GetComponent<Piece>().ResetEvolveData();
     }
     // gameObjects1をgameObjects2にコピーする
     private void CopyGameBoard(GameObject[,] gameObjects1, GameObject[,] gameObjects2)
@@ -1165,5 +1201,10 @@ public class BattleSceneController : MonoBehaviour
             GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().ToInspector();
             GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().StoppingAction = true;
         }
+    }
+    private void ReflectEvolveData(ActionData actionData)
+    {
+        EvolveData evolveData = actionData.EvolveData;
+
     }
 }

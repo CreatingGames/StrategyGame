@@ -107,4 +107,48 @@ public class Piece : PieceData
             }
         }
     }
+    public void SetEvolveData(EvolveData evolve)
+    {
+        EvolveUpperLeft = evolve.EvolveUpperLeft;
+        EvolveUpperRight = evolve.EvolveUpperRight;
+        EvolveLowerLeft = evolve.EvolveLowerLeft;
+        EvolveLowerRight = evolve.EvolveLowerRight;
+        EvolveForward = evolve.EvolveForward;
+        EvolveBackward = evolve.EvolveBackward;
+        EvolveLeft = evolve.EvolveLeft;
+        EvolveRight = evolve.EvolveRight;
+        UpperLeft += EvolveUpperLeft;
+        UpperRight += EvolveUpperRight;
+        LowerLeft += EvolveLowerLeft;
+        LowerRight += EvolveLowerRight;
+        Forward += EvolveForward;
+        Backward += EvolveBackward;
+        Left += EvolveLeft;
+        Right += EvolveRight;
+        Evolved = true;
+        StoppingAction = true;
+        ToInspector();
+    }
+    public void ResetEvolveData()
+    {
+        UpperLeft -= EvolveUpperLeft;
+        UpperRight -= EvolveUpperRight;
+        LowerLeft -= EvolveLowerLeft;
+        LowerRight -= EvolveLowerRight;
+        Forward -= EvolveForward;
+        Backward -= EvolveBackward;
+        Left -= EvolveLeft;
+        Right -= EvolveRight;
+        EvolveUpperLeft = 0;
+        EvolveUpperRight = 0;
+        EvolveLowerLeft = 0;
+        EvolveLowerRight = 0;
+        EvolveForward = 0;
+        EvolveBackward = 0;
+        EvolveLeft = 0;
+        EvolveRight = 0;
+        Evolved = false;
+        StoppingAction = false;
+        ToInspector();
+    }
 }
