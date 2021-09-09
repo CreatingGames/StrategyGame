@@ -890,6 +890,7 @@ public class BattleSceneController : MonoBehaviour
         {
             EvolveData  evolve = evolvePalette.GetComponent<EvolvePalette>().GetEvolveData();
             GameBoard[evolve.PositionY, evolve.PositionX].GetComponent<Piece>().SetEvolveData(evolve);
+            CopyGameBoard(GameBoard, ActionGameBoard[actionNumber]);
             if (myTurn)
             {
                 myActionData[actionNumber].Function = Functions.Evolve;
@@ -902,7 +903,7 @@ public class BattleSceneController : MonoBehaviour
                 opponentActionData[actionNumber].EvolveData = evolve;
                 opponentActionData[actionNumber].Opponent = true;
             }
-            CopyGameBoard(GameBoard, ActionGameBoard[actionNumber]);
+            
             ActionNumberPlus();
         }
     }
@@ -998,7 +999,6 @@ public class BattleSceneController : MonoBehaviour
     // 登録した手を巻き戻すためのメソッド
     public void ResetGameBoard()
     {
-        //TODO: Forループを回さずにFunctionのEnumのスイッチ判定でActionDataからリセット機能を付ける。
         actionNumber--;
         ActionData actionData;
         if (myTurn)
@@ -1011,21 +1011,23 @@ public class BattleSceneController : MonoBehaviour
         }
         if (actionNumber > 0)
         {
+            
+            ResetCreatePiece(ActionGameBoard[actionNumber - 1], ActionGameBoard[actionNumber]);
             if (actionData.Function == Functions.Evolve)
             {
                 ResetEvolvePiece(ActionGameBoard[actionNumber], actionData.EvolveData);
             }
-            ResetCreatePiece(ActionGameBoard[actionNumber - 1], ActionGameBoard[actionNumber]);
             ResetPiecePosition(ActionGameBoard[actionNumber - 1]);
-            CopyGameBoard(ActionGameBoard[actionNumber], GameBoard);
+            CopyGameBoard(ActionGameBoard[actionNumber - 1], GameBoard);
         }
         else if (actionNumber == 0)
         {
+            
+            ResetCreatePiece(GameBoardBuffer, ActionGameBoard[actionNumber]);
             if (actionData.Function == Functions.Evolve)
             {
                 ResetEvolvePiece(ActionGameBoard[actionNumber], actionData.EvolveData);
             }
-            ResetCreatePiece(GameBoardBuffer, ActionGameBoard[actionNumber]);
             ResetPiecePosition(GameBoardBuffer);
             CopyGameBoard(GameBoardBuffer, GameBoard);
             ResetButton.interactable = false;
@@ -1065,6 +1067,22 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    private void ResetAllEvolvePieces()
+    {
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                if (GameBoard[i, j] != null)
+                {
+                    if (GameBoard[i, j].GetComponent<Piece>().Evolved && GameBoard[i, j].GetComponent<Piece>().StoppingAction)
+                    {
+                        GameBoard[i, j].GetComponent<Piece>().ResetEvolveData();
+                    }
+                }
+            }
+        }
+    }
     private void ResetEvolvePiece(GameObject[,] gameObject, EvolveData evolveData)
     {
         gameObject[evolveData.PositionY, evolveData.PositionX].GetComponent<Piece>().ResetEvolveData();
@@ -1084,6 +1102,7 @@ public class BattleSceneController : MonoBehaviour
     public void OnEnterButtonClicked()
     {
         ResetButton.interactable = false;
+        ResetAllEvolvePieces();
         ResetCreatePiece(GameBoardBuffer, GameBoard);
         ResetPiecePosition(GameBoardBuffer);
         CopyGameBoard(GameBoardBuffer, GameBoard);
@@ -1116,6 +1135,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+
     // 公開していく順番に自分と味方の手を登録していく
     private void MakeTotalActionData()
     {
@@ -1141,6 +1161,8 @@ public class BattleSceneController : MonoBehaviour
                 totalActionDataIndex++;
                 break;
             case Functions.Evolve:
+                ReflectEvolveData(totalActionData[totalActionDataIndex]);
+                totalActionDataIndex++;
                 break;
         }
         if (totalActionDataIndex == ActionMax * 2)
@@ -1205,6 +1227,12 @@ public class BattleSceneController : MonoBehaviour
     private void ReflectEvolveData(ActionData actionData)
     {
         EvolveData evolveData = actionData.EvolveData;
+        if (GameBoard[evolveData.PositionY, evolveData.PositionX] != null)
+        {
+            if (GameBoard[evolveData.PositionY, evolveData.PositionX].GetComponent<Piece>().Opponent == actionData.Opponent)
+            { 
 
+            }
+        }
     }
 }

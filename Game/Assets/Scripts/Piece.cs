@@ -35,6 +35,7 @@ public class Piece : PieceData
         {
             battleSceneController.HighlightActionRange(PositionX, PositionY);
         }
+        ToInspector();
     }
     // 行動範囲の初期化
     public void InitActionRange(int UpperLeft, int LowerLeft, int UpperRight, int LowerRight, int Left, int Right, int Forward, int Backward)
