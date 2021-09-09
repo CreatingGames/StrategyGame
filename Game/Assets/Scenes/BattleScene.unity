@@ -1387,8 +1387,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnBMinus
         m_Mode: 1
         m_Arguments:
@@ -1520,8 +1520,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnRPlus
         m_Mode: 1
         m_Arguments:
@@ -2506,8 +2506,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnLMinus
         m_Mode: 1
         m_Arguments:
@@ -3088,8 +3088,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnFPlus
         m_Mode: 1
         m_Arguments:
@@ -3337,8 +3337,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnBPlus
         m_Mode: 1
         m_Arguments:
@@ -3470,8 +3470,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnLLMinus
         m_Mode: 1
         m_Arguments:
@@ -4106,8 +4106,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnFMinus
         m_Mode: 1
         m_Arguments:
@@ -5662,8 +5662,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnLLPlus
         m_Mode: 1
         m_Arguments:
@@ -5795,8 +5795,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnLPlus
         m_Mode: 1
         m_Arguments:
@@ -8300,8 +8300,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnURPlus
         m_Mode: 1
         m_Arguments:
@@ -8464,7 +8464,7 @@ MonoBehaviour:
   OpponentPiecePrefab: {fileID: 6433473436612652756, guid: cde67a6ed80d2cb47ae01f9718e6f87f, type: 3}
   Canvas: {fileID: 67715138}
   createPalette: {fileID: 1895493445}
-  evolvePalette: {fileID: 0}
+  evolvePalette: {fileID: 1355067123}
   boardSquareClickController: {fileID: 1819504959}
   x: 2
   y: 4
@@ -8685,8 +8685,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnULMinus
         m_Mode: 1
         m_Arguments:
@@ -9725,8 +9725,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnCancel
         m_Mode: 1
         m_Arguments:
@@ -11468,8 +11468,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnOk
         m_Mode: 1
         m_Arguments:
@@ -12078,8 +12078,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnRMinus
         m_Mode: 1
         m_Arguments:
@@ -14894,8 +14894,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnURMinus
         m_Mode: 1
         m_Arguments:
@@ -15423,8 +15423,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreatePalette, Assembly-CSharp
+      - m_Target: {fileID: 1355067125}
+        m_TargetAssemblyTypeName: EvolvePalette, Assembly-CSharp
         m_MethodName: OnULPlus
         m_Mode: 1
         m_Arguments:

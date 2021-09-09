@@ -265,10 +265,10 @@ public class EvolvePalette : MonoBehaviour
         this.FixDialog?.Invoke(EvolvePaletteResult.Cancel);
         gameObject.SetActive(false);
     }
-    public EvolveData GetCreateData()
+    public EvolveData GetEvolveData()
     {
-        EvolveData createData = new EvolveData(x, y, evolveUpperLeft, evolveLowerLeft, evolveUpperRight, evolveLowerRight, evolveLeft, evolveRight, evolveForward, evolveBackward);
-        return createData;
+        EvolveData evolveData = new EvolveData(x, y, evolveUpperLeft, evolveLowerLeft, evolveUpperRight, evolveLowerRight, evolveLeft, evolveRight, evolveForward, evolveBackward);
+        return evolveData;
     }
     public void OnULPlus()
     {
