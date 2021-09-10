@@ -1230,8 +1230,16 @@ public class BattleSceneController : MonoBehaviour
         if (GameBoard[evolveData.PositionY, evolveData.PositionX] != null)
         {
             if (GameBoard[evolveData.PositionY, evolveData.PositionX].GetComponent<Piece>().Opponent == actionData.Opponent)
-            { 
-
+            {
+                GameBoard[evolveData.PositionY, evolveData.PositionX].GetComponent<Piece>().SetEvolveData(evolveData);
+                if (actionData.Opponent)
+                {
+                    OpponentSP -= StrategyPointSetting.CalcurateEvolvingPoint(evolveData.EvolveUpperLeft, evolveData.EvolveUpperRight, evolveData.EvolveLowerLeft, evolveData.EvolveLowerRight, evolveData.EvolveRight, evolveData.EvolveLeft, evolveData.EvolveForward, evolveData.EvolveBackward);
+                }
+                else
+                {
+                    MySP -= StrategyPointSetting.CalcurateEvolvingPoint(evolveData.EvolveUpperLeft, evolveData.EvolveUpperRight, evolveData.EvolveLowerLeft, evolveData.EvolveLowerRight, evolveData.EvolveRight, evolveData.EvolveLeft, evolveData.EvolveForward, evolveData.EvolveBackward);
+                }
             }
         }
     }

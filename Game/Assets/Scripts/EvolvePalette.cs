@@ -411,7 +411,7 @@ public class EvolvePalette : MonoBehaviour
     }
     public void CalcuratingUseStrategyPoint()
     {
-        useStrategyPoint = StrategyPointSetting.CalcurateCreatingPoint(upperLeft + evolveUpperLeft, upperRight + evolveUpperRight, lowerLeft + evolveLowerLeft, lowerRight + evolveLowerRight, right + evolveRight, left + evolveLeft, forward + evolveForward, backward + evolveBackward);
+        useStrategyPoint = StrategyPointSetting.CalcurateEvolvingPoint(evolveUpperLeft,  evolveUpperRight,  evolveLowerLeft,  evolveLowerRight,  evolveRight,  evolveLeft,  evolveForward,  evolveBackward);
         afterStarategyPoint = beforeStrategyPoint - useStrategyPoint;
     }
 }
