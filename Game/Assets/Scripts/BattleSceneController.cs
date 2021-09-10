@@ -999,6 +999,7 @@ public class BattleSceneController : MonoBehaviour
     // 登録した手を巻き戻すためのメソッド
     public void ResetGameBoard()
     {
+        EnterButton.interactable = false;
         actionNumber--;
         ActionData actionData;
         if (myTurn)
