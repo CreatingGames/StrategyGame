@@ -11,6 +11,7 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] GameObject OpponentPiecePrefab;
     [SerializeField] GameObject Canvas;
     [SerializeField] GameObject createPalette;
+    [SerializeField] GameObject evolvePalette;
     [SerializeField] GameObject boardSquareClickController;
     [Header("Test用変数")]
     [SerializeField] int x;
@@ -848,10 +849,24 @@ public class BattleSceneController : MonoBehaviour
                 // 生成してCanvasの子要素に設定
                 createPalette.SetActive(true);
                 createPalette.GetComponent<CreatePalette>().Init();
-                boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = true; // CreatePaletteが１枚しか生成されないようにする
+                boardSquareClickController.GetComponent<BoardSquareClickController>().PaletteCheck = true; // Paletteが１枚しか生成されないようにする
                 createPalette.GetComponent<CreatePalette>().FixDialog = result => CreatePaletteButtonAction(result);
                 createPalette.GetComponent<CreatePalette>().SetPosition(x, y);
                 createPalette.GetComponent<CreatePalette>().SetStrategyPoint(MySP);
+            }
+        }
+        if (Function == Functions.Evolve)
+        {
+            if (GameBoard[y, x] != null && !GameBoard[y, x].GetComponent<Piece>().Opponent && !GameBoard[y, x].GetComponent<Piece>().Evolved)
+            {
+                evolvePalette.SetActive(true);
+                evolvePalette.GetComponent<EvolvePalette>().Init();
+                evolvePalette.GetComponent<EvolvePalette>().SetPosition(x, y);
+                evolvePalette.GetComponent<EvolvePalette>().SetActionRange(GameBoard[y, x].GetComponent<Piece>());
+                boardSquareClickController.GetComponent<BoardSquareClickController>().PaletteCheck = true; // Paletteが１枚しか生成されないようにする
+                evolvePalette.GetComponent<EvolvePalette>().FixDialog = result => EvolvePaletteButtonAction(result);
+                evolvePalette.GetComponent<EvolvePalette>().SetStrategyPoint(MySP);
+
             }
         }
     }
@@ -866,10 +881,35 @@ public class BattleSceneController : MonoBehaviour
             StopMoving = true;
         }
     }
-
+    private void EvolvePaletteButtonAction(EvolvePalette.EvolvePaletteResult result)
+    {
+        boardSquareClickController.GetComponent<BoardSquareClickController>().PaletteCheck = false;
+        MakeAllBoardSquarTransparent();
+        Debug.Log(result);
+        if(result == EvolvePalette.EvolvePaletteResult.OK)
+        {
+            EvolveData  evolve = evolvePalette.GetComponent<EvolvePalette>().GetEvolveData();
+            GameBoard[evolve.PositionY, evolve.PositionX].GetComponent<Piece>().SetEvolveData(evolve);
+            CopyGameBoard(GameBoard, ActionGameBoard[actionNumber]);
+            if (myTurn)
+            {
+                myActionData[actionNumber].Function = Functions.Evolve;
+                myActionData[actionNumber].EvolveData = evolve;
+                myActionData[actionNumber].Opponent = false;
+            }
+            else
+            {
+                opponentActionData[actionNumber].Function = Functions.Evolve;
+                opponentActionData[actionNumber].EvolveData = evolve;
+                opponentActionData[actionNumber].Opponent = true;
+            }
+            
+            ActionNumberPlus();
+        }
+    }
     private void CreatePaletteButtonAction(CreatePalette.CreatePaletteResult result)
     {
-        boardSquareClickController.GetComponent<BoardSquareClickController>().CreatePaletteCheck = false;
+        boardSquareClickController.GetComponent<BoardSquareClickController>().PaletteCheck = false;
         MakeAllBoardSquarTransparent();
         Debug.Log(result);
         if (result == CreatePalette.CreatePaletteResult.OK)
@@ -959,17 +999,36 @@ public class BattleSceneController : MonoBehaviour
     // 登録した手を巻き戻すためのメソッド
     public void ResetGameBoard()
     {
-        if (actionNumber > 1)
+        EnterButton.interactable = false;
+        actionNumber--;
+        ActionData actionData;
+        if (myTurn)
         {
-            actionNumber--;
-            ResetCreatePiece(ActionGameBoard[actionNumber - 1], ActionGameBoard[actionNumber]);
-            ResetPiecePosition(ActionGameBoard[actionNumber - 1]);
-            CopyGameBoard(ActionGameBoard[actionNumber], GameBoard);
+            actionData = myActionData[actionNumber];
         }
-        else if (actionNumber == 1)
+        else
         {
-            actionNumber--;
+            actionData = opponentActionData[actionNumber];
+        }
+        if (actionNumber > 0)
+        {
+            
+            ResetCreatePiece(ActionGameBoard[actionNumber - 1], ActionGameBoard[actionNumber]);
+            if (actionData.Function == Functions.Evolve)
+            {
+                ResetEvolvePiece(ActionGameBoard[actionNumber], actionData.EvolveData);
+            }
+            ResetPiecePosition(ActionGameBoard[actionNumber - 1]);
+            CopyGameBoard(ActionGameBoard[actionNumber - 1], GameBoard);
+        }
+        else if (actionNumber == 0)
+        {
+            
             ResetCreatePiece(GameBoardBuffer, ActionGameBoard[actionNumber]);
+            if (actionData.Function == Functions.Evolve)
+            {
+                ResetEvolvePiece(ActionGameBoard[actionNumber], actionData.EvolveData);
+            }
             ResetPiecePosition(GameBoardBuffer);
             CopyGameBoard(GameBoardBuffer, GameBoard);
             ResetButton.interactable = false;
@@ -1009,6 +1068,26 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    private void ResetAllEvolvePieces()
+    {
+        for (int i = 0; i < BoardSize; i++)
+        {
+            for (int j = 0; j < BoardSize; j++)
+            {
+                if (GameBoard[i, j] != null)
+                {
+                    if (GameBoard[i, j].GetComponent<Piece>().Evolved && GameBoard[i, j].GetComponent<Piece>().StoppingAction)
+                    {
+                        GameBoard[i, j].GetComponent<Piece>().ResetEvolveData();
+                    }
+                }
+            }
+        }
+    }
+    private void ResetEvolvePiece(GameObject[,] gameObject, EvolveData evolveData)
+    {
+        gameObject[evolveData.PositionY, evolveData.PositionX].GetComponent<Piece>().ResetEvolveData();
+    }
     // gameObjects1をgameObjects2にコピーする
     private void CopyGameBoard(GameObject[,] gameObjects1, GameObject[,] gameObjects2)
     {
@@ -1024,6 +1103,7 @@ public class BattleSceneController : MonoBehaviour
     public void OnEnterButtonClicked()
     {
         ResetButton.interactable = false;
+        ResetAllEvolvePieces();
         ResetCreatePiece(GameBoardBuffer, GameBoard);
         ResetPiecePosition(GameBoardBuffer);
         CopyGameBoard(GameBoardBuffer, GameBoard);
@@ -1056,6 +1136,7 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+
     // 公開していく順番に自分と味方の手を登録していく
     private void MakeTotalActionData()
     {
@@ -1081,6 +1162,8 @@ public class BattleSceneController : MonoBehaviour
                 totalActionDataIndex++;
                 break;
             case Functions.Evolve:
+                ReflectEvolveData(totalActionData[totalActionDataIndex]);
+                totalActionDataIndex++;
                 break;
         }
         if (totalActionDataIndex == ActionMax * 2)
@@ -1140,6 +1223,25 @@ public class BattleSceneController : MonoBehaviour
             GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().StrategyPoint = StrategyPointSetting.CalcuratePieceStrategyPoint(GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>());
             GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().ToInspector();
             GameBoard[createData.PositionY, createData.PositionX].GetComponent<Piece>().StoppingAction = true;
+        }
+    }
+    private void ReflectEvolveData(ActionData actionData)
+    {
+        EvolveData evolveData = actionData.EvolveData;
+        if (GameBoard[evolveData.PositionY, evolveData.PositionX] != null)
+        {
+            if (GameBoard[evolveData.PositionY, evolveData.PositionX].GetComponent<Piece>().Opponent == actionData.Opponent)
+            {
+                GameBoard[evolveData.PositionY, evolveData.PositionX].GetComponent<Piece>().SetEvolveData(evolveData);
+                if (actionData.Opponent)
+                {
+                    OpponentSP -= StrategyPointSetting.CalcurateEvolvingPoint(evolveData.EvolveUpperLeft, evolveData.EvolveUpperRight, evolveData.EvolveLowerLeft, evolveData.EvolveLowerRight, evolveData.EvolveRight, evolveData.EvolveLeft, evolveData.EvolveForward, evolveData.EvolveBackward);
+                }
+                else
+                {
+                    MySP -= StrategyPointSetting.CalcurateEvolvingPoint(evolveData.EvolveUpperLeft, evolveData.EvolveUpperRight, evolveData.EvolveLowerLeft, evolveData.EvolveLowerRight, evolveData.EvolveRight, evolveData.EvolveLeft, evolveData.EvolveForward, evolveData.EvolveBackward);
+                }
+            }
         }
     }
 }
