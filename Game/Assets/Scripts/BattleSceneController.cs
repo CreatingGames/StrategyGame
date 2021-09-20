@@ -29,6 +29,7 @@ public class BattleSceneController : MonoBehaviour
     [Header("テキスト")]
     [SerializeField] Text ModeText;
     [SerializeField] Text ActionNumberText;
+    [SerializeField] Text MoveText;
     [SerializeField] Button ResetButton;
     [SerializeField] Button EnterButton;
     [SerializeField] Button NextButton;
@@ -56,6 +57,7 @@ public class BattleSceneController : MonoBehaviour
     private List<ActionData> totalActionData; // 全体の手を登録するためのリスト
     private int totalActionDataIndex = 0; // 全体の手を登録するためのリストのインデックスに使用する変数
     private bool myTurn = true; // 自身の手を登録するターンか相手の手を登録するターンかを判別するための変数
+    public bool FirstMove = false; // 自身が先手が後手かture：先手　false：後手
     public Functions Function { get; set; }// 移動・生成・進化のどのモードが選択されてるかを格納するための変数
 
     private void Start()
@@ -114,6 +116,28 @@ public class BattleSceneController : MonoBehaviour
         else
         {
             ActionNumberText.text = (actionNumber + 1).ToString() + "手目";
+        }
+        if (myTurn)
+        {
+            if (FirstMove)
+            {
+                MoveText.text = "先手";
+            }
+            else
+            {
+                MoveText.text = "後手";
+            }
+        }
+        else
+        {
+            if (FirstMove)
+            {
+                MoveText.text = "後手";
+            }
+            else
+            {
+                MoveText.text = "先手";
+            }
         }
     }
 
@@ -844,7 +868,7 @@ public class BattleSceneController : MonoBehaviour
         }
         if (Function == Functions.Create)
         {
-            if(GameBoard[y,x] == null || GameBoard[y, x].GetComponent<Piece>().Opponent)
+            if (GameBoard[y, x] == null || GameBoard[y, x].GetComponent<Piece>().Opponent)
             {
                 // 生成してCanvasの子要素に設定
                 createPalette.SetActive(true);
@@ -886,9 +910,9 @@ public class BattleSceneController : MonoBehaviour
         boardSquareClickController.GetComponent<BoardSquareClickController>().PaletteCheck = false;
         MakeAllBoardSquarTransparent();
         Debug.Log(result);
-        if(result == EvolvePalette.EvolvePaletteResult.OK)
+        if (result == EvolvePalette.EvolvePaletteResult.OK)
         {
-            EvolveData  evolve = evolvePalette.GetComponent<EvolvePalette>().GetEvolveData();
+            EvolveData evolve = evolvePalette.GetComponent<EvolvePalette>().GetEvolveData();
             GameBoard[evolve.PositionY, evolve.PositionX].GetComponent<Piece>().SetEvolveData(evolve);
             CopyGameBoard(GameBoard, ActionGameBoard[actionNumber]);
             if (myTurn)
@@ -903,7 +927,7 @@ public class BattleSceneController : MonoBehaviour
                 opponentActionData[actionNumber].EvolveData = evolve;
                 opponentActionData[actionNumber].Opponent = true;
             }
-            
+
             ActionNumberPlus();
         }
     }
@@ -1012,7 +1036,7 @@ public class BattleSceneController : MonoBehaviour
         }
         if (actionNumber > 0)
         {
-            
+
             ResetCreatePiece(ActionGameBoard[actionNumber - 1], ActionGameBoard[actionNumber]);
             if (actionData.Function == Functions.Evolve)
             {
@@ -1023,7 +1047,7 @@ public class BattleSceneController : MonoBehaviour
         }
         else if (actionNumber == 0)
         {
-            
+
             ResetCreatePiece(GameBoardBuffer, ActionGameBoard[actionNumber]);
             if (actionData.Function == Functions.Evolve)
             {
@@ -1113,6 +1137,7 @@ public class BattleSceneController : MonoBehaviour
             NextButton.interactable = true;
             EnterButton.interactable = false;
             StopMoving = true;
+            FirstMove = !FirstMove;
         }
         else
         {
@@ -1142,10 +1167,21 @@ public class BattleSceneController : MonoBehaviour
     {
         for (int i = 0, j = 0; i < ActionMax; i++)
         {
-            totalActionData[j] = myActionData[i];
-            j++;
-            totalActionData[j] = opponentActionData[i];
-            j++;
+            if (FirstMove)
+            {
+                totalActionData[j] = myActionData[i];
+                j++;
+                totalActionData[j] = opponentActionData[i];
+                j++;
+            }
+            else
+            {
+                totalActionData[j] = opponentActionData[i];
+                j++;
+                totalActionData[j] = myActionData[i];
+                j++;
+            }
+
         }
     }
     // 全体の手を順に公開していく
