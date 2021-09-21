@@ -8924,6 +8924,7 @@ MonoBehaviour:
   BoardSize: 0
   ModeText: {fileID: 1767483496}
   ActionNumberText: {fileID: 182397294}
+  MoveText: {fileID: 1146739466}
   ResetButton: {fileID: 143303652}
   EnterButton: {fileID: 1867522845}
   NextButton: {fileID: 1136326338}
