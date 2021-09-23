@@ -8,7 +8,9 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] GameObject Board;
     [SerializeField] GameObject Formation;
     [SerializeField] GameObject MyPiecePrefab;
+    [SerializeField] GameObject MyPiecePrefabKing;
     [SerializeField] GameObject OpponentPiecePrefab;
+    [SerializeField] GameObject OpponentPiecePrefabKing;
     [SerializeField] GameObject Canvas;
     [SerializeField] GameObject createPalette;
     [SerializeField] GameObject evolvePalette;
@@ -227,7 +229,16 @@ public class BattleSceneController : MonoBehaviour
             {
                 if (myFormationBoard[i, j] != null)
                 {
-                    GameBoard[i + 3, j] = (GameObject)Instantiate(MyPiecePrefab, BoardSquarPosition[i + 3, j], Quaternion.identity, Canvas.transform);
+                    GameObject piecePrefab;
+                    if (myFormationBoard[i, j].King)
+                    {
+                        piecePrefab = MyPiecePrefabKing;
+                    }
+                    else
+                    {
+                        piecePrefab = MyPiecePrefab;
+                    }
+                    GameBoard[i + 3, j] = (GameObject)Instantiate(piecePrefab, BoardSquarPosition[i + 3, j], Quaternion.identity, Canvas.transform);
                     GameBoard[i + 3, j].GetComponent<Piece>().InitActionRange(myFormationBoard[i, j].UpperLeft, myFormationBoard[i, j].LowerLeft, myFormationBoard[i, j].UpperRight, myFormationBoard[i, j].LowerRight, myFormationBoard[i, j].Left, myFormationBoard[i, j].Right, myFormationBoard[i, j].Forward, myFormationBoard[i, j].Backward);
                     GameBoard[i + 3, j].GetComponent<Piece>().InitPosition(j, i + 3);
                     GameBoard[i + 3, j].GetComponent<Piece>().Opponent = false;
@@ -265,7 +276,16 @@ public class BattleSceneController : MonoBehaviour
                     int right = opponentFormationBoard[i, j].Left;
                     int forward = opponentFormationBoard[i, j].Backward;
                     int backward = opponentFormationBoard[i, j].Forward;
-                    GameBoard[y, x] = (GameObject)Instantiate(OpponentPiecePrefab, BoardSquarPosition[y, x], Quaternion.identity, Canvas.transform);
+                    GameObject piecePrefab;
+                    if (opponentFormationBoard[i, j].King)
+                    {
+                        piecePrefab = OpponentPiecePrefabKing;
+                    }
+                    else
+                    {
+                        piecePrefab = OpponentPiecePrefab;
+                    }
+                    GameBoard[y, x] = (GameObject)Instantiate(piecePrefab, BoardSquarPosition[y, x], Quaternion.identity, Canvas.transform);
                     GameBoard[y, x].GetComponent<Piece>().InitActionRange(upperLeft, lowerLeft, upperRight, lowerRight, left, right, forward, backward);
                     GameBoard[y, x].GetComponent<Piece>().InitPosition(x, y);
                     GameBoard[y, x].GetComponent<Piece>().Opponent = true;
@@ -995,14 +1015,20 @@ public class BattleSceneController : MonoBehaviour
     // 敵の駒を取った時の処理
     private void BreakPiece(int x, int y)
     {
-        if (GameBoard[y, x].GetComponent<Piece>().Opponent)
+        Piece piece = GameBoard[y, x].GetComponent<Piece>();
+        if (piece.Opponent)
         {
-            MySP += StrategyPointSetting.CalcurateBreakingPiecePoints(GameBoard[y, x].GetComponent<Piece>());
+            MySP += StrategyPointSetting.CalcurateBreakingPiecePoints(piece);
+            if (piece.King)
+            {
+
+            }
         }
         else
         {
-            OpponentSP += StrategyPointSetting.CalcurateBreakingPiecePoints(GameBoard[y, x].GetComponent<Piece>());
+            OpponentSP += StrategyPointSetting.CalcurateBreakingPiecePoints(piece);
         }
+
         Destroy(GameBoard[y, x]);
     }
     // 自身の手を登録するターンと相手の手を登録するターンを切り替えるためのメソッド
