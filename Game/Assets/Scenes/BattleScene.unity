@@ -7882,7 +7882,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 930304492}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1542030631}
+        m_TargetAssemblyTypeName: TransientScene, Assembly-CSharp
+        m_MethodName: OnClickToMainSceneButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &930304492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9310,6 +9322,7 @@ MonoBehaviour:
   createPalette: {fileID: 1895493445}
   evolvePalette: {fileID: 1355067123}
   boardSquareClickController: {fileID: 1819504959}
+  FinishBattle: {fileID: 1542030629}
   x: 2
   y: 4
   MySP: 20
@@ -12610,13 +12623,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1542030630}
+  - component: {fileID: 1542030631}
+  - component: {fileID: 1542030632}
   m_Layer: 5
   m_Name: FinishBattle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1542030630
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12640,6 +12655,31 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1542030631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542030629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1606afd7d13d7bf43bada378cea2d2be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1542030632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542030629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411a795997b1aa841a01b7aee2bf70b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 9689862}
 --- !u!1 &1565359438
 GameObject:
   m_ObjectHideFlags: 0
@@ -12773,7 +12813,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1582559764
 RectTransform:
   m_ObjectHideFlags: 0

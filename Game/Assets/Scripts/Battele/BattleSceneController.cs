@@ -15,6 +15,7 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] GameObject createPalette;
     [SerializeField] GameObject evolvePalette;
     [SerializeField] GameObject boardSquareClickController;
+    [SerializeField] GameObject FinishBattle;
     [Header("Test用変数")]
     [SerializeField] int x;
     [SerializeField] int y;
@@ -244,6 +245,7 @@ public class BattleSceneController : MonoBehaviour
                     GameBoard[i + 3, j].GetComponent<Piece>().Opponent = false;
                     GameBoard[i + 3, j].GetComponent<Piece>().StrategyPoint = StrategyPointSetting.CalcuratePieceStrategyPoint(GameBoard[i + 3, j].GetComponent<Piece>());
                     GameBoard[i + 3, j].GetComponent<Piece>().ToInspector();
+                    GameBoard[i + 3, j].GetComponent<Piece>().King = myFormationBoard[i, j].King;
                 }
             }
         }
@@ -291,6 +293,7 @@ public class BattleSceneController : MonoBehaviour
                     GameBoard[y, x].GetComponent<Piece>().Opponent = true;
                     GameBoard[y, x].GetComponent<Piece>().StrategyPoint = StrategyPointSetting.CalcuratePieceStrategyPoint(GameBoard[y, x].GetComponent<Piece>());
                     GameBoard[y, x].GetComponent<Piece>().ToInspector();
+                    GameBoard[y, x].GetComponent<Piece>().King = opponentFormationBoard[i, j].King;
                 }
             }
         }
@@ -1021,12 +1024,18 @@ public class BattleSceneController : MonoBehaviour
             MySP += StrategyPointSetting.CalcurateBreakingPiecePoints(piece);
             if (piece.King)
             {
-
+                FinishBattle.SetActive(true);
+                FinishBattle.GetComponent<FinishBattle>().Winner();
             }
         }
         else
         {
             OpponentSP += StrategyPointSetting.CalcurateBreakingPiecePoints(piece);
+            if (piece.King)
+            {
+                FinishBattle.SetActive(true);
+                FinishBattle.GetComponent<FinishBattle>().Loser();
+            }
         }
 
         Destroy(GameBoard[y, x]);
