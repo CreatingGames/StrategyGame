@@ -6,7 +6,8 @@ public enum Functions
 {
     Move,
     Create,
-    Evolve
+    Evolve,
+    Skip
 }
 public class FunctionSet : MonoBehaviour
 {
@@ -32,6 +33,10 @@ public class FunctionSet : MonoBehaviour
             case Functions.Evolve:
                 Debug.Log("Evolve");
                 battleSceneController.RestMovingPieceSelected();
+                break;
+            case Functions.Skip:
+                battleSceneController.RestMovingPieceSelected();
+                battleSceneController.Skip();
                 break;
         }
     }

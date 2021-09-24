@@ -917,6 +917,18 @@ public class BattleSceneController : MonoBehaviour
             }
         }
     }
+    public void Skip()
+    {
+        if (myTurn)
+        {
+            myActionData[actionNumber].Function = Functions.Skip;
+        }
+        else
+        {
+            opponentActionData[actionNumber].Function = Functions.Skip;
+        }
+        ActionNumberPlus();
+    }
     // actionNumber++にまつわる処理を関数化した
     private void ActionNumberPlus()
     {
@@ -1234,6 +1246,9 @@ public class BattleSceneController : MonoBehaviour
                 break;
             case Functions.Evolve:
                 ReflectEvolveData(totalActionData[totalActionDataIndex]);
+                totalActionDataIndex++;
+                break;
+            case Functions.Skip:
                 totalActionDataIndex++;
                 break;
         }
