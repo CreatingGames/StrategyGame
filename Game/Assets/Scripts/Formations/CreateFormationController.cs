@@ -35,10 +35,46 @@ public class CreateFormationController : MonoBehaviour
         }
     }
     private string _dataPath;
+    private GameObject[,] BoardSquare;
+    [SerializeField] GameObject Board;
+    private Vector3[,] BoardSquarPosition;
+    private Vector3 piecePositionZ = new Vector3(0.0f, 0.0f, -0.46296296296f);// 生成されるオブジェクト位置をz軸-50にするためにメタ的にこうしてる。
+    private GameObject[,] GameBoard;
+    [SerializeField] GameObject MyPiecePrefab;
+    [SerializeField] GameObject MyPiecePrefabKing;
+    [SerializeField] GameObject cavas;
+
     private void Start()
     {
         _dataPath = Path.Combine(Application.persistentDataPath, "Formations.json");
-        print(_dataPath);
+        GameBoard = new GameObject[2, 5];
+        GetAllBoardSquare();
+        GetAllBoardSquarePosition();
+        OnLoad();
+    }
+    private void GetAllBoardSquare()
+    {
+        BoardSquare = new GameObject[2, 5];
+        int index = 0;
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                BoardSquare[i, j] = Board.transform.GetChild(index).gameObject;
+                index++;
+            }
+        }
+    }
+    private void GetAllBoardSquarePosition()
+    {
+        BoardSquarPosition = new Vector3[2, 5];
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                BoardSquarPosition[i, j] = BoardSquare[i, j].transform.position + piecePositionZ;
+            }
+        }
     }
     public void OnSave()
     {
@@ -66,7 +102,7 @@ public class CreateFormationController : MonoBehaviour
         File.WriteAllText(_dataPath, json);
     }
     // JSON形式をロードしてデシリアライズ
-    public void OnLoad()
+    private void OnLoad()
     {
         // 念のためファイルの存在チェック
         if (!File.Exists(_dataPath)) return;
@@ -77,7 +113,29 @@ public class CreateFormationController : MonoBehaviour
         // JSON形式からオブジェクトにデシリアライズ
         var obj = JsonUtility.FromJson<FormationDatas>(json);
 
-        obj.print();
+        int pieces = obj.Formations.Length;
 
+        for (int i = 0; i < pieces; i++)
+        {
+            GameObject piecePrefab;
+            if (obj.Formations[i].King)
+            {
+                piecePrefab = MyPiecePrefabKing;
+            }
+            else
+            {
+                piecePrefab = MyPiecePrefab;
+            }
+            int x = obj.Formations[i].x;
+            int y = obj.Formations[i].y;
+            GameBoard[y, x] = (GameObject)Instantiate(piecePrefab, BoardSquarPosition[y, x], Quaternion.identity, cavas.transform);
+            FormationPiece piece = GameBoard[y, x].GetComponent<FormationPiece>();
+            piece.InitActionRange(obj.Formations[i].UL, obj.Formations[i].LL, obj.Formations[i].UR, obj.Formations[i].LR, obj.Formations[i].L, obj.Formations[i].R, obj.Formations[i].F, obj.Formations[i].B);
+            piece.InitPosition(x, y);
+            piece.Opponent = false;
+            piece.StrategyPoint = StrategyPointSetting.CalcurateFormationPieceStrategyPoint(piece);
+            piece.ToInspector();
+            piece.King = obj.Formations[i].King;
+        }
     }
 }
