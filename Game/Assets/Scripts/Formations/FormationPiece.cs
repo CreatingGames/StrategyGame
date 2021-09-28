@@ -14,7 +14,7 @@ public class FormationPiece : PieceData
     [SerializeField] int t_X = 0;
     [SerializeField] int t_Y = 0;
     [SerializeField] int t_StrategyPoint = 0;
-
+    private CreateFormationPalette CreateFormationPalette;
     // ãÓÇÃèÛë‘
     public bool Evolved { get; set; } = false;// êiâªçœÇ›Ç©Ç«Ç§Ç©
     public bool Opponent { get; set; } = false;// ìGÇ©Ç«Ç§Ç©
@@ -25,6 +25,7 @@ public class FormationPiece : PieceData
     public bool Invasion = false;// ìGêwínÇ…êNì¸ÇµÇΩÇ±Ç∆Ç™Ç†ÇÈÇ©
     private void Start()
     {
+        CreateFormationPalette = GameObject.Find("Palette").GetComponent<CreateFormationPalette>();
     }
     private void Update()
     {
@@ -107,5 +108,10 @@ public class FormationPiece : PieceData
         Evolved = false;
         StoppingAction = false;
         ToInspector();
+    }
+
+    public void OnClicked()
+    {
+        CreateFormationPalette.OnPieceClicked(PositionX, PositionY, UpperRight, UpperLeft, LowerLeft, LowerRight, Forward, Backward, Right, Left);
     }
 }

@@ -138,4 +138,25 @@ public class CreateFormationController : MonoBehaviour
             piece.King = obj.Formations[i].King;
         }
     }
+    public int  CreatePiece(int x, int y, int UR, int UL, int LR, int LL, int F, int B, int R, int L, bool king)
+    {
+        GameObject piecePrefab;
+        if (king)
+        {
+            piecePrefab = MyPiecePrefabKing;
+        }
+        else
+        {
+            piecePrefab = MyPiecePrefab;
+        }
+        GameBoard[y, x] = (GameObject)Instantiate(piecePrefab, BoardSquarPosition[y, x], Quaternion.identity, cavas.transform);
+        FormationPiece piece = GameBoard[y, x].GetComponent<FormationPiece>();
+        piece.InitActionRange(UL, LL, UR, LR, L, R, F, B);
+        piece.InitPosition(x, y);
+        piece.Opponent = false;
+        piece.StrategyPoint = StrategyPointSetting.CalcurateFormationPieceStrategyPoint(piece);
+        piece.ToInspector();
+        piece.King = king;
+        return piece.StrategyPoint;
+    }
 }
