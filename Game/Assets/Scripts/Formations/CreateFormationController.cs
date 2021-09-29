@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CreateFormationController : MonoBehaviour
 {
+    [SerializeField] string Faile;
+    [SerializeField] CreateFormationPalette create;
     [System.Serializable]
     public struct FormationDatas
     {
@@ -46,7 +48,7 @@ public class CreateFormationController : MonoBehaviour
 
     private void Start()
     {
-        _dataPath = Path.Combine(Application.persistentDataPath, "Formations.json");
+        _dataPath = Path.Combine(Application.persistentDataPath, Faile);
         GameBoard = new GameObject[2, 5];
         GetAllBoardSquare();
         GetAllBoardSquarePosition();
@@ -136,6 +138,10 @@ public class CreateFormationController : MonoBehaviour
             piece.StrategyPoint = StrategyPointSetting.CalcurateFormationPieceStrategyPoint(piece);
             piece.ToInspector();
             piece.King = obj.Formations[i].King;
+            if (obj.Formations[i].King)
+            {
+                create.king = true;
+            }
         }
     }
     public int  CreatePiece(int x, int y, int UR, int UL, int LR, int LL, int F, int B, int R, int L, bool king)
@@ -161,6 +167,10 @@ public class CreateFormationController : MonoBehaviour
     }
     public void DeletePiece(int x,int y)
     {
+        if(GameBoard[y, x].GetComponent<FormationPiece>().King)
+        {
+            create.king = false;
+        }
         Destroy(GameBoard[y, x]);
         GameBoard[y, x] = null;
     }

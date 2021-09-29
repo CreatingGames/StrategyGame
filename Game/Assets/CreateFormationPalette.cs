@@ -24,6 +24,7 @@ public class CreateFormationPalette : MonoBehaviour
     [SerializeField] GameObject CreateMode;
     [SerializeField] GameObject PieceMode;
     [SerializeField] GameObject CreateFormationController;
+    [SerializeField] GameObject CreateKing;
     CreateFormationController createFormationController;
     private int upperLeft;
     private int upperRight;
@@ -35,6 +36,7 @@ public class CreateFormationPalette : MonoBehaviour
     private int left;
     private int x;
     private int y;
+    public bool king;
     private int beforeStrategyPoint;
     private int useStrategyPoint;
     private int afterStarategyPoint;
@@ -61,6 +63,7 @@ public class CreateFormationPalette : MonoBehaviour
 
     private void Update()
     {
+        CreateKing.SetActive(!king);
     }
     enum Direction
     {
@@ -142,6 +145,7 @@ public class CreateFormationPalette : MonoBehaviour
     // OKƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚Æ‚«
     public void OnOk()
     {
+        createFormationController.CreatePiece(x, y, upperRight, upperLeft, lowerRight, lowerLeft, forward, backward, right, left, false);
         ModeToNormal();
         InitActionRange();
         UpdateText();
@@ -160,6 +164,14 @@ public class CreateFormationPalette : MonoBehaviour
     public void OnDelete()
     {
         createFormationController.DeletePiece(x, y);
+        ModeToNormal();
+        InitActionRange();
+        UpdateText();
+    }
+    public void OnCreateKing()
+    {
+        createFormationController.CreatePiece(x, y, upperRight, upperLeft, lowerRight, lowerLeft, forward, backward, right, left, true);
+        king = true;
         ModeToNormal();
         InitActionRange();
         UpdateText();
