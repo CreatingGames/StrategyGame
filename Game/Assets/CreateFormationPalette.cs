@@ -159,6 +159,7 @@ public class CreateFormationPalette : MonoBehaviour
     }
     public void OnDelete()
     {
+        createFormationController.DeletePiece(x, y);
         ModeToNormal();
         InitActionRange();
         UpdateText();

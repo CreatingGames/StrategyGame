@@ -159,4 +159,9 @@ public class CreateFormationController : MonoBehaviour
         piece.King = king;
         return piece.StrategyPoint;
     }
+    public void DeletePiece(int x,int y)
+    {
+        Destroy(GameBoard[y, x]);
+        GameBoard[y, x] = null;
+    }
 }
