@@ -25,6 +25,8 @@ public class CreateFormationPalette : MonoBehaviour
     [SerializeField] GameObject PieceMode;
     [SerializeField] GameObject CreateFormationController;
     [SerializeField] GameObject CreateKing;
+    [SerializeField] bool Opponent = false;
+    [SerializeField] TransientScene TransientScene;
     CreateFormationController createFormationController;
     private int upperLeft;
     private int upperRight;
@@ -55,9 +57,6 @@ public class CreateFormationPalette : MonoBehaviour
         InitActionRange();
         UseStrategyPointText.text = "0";
         useStrategyPoint = 0;
-        beforeStrategyPoint = StrategyPointSetting.InitialStrategyPoint;
-        StrategyPoint = StrategyPointSetting.InitialStrategyPoint;
-        CurrentStrategyPoint = StrategyPointSetting.InitialStrategyPoint;
         mode = Modes.Normal;
     }
 
@@ -125,9 +124,10 @@ public class CreateFormationPalette : MonoBehaviour
         useStrategyPoint = 0;
         afterStarategyPoint = StrategyPoint;
         beforeStrategyPoint = StrategyPoint;
+        CurrentStrategyPoint = StrategyPoint;
         UpdateText();
     }
-    public void OnPieceClicked(int x, int y, int UL, int UR, int LL, int LR, int F, int B, int R, int L)
+    public void OnPieceClicked(int x, int y, int UL, int UR, int LL, int LR, int F, int B, int R, int L, bool king)
     {
         SetPosition(x, y);
         ModeToPiece();
@@ -139,12 +139,22 @@ public class CreateFormationPalette : MonoBehaviour
         forward = F;
         left = L;
         right = R;
-        PieceStrategyPoint = StrategyPointSetting.CalcurateCreatingPoint(upperLeft, upperRight, lowerLeft, lowerRight, right, left, forward, backward);
+        if (king)
+        {
+            PieceStrategyPoint = 0;
+        }
+        else
+        {
+            PieceStrategyPoint = StrategyPointSetting.CalcurateCreatingPoint(upperLeft, upperRight, lowerLeft, lowerRight, right, left, forward, backward);
+        }
         UpdateText();
     }
     // OKƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚Æ‚«
     public void OnOk()
     {
+        beforeStrategyPoint = afterStarategyPoint;
+        StrategyPoint = afterStarategyPoint;
+        CurrentStrategyPoint = StrategyPoint;
         createFormationController.CreatePiece(x, y, upperRight, upperLeft, lowerRight, lowerLeft, forward, backward, right, left, false);
         ModeToNormal();
         InitActionRange();
@@ -159,18 +169,30 @@ public class CreateFormationPalette : MonoBehaviour
     }
     public void OnSave()
     {
-
+        createFormationController.OnSave(StrategyPointSetting.InitialStrategyPoint - CurrentStrategyPoint);
+        if (Opponent)
+        {
+            TransientScene.OnClickToMainSceneButton();
+        }
+        else
+        {
+            TransientScene.ToCreateFormationOpponentScene();
+        }
     }
     public void OnDelete()
     {
         createFormationController.DeletePiece(x, y);
+        afterStarategyPoint += PieceStrategyPoint;
+        beforeStrategyPoint = afterStarategyPoint;
+        CurrentStrategyPoint = afterStarategyPoint;
+        StrategyPoint = afterStarategyPoint;
         ModeToNormal();
         InitActionRange();
         UpdateText();
     }
     public void OnCreateKing()
     {
-        createFormationController.CreatePiece(x, y, upperRight, upperLeft, lowerRight, lowerLeft, forward, backward, right, left, true);
+        createFormationController.CreatePiece(x, y, 1, 1, 1, 1, 1, 1, 1, 1, true);
         king = true;
         ModeToNormal();
         InitActionRange();
@@ -196,6 +218,14 @@ public class CreateFormationPalette : MonoBehaviour
         CreateMode.SetActive(false);
         PieceMode.SetActive(false);
         NormalMode.SetActive(true);
+    }
+    public void SetSP(int SP)
+    {
+        beforeStrategyPoint = StrategyPointSetting.InitialStrategyPoint - SP;
+        afterStarategyPoint = StrategyPointSetting.InitialStrategyPoint - SP;
+        CurrentStrategyPoint = StrategyPointSetting.InitialStrategyPoint - SP;
+        StrategyPoint = StrategyPointSetting.InitialStrategyPoint - SP;
+        UpdateText();
     }
     public CreateData GetCreateData()
     {

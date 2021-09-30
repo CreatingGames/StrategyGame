@@ -14,4 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
     guid: da3666bd867634b418fabc467f871789
+  - enabled: 1
+    path: Assets/Scenes/BattleScene.unity
+    guid: 77120bc6c85164e40af4c98ce441820b
+  - enabled: 1
+    path: Assets/Scenes/CreateFormation.unity
+    guid: 5554444bbb72a314dadeb16a5f8b79ff
+  - enabled: 1
+    path: Assets/Scenes/CreateFormationOpponent.unity
+    guid: 9d509298a6891df4487faaea57f2f6d5
   m_configObjects: {}

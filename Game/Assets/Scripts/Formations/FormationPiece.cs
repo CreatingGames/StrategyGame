@@ -112,6 +112,6 @@ public class FormationPiece : PieceData
 
     public void OnClicked()
     {
-        CreateFormationPalette.OnPieceClicked(PositionX, PositionY, UpperRight, UpperLeft, LowerLeft, LowerRight, Forward, Backward, Right, Left);
+        CreateFormationPalette.OnPieceClicked(PositionX, PositionY, UpperRight, UpperLeft, LowerLeft, LowerRight, Forward, Backward, Right, Left, King);
     }
 }

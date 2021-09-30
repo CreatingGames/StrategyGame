@@ -2649,7 +2649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198c6ad8f8fff2e448b4ad8f07119a6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Faile: Formations.json
+  Faile: OppnentFormations.json
   create: {fileID: 987401817}
   Board: {fileID: 1379070476}
   MyPiecePrefab: {fileID: 6433473436612652756, guid: fe69061dbf93ad643948fcd25eb02a92, type: 3}
@@ -3881,7 +3881,7 @@ MonoBehaviour:
   PieceMode: {fileID: 1493467889}
   CreateFormationController: {fileID: 751774671}
   CreateKing: {fileID: 1121787890}
-  Opponent: 0
+  Opponent: 1
   TransientScene: {fileID: 751774674}
   king: 0
 --- !u!1 &1010224093

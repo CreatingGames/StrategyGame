@@ -78,24 +78,47 @@ public class CreateFormationController : MonoBehaviour
             }
         }
     }
-    public void OnSave()
+    public void OnSave(int SP)
     {
+        int num = 0;
         var obj = new FormationDatas
         {
-            StrategyPoint = 0
+            StrategyPoint = SP
         };
-        obj.Formations = new FormationDatas.Formation[1];
-        obj.Formations[0].x = 0;
-        obj.Formations[0].y = 1;
-        obj.Formations[0].UL = 0;
-        obj.Formations[0].UR = 0;
-        obj.Formations[0].LL = 0;
-        obj.Formations[0].LR = 0;
-        obj.Formations[0].L = 0;
-        obj.Formations[0].R = 0;
-        obj.Formations[0].F = 0;
-        obj.Formations[0].B = 0;
-        obj.Formations[0].King = true;
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                if (GameBoard[i, j] != null)
+                {
+                    num++;
+                }
+            }
+        }
+        obj.Formations = new FormationDatas.Formation[num];
+        int index = 0;
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                if (GameBoard[i, j] != null)
+                {
+                    FormationPiece formationPiece = GameBoard[i, j].GetComponent<FormationPiece>();
+                    obj.Formations[index].x = formationPiece.PositionX;
+                    obj.Formations[index].y = formationPiece.PositionY;
+                    obj.Formations[index].UL = formationPiece.UpperLeft;
+                    obj.Formations[index].UR = formationPiece.UpperRight;
+                    obj.Formations[index].LL = formationPiece.LowerLeft;
+                    obj.Formations[index].LR = formationPiece.LowerRight;
+                    obj.Formations[index].L = formationPiece.Left;
+                    obj.Formations[index].R = formationPiece.Right;
+                    obj.Formations[index].F = formationPiece.Forward;
+                    obj.Formations[index].B = formationPiece.Backward;
+                    obj.Formations[index].King = formationPiece.King;
+                    index++;
+                }
+            }
+        }
 
         // JSON形式にシリアライズ
         var json = JsonUtility.ToJson(obj, false);
@@ -107,7 +130,11 @@ public class CreateFormationController : MonoBehaviour
     private void OnLoad()
     {
         // 念のためファイルの存在チェック
-        if (!File.Exists(_dataPath)) return;
+        if (!File.Exists(_dataPath))
+        {
+            create.SetSP(0);
+            return;
+        }
 
         // JSONデータとしてデータを読み込む
         var json = File.ReadAllText(_dataPath);
@@ -143,6 +170,7 @@ public class CreateFormationController : MonoBehaviour
                 create.king = true;
             }
         }
+        create.SetSP(obj.StrategyPoint);
     }
     public int  CreatePiece(int x, int y, int UR, int UL, int LR, int LL, int F, int B, int R, int L, bool king)
     {

@@ -28,4 +28,17 @@ public class TransientScene : MonoBehaviour
         SceneManager.LoadScene("MainScene");
     }
 
+    public void OnClickToBattleSceneButton()
+    {
+        SceneManager.LoadScene("BattleScene");
+    }
+
+    public void ToCreateFormationScene()
+    {
+        SceneManager.LoadScene("CreateFormation");
+    }
+    public void ToCreateFormationOpponentScene()
+    {
+        SceneManager.LoadScene("CreateFormationOpponent");
+    }
 }
