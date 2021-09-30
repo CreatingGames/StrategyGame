@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class StrategyPointSetting : MonoBehaviour
 {
-    public static int InitialStrategyPoint { get; } = 100;
+    public static int InitialStrategyPoint { get; } = 20;
 
     public static int CalcuratePieceStrategyPoint(Piece piece)
     {

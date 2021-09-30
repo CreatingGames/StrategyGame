@@ -78,8 +78,8 @@ public class BattleSceneController : MonoBehaviour
         GetAllBoardSquarePosition();
         StartCoroutine(LoadMyFormation());
         StartCoroutine(LoadOpponentFormation());
-        MySP = StrategyPointSetting.InitialStrategyPoint;
-        OpponentSP = StrategyPointSetting.InitialStrategyPoint;
+        MySP = StrategyPointSetting.InitialStrategyPoint - Formation.GetComponent<FormationData>().MySP;
+        OpponentSP = StrategyPointSetting.InitialStrategyPoint - Formation.GetComponent<FormationData>().OpponentSP;
         ActionGameBoard = new List<GameObject[,]>();
         myActionData = new List<ActionData>();
         opponentActionData = new List<ActionData>();

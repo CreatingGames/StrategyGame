@@ -8,6 +8,8 @@ public class FormationData : MonoBehaviour
     public PieceData[,] OpponentFormationBoard;
     public bool InitializedMyformation = false;
     public bool InitializedOpponentformation = false;
+    public int MySP;
+    public int OpponentSP;
     public void InitMyFormationData()
     {
         string _dataPath;
@@ -23,6 +25,7 @@ public class FormationData : MonoBehaviour
 
         // JSON形式からオブジェクトにデシリアライズ
         var obj = JsonUtility.FromJson<CreateFormationController.FormationDatas>(json);
+        MySP = obj.StrategyPoint;
 
         int pieces = obj.Formations.Length;
         MyFormationBoard = new PieceData[2, 5];
@@ -78,7 +81,7 @@ public class FormationData : MonoBehaviour
             OpponentFormationBoard[y, x].Left = obj.Formations[i].L;
             OpponentFormationBoard[y, x].King = obj.Formations[i].King;
         }
-        
+        OpponentSP = obj.StrategyPoint;
         InitializedOpponentformation = true;
     }
 }
