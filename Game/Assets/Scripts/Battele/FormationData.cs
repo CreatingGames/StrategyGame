@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 public class FormationData : MonoBehaviour
 {
@@ -9,43 +10,75 @@ public class FormationData : MonoBehaviour
     public bool InitializedOpponentformation = false;
     public void InitMyFormationData()
     {
-        MyFormationBoard = new PieceData[2, 5];
-        MyFormationBoard[0, 2] = gameObject.AddComponent<PieceData>();
-        MyFormationBoard[0, 2].Forward = 3;
-        MyFormationBoard[0, 2].Backward = 3;
-        MyFormationBoard[0, 2].Right = 3;
-        MyFormationBoard[0, 2].Left = 3;
-        MyFormationBoard[0, 2].UpperLeft = 3;
-        MyFormationBoard[0, 2].LowerLeft = 3;
-        MyFormationBoard[0, 2].UpperRight = 3;
-        MyFormationBoard[0, 2].LowerRight = 3;
+        string _dataPath;
+        _dataPath = Path.Combine(Application.persistentDataPath, "Formations.json");
+        // 念のためファイルの存在チェック
+        if (!File.Exists(_dataPath))
+        {
+            return;
+        }
 
-        MyFormationBoard[0, 1] = gameObject.AddComponent<PieceData>();
-        MyFormationBoard[0, 1].Forward = 1;
-        MyFormationBoard[0, 1].Backward = 1;
-        MyFormationBoard[0, 1].Right = 1;
-        MyFormationBoard[0, 1].Left = 1;
-        MyFormationBoard[0, 1].UpperLeft = 1;
-        MyFormationBoard[0, 1].LowerLeft = 1;
-        MyFormationBoard[0, 1].UpperRight = 1;
-        MyFormationBoard[0, 1].LowerRight = 1;
-        MyFormationBoard[0, 1].King = true;
+        // JSONデータとしてデータを読み込む
+        var json = File.ReadAllText(_dataPath);
+
+        // JSON形式からオブジェクトにデシリアライズ
+        var obj = JsonUtility.FromJson<CreateFormationController.FormationDatas>(json);
+
+        int pieces = obj.Formations.Length;
+        MyFormationBoard = new PieceData[2, 5];
+        for (int i = 0; i < pieces; i++)
+        {
+            int x = obj.Formations[i].x;
+            int y = obj.Formations[i].y;
+            MyFormationBoard[y, x] = gameObject.AddComponent<PieceData>();
+            MyFormationBoard[y, x].UpperLeft = obj.Formations[i].UL;
+            MyFormationBoard[y, x].UpperRight = obj.Formations[i].UR;
+            MyFormationBoard[y, x].LowerLeft = obj.Formations[i].LL;
+            MyFormationBoard[y, x].LowerRight = obj.Formations[i].LR;
+            MyFormationBoard[y, x].Forward = obj.Formations[i].F;
+            MyFormationBoard[y, x].Backward = obj.Formations[i].B;
+            MyFormationBoard[y, x].Right = obj.Formations[i].R;
+            MyFormationBoard[y, x].Left = obj.Formations[i].L;
+            MyFormationBoard[y, x].King = obj.Formations[i].King;
+        }
+
         InitializedMyformation = true;
 
     }
     public void InitOpponentFormationData()
     {
+        string _dataPath;
+        _dataPath = Path.Combine(Application.persistentDataPath, "OppnentFormations.json");
+        // 念のためファイルの存在チェック
+        if (!File.Exists(_dataPath))
+        {
+            return;
+        }
+
+        // JSONデータとしてデータを読み込む
+        var json = File.ReadAllText(_dataPath);
+
+        // JSON形式からオブジェクトにデシリアライズ
+        var obj = JsonUtility.FromJson<CreateFormationController.FormationDatas>(json);
+
+        int pieces = obj.Formations.Length;
         OpponentFormationBoard = new PieceData[2, 5];
-        OpponentFormationBoard[0, 2] = gameObject.AddComponent<PieceData>();
-        OpponentFormationBoard[0, 2].Forward = 0;
-        OpponentFormationBoard[0, 2].Backward = 1;
-        OpponentFormationBoard[0, 2].Right = 0;
-        OpponentFormationBoard[0, 2].Left = 0;
-        OpponentFormationBoard[0, 2].UpperLeft = 3;
-        OpponentFormationBoard[0, 2].LowerLeft = 1;
-        OpponentFormationBoard[0, 2].UpperRight = 3;
-        OpponentFormationBoard[0, 2].LowerRight = 1;
-        OpponentFormationBoard[0, 2].King = true;
+        for (int i = 0; i < pieces; i++)
+        {
+            int x = obj.Formations[i].x;
+            int y = obj.Formations[i].y;
+            OpponentFormationBoard[y, x] = gameObject.AddComponent<PieceData>();
+            OpponentFormationBoard[y, x].UpperLeft = obj.Formations[i].UL;
+            OpponentFormationBoard[y, x].UpperRight = obj.Formations[i].UR;
+            OpponentFormationBoard[y, x].LowerLeft = obj.Formations[i].LL;
+            OpponentFormationBoard[y, x].LowerRight = obj.Formations[i].LR;
+            OpponentFormationBoard[y, x].Forward = obj.Formations[i].F;
+            OpponentFormationBoard[y, x].Backward = obj.Formations[i].B;
+            OpponentFormationBoard[y, x].Right = obj.Formations[i].R;
+            OpponentFormationBoard[y, x].Left = obj.Formations[i].L;
+            OpponentFormationBoard[y, x].King = obj.Formations[i].King;
+        }
+        
         InitializedOpponentformation = true;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -246,6 +247,10 @@ public class BattleSceneController : MonoBehaviour
                     GameBoard[i + 3, j].GetComponent<Piece>().StrategyPoint = StrategyPointSetting.CalcuratePieceStrategyPoint(GameBoard[i + 3, j].GetComponent<Piece>());
                     GameBoard[i + 3, j].GetComponent<Piece>().ToInspector();
                     GameBoard[i + 3, j].GetComponent<Piece>().King = myFormationBoard[i, j].King;
+                    if(GameBoard[i + 3, j].GetComponent<Piece>().King)
+                    {
+                        GameBoard[i + 3, j].GetComponent<Piece>().Evolved = true;
+                    }
                 }
             }
         }
@@ -294,6 +299,10 @@ public class BattleSceneController : MonoBehaviour
                     GameBoard[y, x].GetComponent<Piece>().StrategyPoint = StrategyPointSetting.CalcuratePieceStrategyPoint(GameBoard[y, x].GetComponent<Piece>());
                     GameBoard[y, x].GetComponent<Piece>().ToInspector();
                     GameBoard[y, x].GetComponent<Piece>().King = opponentFormationBoard[i, j].King;
+                    if (GameBoard[y, x].GetComponent<Piece>().King)
+                    {
+                        GameBoard[y, x].GetComponent<Piece>().Evolved = true;
+                    }
                 }
             }
         }
