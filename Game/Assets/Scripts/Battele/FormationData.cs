@@ -29,6 +29,7 @@ public class FormationData : MonoBehaviour
         MyFormationBoard[0, 1].LowerLeft = 1;
         MyFormationBoard[0, 1].UpperRight = 1;
         MyFormationBoard[0, 1].LowerRight = 1;
+        MyFormationBoard[0, 1].King = true;
         InitializedMyformation = true;
 
     }
@@ -44,6 +45,7 @@ public class FormationData : MonoBehaviour
         OpponentFormationBoard[0, 2].LowerLeft = 1;
         OpponentFormationBoard[0, 2].UpperRight = 3;
         OpponentFormationBoard[0, 2].LowerRight = 1;
+        OpponentFormationBoard[0, 2].King = true;
         InitializedOpponentformation = true;
     }
 }
